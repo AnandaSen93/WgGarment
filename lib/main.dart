@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
 import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/Home/home.dart';
@@ -17,7 +18,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-       // ChangeNotifierProvider(create: (context) => HomeViewModel()), // Another ViewModel
+        ChangeNotifierProvider(create: (context) => HomeViewModel()), // Another ViewModel
         Provider(create: (context) => ApiServices()), // Non ChangeNotifier provider
       ],
       child: const MyApp(),

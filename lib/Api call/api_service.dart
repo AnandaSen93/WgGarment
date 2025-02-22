@@ -3,28 +3,13 @@ import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-  // Future<LoginModel?> loginWithModel( String email, String password)async{
 
-  //   try{
-  //     var url = Uri.parse("https://reqres.in/api/login");
-  //     var response = await http.post(url, body: {
-  //       "email": email,
-  //       "password": password
-  //     });
 
-  //     if(response.statusCode == 200){
-  //       LoginModel model = LoginModel.fromJson(jsonDecode(response.body));
-  //       return model;
-  //     }
-  //   }catch (e){
-  //     print(e);
-  //   }
-  //   return null;
-  // }
 
-  Future<dynamic> postApiCall(Map<String, dynamic> params) async {
+
+  Future<dynamic> postApiCall(Map<String, dynamic> params,String apiName) async {
     try {
-      final mainUrl = '${ApiConstant.baseUrl}${ApiConstant.loginUrl}';
+      final mainUrl = '${ApiConstant.baseUrl}${apiName}';
 
       var url = Uri.parse(mainUrl);
       // var response = await http.post(url, body: jsonEncode(body));
@@ -60,4 +45,3 @@ class ApiServices {
   
 }
 
-class ApiConstants {}

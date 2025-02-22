@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Login/login_model.dart';
 
@@ -50,7 +51,7 @@ class LoginViewModel extends ChangeNotifier {
           "password": _password,
           "deviceToken": "",
           "deviceType": "I"
-        });
+        }, ApiConstant.loginUrl);
 
         print("Response Type: ${response.runtimeType}");
         loginModel = loginModelFromJson(response);

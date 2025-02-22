@@ -10,7 +10,15 @@ const productbackgroundcolor = Color(0xFFE9E6E4);
 
 
 
+Color hexToColor(String hexString) {
+  hexString = hexString.toUpperCase().replaceAll("#", ""); // Remove #
+  
+  if (hexString.length == 6) {
+    hexString = "FF$hexString"; // Add full opacity if alpha is missing
+  }
 
+  return Color(int.parse(hexString, radix: 16));
+}
 
 
 
