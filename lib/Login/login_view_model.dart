@@ -4,6 +4,8 @@ import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Login/login_model.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginViewModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
@@ -56,6 +58,11 @@ class LoginViewModel extends ChangeNotifier {
         print("Response Type: ${response.runtimeType}");
         loginModel = loginModelFromJson(response);
         print("Response Text: ${loginModel.responseText}");
+
+        if (loginModel.responseCode == 1){
+          var share = await SharedPreferences.getInstance();
+          share.setBool(isLogin, true);
+        }
 
         return loginModel;
       } catch (error) {

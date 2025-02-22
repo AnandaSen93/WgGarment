@@ -301,3 +301,30 @@ class SizeList {
     return data;
   }
 }
+
+
+
+// add remove wishlist
+
+NormalModel normalModelFromJson(String str) => NormalModel.fromJson(json.decode(str));
+
+String normalModelToJson(NormalModel data) => json.encode(data.toJson()); 
+
+class NormalModel {
+  String? responseText;
+  int? responseCode;
+
+  NormalModel({this.responseText, this.responseCode});
+
+  NormalModel.fromJson(Map<String, dynamic> json) {
+    responseText = json['responseText'];
+    responseCode = json['responseCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['responseText'] = this.responseText;
+    data['responseCode'] = this.responseCode;
+    return data;
+  }
+}
