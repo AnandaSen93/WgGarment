@@ -9,6 +9,10 @@ import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Login/login_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
+import 'package:wg_garment/Menu/menu.dart';
+import 'package:wg_garment/Signup/signup.dart';
+
+
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -17,7 +21,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView>
-  with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   final TextEditingController _emailCon = TextEditingController();
@@ -200,49 +204,53 @@ class _LoginViewState extends State<LoginView>
                       ),
                       SizedBox(height: 50),
                       SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: Expanded(
-                            child: TextButton(
-                                onPressed: () async {
-                                  if (loginViewModel.checkValidation() == "success") {
-                                    LoginModel? response =
-                                        await loginViewModel.loginApiCall();
-                                    if (response != null) {
-                                      if (response.responseCode == 1) {
-                                        print(response.responseData);
-                                      } else {
-                                       Fluttertoast.showToast(msg: response.responseText ?? "");
-                                      }
-                                    } else {
-                                      print("Login failed");
-                                    }
+                        height: 50,
+                        width: double.infinity,
+                        child: TextButton(
+                            onPressed: () async {
+                              if (loginViewModel.checkValidation() ==
+                                  "success") {
+                                LoginModel? response =
+                                    await loginViewModel.loginApiCall();
+                                if (response != null) {
+                                  if (response.responseCode == 1) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MenuView()));
                                   } else {
-                                    setState(() {
-                                      Fluttertoast.showToast(msg:loginViewModel.checkValidation());
-                                     
-                                    });
+                                    Fluttertoast.showToast(
+                                        msg: response.responseText ?? "");
                                   }
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      pinkcolor, // Button background color
-                                  foregroundColor: Colors.white, // Text color
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        25.0), // Rounded corners
-                                  ),
-                                ),
-                                child: Text("LOG IN")),
-                          )),
+                                } else {
+                                  print("Login failed");
+                                }
+                              } else {
+                                setState(() {
+                                  Fluttertoast.showToast(
+                                      msg: loginViewModel.checkValidation());
+                                });
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  pinkcolor, // Button background color
+                              foregroundColor: Colors.white, // Text color
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    25.0), // Rounded corners
+                              ),
+                            ),
+                            child: Text("LOG IN")),
+                      ),
                       TextButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Signup()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignupView()));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

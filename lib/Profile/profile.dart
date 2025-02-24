@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Login/login.dart';
+import 'package:wg_garment/Signup/signup.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -11,7 +15,16 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  var list = ["My Order", "My Address", "Notification", "Change Password", "Log Out", "Delete Account"];
+  var list = [
+    "My Order",
+    "My Address",
+    "Notification",
+    "Change Password",
+    "Log Out",
+    "Delete Account"
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
@@ -22,8 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             AspectRatio(
               aspectRatio: 2.5,
-              child: Stack(
-                children: [
+              child: Stack(children: [
                 Container(
                   decoration: BoxDecoration(
                     color: pinkcolor.withOpacity(0.05),
@@ -72,71 +84,114 @@ class _ProfileViewState extends State<ProfileView> {
                     ],
                   ),
                 ),
-               
                 Positioned(
-                      bottom:0,
-                      right: 0,
-                      child: IconButton(
-                        icon: Image.asset(
-                          "assets/images/edit_text.png", // Replace with your image path
-                          width: 25,
-                          height: 25,
-                        ),
-                        onPressed: () {
-                          // Action when pressed
-                          print("delete");
-
-                          setState(() {});
-                        },
-                      ),
+                  bottom: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: Image.asset(
+                      "assets/images/edit_text.png", // Replace with your image path
+                      width: 25,
+                      height: 25,
                     ),
-              
-              
+                    onPressed: () {
+                      // Action when pressed
+                      print("delete");
+                      setState(() {});
+                    },
+                  ),
+                ),
               ]),
             ),
             SizedBox(height: 10),
             Expanded(
-            child: Container(
+                child: Container(
               //padding:EdgeInsets.only(right: 15,left: 15,),
               child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: list.length,
-                itemBuilder: (context, index){
-                return Column(
-                  children:[ Container(
-                     // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: lightgraykcolor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      height: 50,
-                      // color: lightgraykcolor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(width: 10),
-                          Icon(Icons.audiotrack_rounded),
-                          SizedBox(width: 10),
-                          Text(
-                            list[index],
-                            style: textStyleForTextField,
-                          ),
-                          Spacer(),
-                          Icon(Icons.chevron_right_sharp),
-                          SizedBox(width: 5),
-                        ],
+                  scrollDirection: Axis.vertical,
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        if (list[index] == "Log Out") {
+                          Alert(
+                            context: context,
+                            type: AlertType
+                                .warning, // You can change the type (success, error, info, etc.)
+                            title: "Log Out",
+                            desc: "Are you sure you want to logout?",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () async {
+                                  print("Yes");
+                                  Navigator.pop(context);
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.remove('isLoggedIn');
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginView()));
 
-                      ),
-                    ),
-                    SizedBox(height: 5)
-                    ]
-                );
-              }),
-            )
-            )
-            
-            
-          
+                                  // Close the alert
+                                },
+                                color: Colors.green,
+                              ),
+                              DialogButton(
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  print("No");
+                                  Navigator.pop(context); // Close the alert
+                                },
+                                color: Colors.red,
+                              )
+                            ],
+                          ).show();
+                        } else if (list[index] == "Delete Account") {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignupView()));
+                        }
+                      },
+                      child: Column(children: [
+                        Container(
+                          // padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: lightgraykcolor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          height: 50,
+                          // color: lightgraykcolor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 10),
+                              Icon(Icons.audiotrack_rounded),
+                              SizedBox(width: 10),
+                              Text(
+                                list[index],
+                                style: textStyleForTextField,
+                              ),
+                              Spacer(),
+                              Icon(Icons.chevron_right_sharp),
+                              SizedBox(width: 5),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5)
+                      ]),
+                    );
+                  }),
+            ))
           ],
         ),
       )),

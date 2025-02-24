@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
@@ -16,14 +17,17 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  bool _like = true;
+  
   bool _isInitialized = false;
 
 
   @override
   void initState() {
     super.initState();
+     loadData();
   }
+
+ 
 
   @override
   void dispose() {
@@ -40,6 +44,14 @@ class _HomeViewState extends State<HomeView> {
       _isInitialized = true; // Ensure it's called only once
     }
   }
+
+   Future<void> loadData() async {
+  final prefs = await SharedPreferences.getInstance();
+
+ 
+  bool? isLoggedIn = prefs.getBool('isLoggedIn');
+  print('Is Logged In: $isLoggedIn');
+}
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +271,7 @@ class _HomeViewState extends State<HomeView> {
                                                 print("hello");
 
                                                 homeViewModel.addRemoveWishlistApiCall(homeViewModel.newArrival[index].productId.toString());
-                                                print(
-                                                    "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
+                                                
                                               },
                                             ),
                                           )
@@ -451,13 +462,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               onPressed: () {
                                                 // Action when pressed
-                                                print("hello");
-
-                                                setState(() {
-                                                  // wishlistApi call
-                                                });
-                                                print(
-                                                    "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
+                                                  homeViewModel.addRemoveWishlistApiCall(homeViewModel.mostWanted[index].productId.toString());
                                               },
                                             ),
                                           )
@@ -649,13 +654,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               onPressed: () {
                                                 // Action when pressed
-                                                print("hello");
-
-                                                setState(() {
-                                                  _like = !_like;
-                                                });
-                                                print(
-                                                    "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
+                                                   homeViewModel.addRemoveWishlistApiCall(homeViewModel.backInaStack[index].productId.toString());
                                               },
                                             ),
                                           )
@@ -764,3 +763,5 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
+
+

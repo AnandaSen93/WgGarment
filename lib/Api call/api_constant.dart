@@ -5,5 +5,8 @@ class ApiConstant {
   static const String loginUrl = "login";
   static const String homeUrl = "home";
   static const String addremovewishlistUrl = "addremovewishlist";
+  static const String categorylistUrl = "categorylist";
+
+
   
 }

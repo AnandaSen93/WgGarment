@@ -26,7 +26,7 @@ class LoginViewModel extends ChangeNotifier {
     String str = "";
     if (_email.isEmpty) {
       str = "Please enter your email.";
-    } else if (isValidEmail(_email)) {
+    } else if (!isValidEmail(_email)) {
       str = "Please enter your valid email.";
     } else if (_password == "") {
       str = "Please enter your password.";
@@ -61,12 +61,13 @@ class LoginViewModel extends ChangeNotifier {
 
         if (loginModel.responseCode == 1){
           var share = await SharedPreferences.getInstance();
-          share.setBool(isLogin, true);
+          share.setBool("isLoggedIn", true);
+          print("isLoggedIn");
         }
-
+        
         return loginModel;
       } catch (error) {
-        print("Error: $error");
+        print("Error parse: $error");
         return null;
       }
     }

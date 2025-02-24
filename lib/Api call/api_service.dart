@@ -29,13 +29,13 @@ class ApiServices {
 
       print("StatusCode: ${response.statusCode}");
       print("Response: ${response}");
-      if (response.statusCode == 200) {
+     // if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
         final jsonMap = jsonDecode(responseBody);
         print("Response: ${responseBody}");
         // Map JSON to the ApiResponse model
         return responseBody;
-      }
+     // }
     } catch (e) {
       print(e);
     }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 HomeModel homeModelFromJson(String str) => HomeModel.fromJson(json.decode(str));
-
 String homeModelToJson(HomeModel data) => json.encode(data.toJson()); 
 
 class HomeModel {
