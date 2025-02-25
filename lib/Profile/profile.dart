@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Login/login.dart';
+import 'package:wg_garment/Profile/profile_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -25,8 +27,38 @@ class _ProfileViewState extends State<ProfileView> {
   ];
 
 
+
+  bool _isInitialized = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+ 
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      Provider.of<ProfileViewModel>(context, listen: false).profileApiCall();
+
+      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
+      _isInitialized = true; // Ensure it's called only once
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+     final profileViewModel = Provider.of<ProfileViewModel>(context);
     return PlatformScaffold(
       body: SafeArea(
           child: Container(
@@ -51,8 +83,11 @@ class _ProfileViewState extends State<ProfileView> {
                           child: ClipOval(
                             child: AspectRatio(
                                 aspectRatio: 1,
-                                child:
-                                    Image.asset("assets/images/product.png")),
+                                child: ((profileViewModel.profileDta?.profileImage.toString() ?? "") != "") ? 
+                                    Image.network(
+                                      profileViewModel.profileDta?.profileImage.toString() ?? "",
+                                      fit: BoxFit.cover,
+                                    ):Image.asset("assets/images/profile.png")),
                           ),
                         ),
                       ),
@@ -64,17 +99,17 @@ class _ProfileViewState extends State<ProfileView> {
                           children: [
                             Spacer(),
                             Text(
-                              "User Name",
+                              "${profileViewModel.profileDta?.firstName.toString() ?? ""} ${profileViewModel.profileDta?.lastName.toString() ?? ""}",
                               style: textStyleForCategorytName,
                             ),
                             SizedBox(height: 5),
                             Text(
-                              "email:testuser@test.com",
+                              profileViewModel.profileDta?.email.toString() ?? "",
                               style: textStyleForCategorytName,
                             ),
                             SizedBox(height: 5),
                             Text(
-                              "phone:9876543210",
+                              profileViewModel.profileDta?.phone.toString() ?? "",
                               style: textStyleForCategorytName,
                             ),
                             Spacer(),

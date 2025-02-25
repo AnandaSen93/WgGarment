@@ -21,7 +21,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   final TextEditingController _emailCon = TextEditingController();
@@ -36,6 +36,8 @@ class _LoginViewState extends State<LoginView>
   @override
   void dispose() {
     _controller.dispose();
+    _emailCon.dispose();
+    _passwordCon.dispose();
     super.dispose();
   }
 
