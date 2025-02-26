@@ -3,10 +3,6 @@ import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
-
-
-
-
   Future<dynamic> postApiCall(Map<String, dynamic> params,String apiName) async {
     try {
       final mainUrl = '${ApiConstant.baseUrl}${apiName}';
@@ -43,5 +39,15 @@ class ApiServices {
 
 
   
+}
+
+
+class Helper {
+   static bool isValidEmail(String email) {
+    // Regular expression for email validation
+    String pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(email);
+  }
 }
 

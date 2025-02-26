@@ -7,6 +7,7 @@ class ApiConstant {
   static const String addremovewishlistUrl = "addremovewishlist";
   static const String categorylistUrl = "categorylist";
   static const String profiledetailsUrl = "profiledetails";
+  static const String signupUrl = "registration";
 
 
   
