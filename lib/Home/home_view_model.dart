@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Api%20call/loader.dart';
 import 'package:wg_garment/Home/home_model.dart';
 
 class HomeViewModel extends ChangeNotifier {
@@ -14,6 +15,7 @@ class HomeViewModel extends ChangeNotifier {
   List<BannerClass> allBanner = [];
 
   Future<HomeModel?> homeApiCall() async {
+
     try {
       final response = await ApiServices().postApiCall(
           {"userId": "1", "deviceToken": "", "deviceType": "I"},
@@ -27,7 +29,7 @@ class HomeViewModel extends ChangeNotifier {
       allBanner = homeModel.responseData?.normalBanner ?? [];
       mostWanted = homeModel.responseData?.mostWanted ?? [];
       backInaStack = homeModel.responseData?.backInStock ?? [];
-
+     
       print("allBanner: ${newArrival}");
       notifyListeners();
       return HomeModel();

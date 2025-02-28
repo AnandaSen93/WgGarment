@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
@@ -21,12 +22,38 @@ class _HomeViewState extends State<HomeView> {
   bool _isInitialized = false;
 
 
+
+
+
   @override
   void initState() {
     super.initState();
+    
+  //  lodder();
+
+
      loadData();
   }
 
+
+   void showLoadingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Prevent closing when tapping outside
+    builder: (context) {
+      return AlertDialog(
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 20),
+            Text("Loading..."),
+          ],
+        ),
+      );
+    },
+  );
+}
  
 
   @override
@@ -47,8 +74,6 @@ class _HomeViewState extends State<HomeView> {
 
    Future<void> loadData() async {
   final prefs = await SharedPreferences.getInstance();
-
- 
   bool? isLoggedIn = prefs.getBool('isLoggedIn');
   print('Is Logged In: $isLoggedIn');
 }
@@ -64,12 +89,16 @@ class _HomeViewState extends State<HomeView> {
     }
 
     return PlatformScaffold(
-      body: SafeArea(
+      body: 
+      
+      SafeArea(
           child: SingleChildScrollView(
-        child: Container(
+        child: 
+        Container(
           padding: EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: [
+          child: 
+          Column(
+            children: [              
               // Search Start
               Container(
                 child: Container(
@@ -112,7 +141,8 @@ class _HomeViewState extends State<HomeView> {
                                 ?.map((imageUrl) {
                               return ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
+                                child:  CustomNetworkImage(
+                                    imageUrl:
                                   imageUrl.image
                                       .toString(), // Convert String to Widget
                                   fit: BoxFit.cover,
@@ -125,7 +155,7 @@ class _HomeViewState extends State<HomeView> {
                     : Container(
                         color: Colors.grey[300],
                         child: Center(
-                          child: Text("No images available"),
+                          child: Text(""),
                         ),
                       ),
               ),
@@ -167,7 +197,8 @@ class _HomeViewState extends State<HomeView> {
                                 color: Colors.transparent,
                                 child: Column(
                                   children: [
-                                    Image.network(
+                                     CustomNetworkImage(
+                                    imageUrl:
                                       homeViewModel
                                           .topCategory[index].categoryImage
                                           .toString(),
@@ -246,7 +277,8 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(
+                                           CustomNetworkImage(
+                                    imageUrl:
                                             homeViewModel
                                                 .newArrival[index].productImage
                                                 .toString(),
@@ -382,7 +414,8 @@ class _HomeViewState extends State<HomeView> {
                   ? Container(
                       height: 200,
                       color: Colors.red,
-                      child: Image.network(
+                      child:  CustomNetworkImage(
+                                    imageUrl:
                         homeViewModel.allBanner[0].image.toString(),
                         height: double.infinity,
                         width: double.infinity,
@@ -440,7 +473,8 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(homeViewModel
+                                           CustomNetworkImage(
+                                    imageUrl:homeViewModel
                                               .mostWanted[index].productImage
                                               .toString(),
                                               height: double.infinity,
@@ -570,7 +604,8 @@ class _HomeViewState extends State<HomeView> {
                   ? Container(
                       height: 200,
                       color: Colors.red,
-                      child: Image.network(
+                      child:  CustomNetworkImage(
+                                    imageUrl:
                         homeViewModel.allBanner[1].image.toString(),
                         height: double.infinity,
                         width: double.infinity,
@@ -632,7 +667,8 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(
+                                           CustomNetworkImage(
+                                    imageUrl:
                                             homeViewModel
                                                 .backInaStack[index].productImage
                                                 .toString(),

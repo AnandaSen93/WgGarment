@@ -1,9 +1,16 @@
 import 'dart:convert';
 
+ProductListModel productListModelFromJson(String str) => ProductListModel.fromJson(json.decode(str));
+String productListModelToJson(ProductListModel data) => json.encode(data.toJson());
+
+
+
 class ProductListModel {
     String? responseText;
     int? responseCode;
     List<ProductListData>? responseData;
+
+    
 
     ProductListModel({
         this.responseText,

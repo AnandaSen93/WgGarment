@@ -3,15 +3,41 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Category/category_model.dart';
+import 'package:wg_garment/Product%20List/product_list.dart';
+import 'package:wg_garment/Product%20List/product_list_view_model.dart';
 
 class CategoryViewModel extends ChangeNotifier {
 
   List<CategoryData> category_list = [];
   List<SubCategory> subCategory_list =[];
   int isSelected = 1;
+
+  String selectedSubCatID = "";
+
+
+  void navigateToProductListing(BuildContext context) async {
+    
+
+    Provider.of<ProductListViewModel>(context, listen: false).setcategoryId(selectedSubCatID);
+
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductListView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
 
    void getsubCategoryList(int index){
       isSelected = index;
@@ -24,7 +50,7 @@ class CategoryViewModel extends ChangeNotifier {
 
   Future<CategoryModel?> getcategoryList() async {
       try {
-        final response = await ApiServices().postApiCall(
+        var response = await ApiServices().postApiCall(
           {},
           ApiConstant.categorylistUrl);
 

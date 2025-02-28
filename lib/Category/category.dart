@@ -108,12 +108,9 @@ class _CategoryState extends State<CategoryView> {
                 itemBuilder: (context, index1){
                 return GestureDetector(
                   onTap: (){
-                    Fluttertoast.showToast(msg: categoryViewModel.subCategory_list[index1].subcategoryName.toString());
-                     Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductListView()));
+                    Fluttertoast.showToast(msg: categoryViewModel.subCategory_list[index1].subcategoryId.toString());
+                    categoryViewModel.selectedSubCatID = categoryViewModel.subCategory_list[index1].subcategoryId.toString();
+                    categoryViewModel.navigateToProductListing(context);
                   },
                   child: Column(
                     children:[ Container(

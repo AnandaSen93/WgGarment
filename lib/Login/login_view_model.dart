@@ -57,6 +57,7 @@ class LoginViewModel extends ChangeNotifier {
         if (loginModel.responseCode == 1){
           var share = await SharedPreferences.getInstance();
           share.setBool("isLoggedIn", true);
+          share.setString("userID",loginModel.responseData?.userId ?? "");
           print("isLoggedIn");
         }
         
