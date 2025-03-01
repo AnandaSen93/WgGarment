@@ -335,7 +335,11 @@ class _HomeViewState extends State<HomeView> {
                                                               .newArrival[index]
                                                               .productSellPrice
                                                               .toString() !=
-                                                          "")
+                                                          "" && homeViewModel
+                                                              .newArrival[index]
+                                                              .productSellPrice
+                                                              .toString() !=
+                                                          "0.00")
                                                       ? Text(
                                                           homeViewModel
                                                               .newArrival[index]
@@ -354,7 +358,11 @@ class _HomeViewState extends State<HomeView> {
                                                               .newArrival[index]
                                                               .productSellPrice
                                                               .toString() ==
-                                                          "")
+                                                          "" || homeViewModel
+                                                              .newArrival[index]
+                                                              .productSellPrice
+                                                              .toString() ==
+                                                          "0.00")
                                                       ? Text("",
                                                           style:
                                                               textStyleForCutPrice,maxLines: 1)
@@ -527,7 +535,11 @@ class _HomeViewState extends State<HomeView> {
                                                               .mostWanted[index]
                                                               .productSellPrice
                                                               .toString() !=
-                                                          "")
+                                                          "" && homeViewModel
+                                                              .mostWanted[index]
+                                                              .productSellPrice
+                                                              .toString() !=
+                                                          "0.00")
                                                       ? Text(
                                                           homeViewModel
                                                               .mostWanted[index]
@@ -546,7 +558,11 @@ class _HomeViewState extends State<HomeView> {
                                                               .mostWanted[index]
                                                               .productSellPrice
                                                               .toString() ==
-                                                          "")
+                                                          "" || homeViewModel
+                                                              .mostWanted[index]
+                                                              .productSellPrice
+                                                              .toString() !=
+                                                          "0.00")
                                                       ? Text("",
                                                           style:
                                                               textStyleForCutPrice,maxLines: 1,)
@@ -722,6 +738,10 @@ class _HomeViewState extends State<HomeView> {
                                                               .backInaStack[index]
                                                               .productSellPrice
                                                               .toString() !=
+                                                          "" && homeViewModel
+                                                              .backInaStack[index]
+                                                              .productSellPrice
+                                                              .toString() !=
                                                           "")
                                                       ? Text(
                                                           homeViewModel
@@ -741,7 +761,11 @@ class _HomeViewState extends State<HomeView> {
                                                               .backInaStack[index]
                                                               .productSellPrice
                                                               .toString() ==
-                                                          "")
+                                                          "" || homeViewModel
+                                                              .backInaStack[index]
+                                                              .productSellPrice
+                                                              .toString() !=
+                                                          "0.00")
                                                       ? Text("",
                                                           style:
                                                               textStyleForCutPrice,maxLines: 1)

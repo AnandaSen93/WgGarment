@@ -19,7 +19,7 @@ class ProductListView extends StatefulWidget {
 }
 
 class _ProductListViewState extends State<ProductListView> {
-  bool _like = true;
+  RangeValues _selectedRange = RangeValues(20, 80);
   String dropdownvalue = 'Newest';
   var dropdownItems = [
     "Price Low To Hight","Price Hight To Low","Newest" 
@@ -59,6 +59,60 @@ class _ProductListViewState extends State<ProductListView> {
     }
   }
 
+
+    void _showRangeSliderDialog() {
+    RangeValues tempRange = _selectedRange; // ✅ Store temporary range
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder( // ✅ Make the dialog stateful
+          builder: (context, setStateDialog) { // setStateDialog updates dialog UI
+            return AlertDialog(
+              title: Text("Select Price Range"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("Selected price Range: ${tempRange.start.round()} - ${tempRange.end.round()}"),
+                  RangeSlider(
+                    values: tempRange,
+                    min: 0,
+                    max: 100,
+                    divisions: 10,
+                    labels: RangeLabels(
+                      tempRange.start.round().toString(),
+                      tempRange.end.round().toString(),
+                    ),
+                    onChanged: (RangeValues values) {
+                      setStateDialog(() { // ✅ Update only the dialog UI
+                        tempRange = values;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context), // ❌ Close without saving
+                  child: Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() { // ✅ Update main UI after dialog closes
+                      _selectedRange = tempRange;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Text("Done"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final productListViewModel = Provider.of<ProductListViewModel>(context);
@@ -96,25 +150,28 @@ class _ProductListViewState extends State<ProductListView> {
               child: Row(
                 children: [
                   SizedBox(width: 5),
-                  Container(
-                      height: double.infinity,
-                       width: screenWidth * 0.45,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 5),
-                          Icon(Icons.sort),
-                          Spacer(),
-                          Text("Sort",
-                            style: textStyleForCategorytName,
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_drop_down),
-                        ],
-                      )),
+                  GestureDetector(
+                    onTap: _showRangeSliderDialog,
+                    child: Container(
+                        height: double.infinity,
+                         width: screenWidth * 0.45,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(width: 5),
+                            Icon(Icons.sort),
+                            Spacer(),
+                            Text("Sort",
+                              style: textStyleForCategorytName,
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        )),
+                  ),
                   Spacer(),
                   Container(
                       height: double.infinity,
@@ -229,11 +286,7 @@ class _ProductListViewState extends State<ProductListView> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          (productListViewModel
-                                                      .productList[index]
-                                                      .productSellPrice
-                                                      .toString() !=
-                                                  "")
+                                          (productListViewModel.productList[index] .productSellPrice.toString() != "" && productListViewModel.productList[index] .productSellPrice.toString() != "0.00")
                                               ? Text(
                                                   productListViewModel
                                                       .productList[index]
@@ -249,11 +302,7 @@ class _ProductListViewState extends State<ProductListView> {
                                                       .toString(),
                                                   style: textStyleForMainPrice,
                                                   maxLines: 1),
-                                          (productListViewModel
-                                                      .productList[index]
-                                                      .productSellPrice
-                                                      .toString() ==
-                                                  "")
+                                          (productListViewModel.productList[index].productSellPrice.toString() == "" || productListViewModel.productList[index].productSellPrice.toString() == "0.00")
                                               ? Text("",
                                                   style: textStyleForCutPrice,
                                                   maxLines: 1)
