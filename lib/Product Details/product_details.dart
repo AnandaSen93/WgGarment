@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'dart:async';
+
+import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({super.key});
@@ -15,6 +18,7 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
+  bool _isInitialized = false;
   PageController pageController = PageController();
   int currentPageIndex = 0;
   Timer? _timer;
@@ -69,6 +73,19 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     super.dispose();
   }
 
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      Provider.of<ProductDetailsViewModel>(context, listen: false).productDetailsApi();
+      _isInitialized = true; // Ensure it's called only once
+    }
+  }
+
+
+
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       currentPageIndex = currentPageIndex + 1;
@@ -93,8 +110,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     return textPainter.size.width; // Get the width
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+ final productDetailsViewModel = Provider.of<ProductDetailsViewModel>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return PlatformScaffold(
@@ -163,7 +184,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         child: IconButton(
                           onPressed: () {},
                           icon: Image.asset(
-                            _like
+                            (productDetailsViewModel.productDetailsData?.isWishlist.toString() == "1")
                                 ? "assets/images/dislike.png"
                                 : "assets/images/like.png", // Replace with your image path
                             width: 30,
@@ -179,7 +200,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       children: [
                         Expanded(
                             child: Text(
-                          "Tristique Mauris Sollicitudin",
+                          productDetailsViewModel.productDetailsData?.productName.toString() ?? "",
                           style: textStyleForProductName,
                         )),
                         AspectRatio(
@@ -187,11 +208,52 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           child: Container(
                             color: Colors.transparent,
                             alignment: Alignment.center,
-                            child: Text(
-                              "599 SEK",
-                              style: textStyleForMainPrice,
-                              textAlign: TextAlign.center,
-                            ),
+                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  (productDetailsViewModel.productDetailsData
+                                                              ?.productSellPrice
+                                                              .toString() !=
+                                                          "" && productDetailsViewModel.productDetailsData
+                                                              ?.productSellPrice
+                                                              .toString() !=
+                                                          "0.00")
+                                                      ? Text(
+                                                          productDetailsViewModel
+                                                              .productDetailsData
+                                                              ?.productSellPrice
+                                                              .toString() ?? "",
+                                                          style:
+                                                              textStyleForMainPrice,maxLines: 1,)
+                                                      : Text(
+                                                          productDetailsViewModel
+                                                              .productDetailsData
+                                                              ?.productOriginalPrice
+                                                              .toString() ?? "",
+                                                          style:
+                                                              textStyleForMainPrice,maxLines: 1),
+                                                  (productDetailsViewModel
+                                                              .productDetailsData
+                                                              ?.productSellPrice
+                                                              .toString() ==
+                                                          "" || productDetailsViewModel
+                                                              .productDetailsData
+                                                              ?.productSellPrice
+                                                              .toString() ==
+                                                          "0.00")
+                                                      ? Text("",
+                                                          style:
+                                                              textStyleForCutPrice,maxLines: 1)
+                                                      : Text(
+                                                          productDetailsViewModel
+                                                              .productDetailsData
+                                                              ?.productOriginalPrice
+                                                              .toString() ?? "",
+                                                          style:
+                                                              textStyleForCutPrice,maxLines: 1)
+                                                ],
+                                              )
                           ),
                         )
                       ],

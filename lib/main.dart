@@ -14,6 +14,7 @@ import 'package:wg_garment/Home/home.dart';
 
 import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
+import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 import 'package:wg_garment/Product%20List/product_list.dart';
 import 'package:wg_garment/Product%20List/product_list_view_model.dart';
 import 'package:wg_garment/Profile/profile_view_model.dart';
@@ -32,6 +33,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => ProfileViewModel()),
         ChangeNotifierProvider(create: (context) => SignupViewModel()),
         ChangeNotifierProvider(create: (context) => ProductListViewModel()),
+        ChangeNotifierProvider(create: (context) => ProductDetailsViewModel()),
         Provider(create: (context) => ApiServices()), // Non ChangeNotifier provider
       ],
       child: const MyApp(),

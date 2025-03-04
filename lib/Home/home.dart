@@ -262,11 +262,7 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                               homeViewModel.navigateToProductDetails(homeViewModel.newArrival[index].productId.toString(), context);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -463,11 +459,7 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                                homeViewModel.navigateToProductDetails(homeViewModel.mostWanted[index].productId.toString(), context);
                               },
                               child: Container(
                                 padding: EdgeInsets.only(right: 8),
@@ -668,11 +660,7 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                                homeViewModel.navigateToProductDetails(homeViewModel.backInaStack[index].productId.toString(), context);
                               },
                               child: Container(
                                 color: Colors.transparent,

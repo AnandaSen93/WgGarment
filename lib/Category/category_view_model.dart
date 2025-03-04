@@ -19,8 +19,7 @@ class CategoryViewModel extends ChangeNotifier {
   String selectedSubCatID = "";
 
 
-  void navigateToProductListing(BuildContext context) async {
-    
+  void navigateToProductListing(BuildContext context) async {    
 
     Provider.of<ProductListViewModel>(context, listen: false).setcategoryId(selectedSubCatID);
 

@@ -10,6 +10,12 @@ class ProductDetailsViewModel extends ChangeNotifier {
   
   String productId = "";
   List<ProductListData> similarProductlist = [];
+  ProductData? productDetailsData;
+
+  void selectedProductID(String productID){
+    productId = productID;
+    notifyListeners();
+  }
   
 
 
@@ -36,6 +42,7 @@ void clearData() {
       print("Response Type: ${response.runtimeType}");
       var productDetailsData = productDetailsModelFromJson(response);
       similarProductlist = productDetailsData.responseData?.similarProduct ?? [];
+      productDetailsData = productDetailsData;
       notifyListeners();
       return productDetailsData;
     } catch (Error) {
