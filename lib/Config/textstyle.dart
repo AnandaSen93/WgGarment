@@ -11,7 +11,7 @@ const textStyleForTextField = TextStyle(
 
 const textStyleForHomePageHeading = TextStyle(
                             fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
-                            fontSize: 37,
+                            fontSize: 30,
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.none);
@@ -114,6 +114,22 @@ const textstyleSmall = TextStyle(
                             decoration: TextDecoration.none
 );
 
+const textStyleForSelected = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 15,
+                           // backgroundColor: Colors.black,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.none
+                            );
+const textStyleForDeSelected = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 15,
+                            //backgroundColor: Colors.white,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.none
+                            );
 
 
 

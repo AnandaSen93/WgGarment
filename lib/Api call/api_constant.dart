@@ -10,6 +10,10 @@ class ApiConstant {
   static const String categorylistUrl = "categorylist";
   static const String productllistingurl = "productllisting";
   static const String profiledetailsUrl = "profiledetails";
+  static const String productdetailsUrl = "productdetails";
+  static const String addToCartUrl = "addtocart";
+
+  
   
   static const String addremovewishlistUrl = "addremovewishlist";
 }

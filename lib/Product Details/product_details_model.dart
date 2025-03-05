@@ -169,7 +169,7 @@ class ProductData {
         productRating: json["productRating"],
         productReviewList: json["productReviewList"] == null ? [] : List<ProductReviewList>.from(json["productReviewList"]!.map((x) => ProductReviewList.fromJson(x))),
         productShareableLink: json["productShareableLink"],
-        similarProduct: json["similarProduct"] == null ? [] : List<ProductListData>.from(json["similarProduct"]!.map((x) => x)),
+        similarProduct: json["similarProduct"] == null ? [] : List<ProductListData>.from(json["similarProduct"]!.map((x) => ProductListData.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -194,7 +194,7 @@ class ProductData {
         "productRating": productRating,
         "productReviewList": productReviewList == null ? [] : List<dynamic>.from(productReviewList!.map((x) => x.toJson())),
         "productShareableLink": productShareableLink,
-        "similarProduct": similarProduct == null ? [] : List<dynamic>.from(similarProduct!.map((x) => x)),
+        "similarProduct": similarProduct == null ? [] : List<dynamic>.from(similarProduct!.map((x) => x.toJson())),
     };
 }
 

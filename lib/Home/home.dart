@@ -132,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
                 color: Colors.transparent,
                 child: (homeViewModel.topbanner.length != 0)
                     ? ImageSlideshow(
-                        indicatorColor: Colors.blue,
+                        indicatorColor:pinkcolor,
                         onPageChanged: (value) {},
                         autoPlayInterval: 3000,
                         isLoop: true,
