@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/cart/cart_model.dart';
+import 'package:wg_garment/cart/cart_view_model.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -12,8 +17,45 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   bool _like = true;
+
+
+
+  late CartViewModel _viewModel;
+  bool _isInitialized = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.clearData();
+    super.dispose();
+  }
+
+    @override
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _viewModel = Provider.of<CartViewModel>(context, listen: false);
+
+      final response = await _viewModel.cartApicall();
+      if (response != null) {
+        if (response.responseCode != 1) {
+          Fluttertoast.showToast(msg: response.responseText ?? "");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Somethings went wrong!");
+      }
+
+      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
+      _isInitialized = true; // Ensure it's called only once
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final cartViewModel = Provider.of<CartViewModel>(context);
     return PlatformScaffold(
       body: SafeArea(
           child: Container(
@@ -22,6 +64,7 @@ class _CartViewState extends State<CartView> {
           children: [
             Expanded(
                 child: ListView.separated(
+                  itemCount: cartViewModel.cartList.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               separatorBuilder: (context, index) {
@@ -43,6 +86,7 @@ class _CartViewState extends State<CartView> {
                             padding:
                                 EdgeInsets.only(right: 10, top: 10, bottom: 10),
                             child: Container(
+                              clipBehavior: Clip.hardEdge,
                               decoration: BoxDecoration(
                                 color: productbackgroundcolor,
                                 borderRadius: BorderRadius.circular(8),
@@ -50,7 +94,10 @@ class _CartViewState extends State<CartView> {
                               child: AspectRatio(
                                   aspectRatio: 1,
                                   child:
-                                      Image.asset("assets/images/product.png")),
+                                      CustomNetworkImage(imageUrl: cartViewModel.cartList[index].productImage.toString(),
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      )),
                             ),
                           ),
                           Expanded(
@@ -62,18 +109,19 @@ class _CartViewState extends State<CartView> {
                                   children: [
                                     Spacer(),
                                     Text(
-                                      "Product Name",
+                                      cartViewModel.cartList[index].productName.toString(),
                                       style: textStyleForMainProductName,
                                     ),
                                     Spacer(),
                                     Text(
-                                      "Product DescriptionDescriptionDescriptionDescriptionDescription",
+                                      cartViewModel.cartList[index].productShortDescription.toString(),
                                       style: textStyleForMainProductDescription,
                                       maxLines: 2,
                                     ),
                                     Spacer(),
                                     Text(
-                                      "Product varient",
+                                      cartViewModel.varientText(cartViewModel.cartList[index].size.toString(), cartViewModel.cartList[index].color.toString())
+                                      ,
                                       style: textStyleForMainProductvarient,
                                       maxLines: 2,
                                     ),
@@ -102,7 +150,7 @@ class _CartViewState extends State<CartView> {
                                                 )),
                                           ),
                                           Text(
-                                            "1",
+                                            cartViewModel.cartList[index].productQuantity.toString(),
                                             style: textStyleForMainPrice,
                                           ),
                                           AspectRatio(
@@ -146,7 +194,7 @@ class _CartViewState extends State<CartView> {
                       left: 0,
                       child: IconButton(
                         icon: Image.asset(
-                          _like
+                          (cartViewModel.cartList[index].isWishlist != "1")
                               ? "assets/images/dislike.png"
                               : "assets/images/like.png", // Replace with your image path
                           width: 25,
@@ -167,7 +215,7 @@ class _CartViewState extends State<CartView> {
                   ]),
                 );
               },
-              itemCount: 10,
+              
             )),
             Container(
               padding: EdgeInsets.all(10),
@@ -178,14 +226,16 @@ class _CartViewState extends State<CartView> {
               child: Row(
                 children: [
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment:  CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Total Pay: \$500",
+                        "Total Pay: \$${cartViewModel.totalPay}",
                         style: textStyleForCategorytName,
                       ),
                       SizedBox(height: 5),
                       Text(
-                        "Total Save: \$50",
+                        "Total Save: \$${cartViewModel.totalsave}",
                         style: textStyleForMainPrice,
                       )
                     ],

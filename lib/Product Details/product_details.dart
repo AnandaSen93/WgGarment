@@ -97,8 +97,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    final productDetailsViewModel =
-        Provider.of<ProductDetailsViewModel>(context);
+    final productDetailsViewModel = Provider.of<ProductDetailsViewModel>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -383,7 +382,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                       productDetailsViewModel
                                                           .colorList[index]
                                                           .valueId)
-                                              ? 3.0
+                                              ? 1.0
                                               : 0.0, // Border width when selected
                                         ),
                                       ),

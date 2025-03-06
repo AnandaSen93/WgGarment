@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wg_garment/Config/colors.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -29,6 +30,7 @@ class CustomNetworkImage extends StatelessWidget {
         if (loadingProgress == null) return child;
         return Center(
           child: CircularProgressIndicator(
+            color: pinkcolor,
             value: loadingProgress.expectedTotalBytes != null
                 ? loadingProgress.cumulativeBytesLoaded /
                     (loadingProgress.expectedTotalBytes ?? 1)

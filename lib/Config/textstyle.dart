@@ -62,7 +62,7 @@ const textStyleForCategorytName = TextStyle(
 
 const textStyleForCategorytName2 = TextStyle(
                             fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
-                            fontSize: 17,
+                            fontSize: 16,
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.none);
@@ -130,6 +130,15 @@ const textStyleForDeSelected = TextStyle(
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.none
                             );
+
+const textStyleCounter = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.none);
+
+
 
 
 

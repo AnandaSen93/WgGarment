@@ -13,6 +13,7 @@ import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/Home/home.dart';
 
 import 'package:wg_garment/Login/login.dart';
+import 'package:wg_garment/Menu/menu_view_model.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 import 'package:wg_garment/Product%20List/product_list.dart';
@@ -21,6 +22,8 @@ import 'package:wg_garment/Profile/profile_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
 import 'package:wg_garment/Signup/signup_view_model.dart';
 import 'package:wg_garment/Splash/splash.dart';
+import 'package:wg_garment/WishList/wishlist_view_model.dart';
+import 'package:wg_garment/cart/cart_view_model.dart';
 
 
 void main() {
@@ -34,6 +37,9 @@ void main() {
         ChangeNotifierProvider(create: (context) => SignupViewModel()),
         ChangeNotifierProvider(create: (context) => ProductListViewModel()),
         ChangeNotifierProvider(create: (context) => ProductDetailsViewModel()),
+        ChangeNotifierProvider(create: (context) => MenuViewModel()),
+        ChangeNotifierProvider(create: (context) => CartViewModel()),
+          ChangeNotifierProvider(create: (context) => WishlistViewModel()),
         Provider(create: (context) => ApiServices()), // Non ChangeNotifier provider
       ],
       child: const MyApp(),

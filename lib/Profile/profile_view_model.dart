@@ -17,8 +17,8 @@ class ProfileViewModel extends ChangeNotifier{
       }, ApiConstant.profiledetailsUrl);
       print("Response Type: ${response.runtimeType}");
       final profileApiData = userModelFromJson(response);
-
       profileDta = profileApiData.responseData;
+      
       notifyListeners();
       return profileApiData;
 
