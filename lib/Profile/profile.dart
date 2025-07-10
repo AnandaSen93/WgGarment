@@ -20,11 +20,18 @@ class _ProfileViewState extends State<ProfileView> {
   var list = [
     "My Order",
     "My Address",
-    "Notification",
-    "Change Password",
+    "Privacy",
+    "Terms And Aonditions",
+    "Privacy Policy",
+    "Who We Are",
+    "Contact",
+    "Return Policy",
     "Log Out",
     "Delete Account"
   ];
+
+  bool isNewsLetterSubscribe = false;
+  bool isProductFeedSubscribe = false;
 
 
 
@@ -138,6 +145,54 @@ class _ProfileViewState extends State<ProfileView> {
               ]),
             ),
             SizedBox(height: 10),
+            Container(
+                        height: 40,
+                        width: double.infinity,
+                        //  color: Colors.green,
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isNewsLetterSubscribe = !isNewsLetterSubscribe;
+                                  });
+                                },
+                                icon: Icon(
+                                  isNewsLetterSubscribe ? Icons.check_box : Icons.check_box_outline_blank,
+                                  size: 30,
+                                )),
+                            Text(
+                              "Subscribe newsletter",
+                              style: textStyleForCategorytName,
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 40,
+                        width: double.infinity,
+                        //  color: Colors.green,
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isProductFeedSubscribe = !isProductFeedSubscribe;
+                                  });
+                                },
+                                icon: Icon(
+                                  isProductFeedSubscribe ? Icons.check_box : Icons.check_box_outline_blank,
+                                  size: 30,
+                                )),
+                            Text(
+                              "Subscribe to product feed",
+                              style: textStyleForCategorytName,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      
             Expanded(
                 child: Container(
               //padding:EdgeInsets.only(right: 15,left: 15,),
@@ -195,9 +250,13 @@ class _ProfileViewState extends State<ProfileView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SignupView()));
+                        } else if (list[index] == "My Address") {
+                          profileViewModel.navigateToAddressList(context);
                         }
                       },
-                      child: Column(children: [
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                         Container(
                           // padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -210,12 +269,22 @@ class _ProfileViewState extends State<ProfileView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(width: 10),
-                              Icon(Icons.audiotrack_rounded),
+                              //Icon(Icons.audiotrack_rounded),
                               SizedBox(width: 10),
-                              Text(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                   Text(
                                 list[index],
                                 style: textStyleForTextField,
                               ),
+                               Text(
+                                list[index],
+                                style: textstyleSmall,
+                              ),
+                                ],
+                              ),
+                             
                               Spacer(),
                               Icon(Icons.chevron_right_sharp),
                               SizedBox(width: 5),

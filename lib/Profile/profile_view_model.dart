@@ -1,32 +1,43 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:wg_garment/Address%20List/addresslist.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
 
-class ProfileViewModel extends ChangeNotifier{
-
+class ProfileViewModel extends ChangeNotifier {
   UserData? profileDta;
 
-  Future<UserModel?> profileApiCall() async{
+  void navigateToAddressList(BuildContext context) async {
+   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddresslistView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
+
+  Future<UserModel?> profileApiCall() async {
     try {
-      final response = await ApiServices().postApiCall({
-        "userId":"3"
-      }, ApiConstant.profiledetailsUrl);
+      final response = await ApiServices()
+          .postApiCall({"userId": "3"}, ApiConstant.profiledetailsUrl);
       print("Response Type: ${response.runtimeType}");
       final profileApiData = userModelFromJson(response);
       profileDta = profileApiData.responseData;
-      
+
       notifyListeners();
       return profileApiData;
-
     } catch (error) {
       print("Error parse: $error");
       notifyListeners();
       return null;
     }
   }
-  
 }

@@ -159,12 +159,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         bottom: 0,
                         right: 10,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.productId);
+                          },
                           icon: Image.asset(
                             (productDetailsViewModel
                                         .productDetailsData?.isWishlist
                                         .toString() ==
-                                    "1")
+                                    "0")
                                 ? "assets/images/dislike.png"
                                 : "assets/images/like.png", // Replace with your image path
                             width: 30,
@@ -889,7 +891,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                                 .similarProductlist[
                                                                     index]
                                                                 .isWishlist ==
-                                                            "1"
+                                                            "0"
                                                         ? "assets/images/dislike.png"
                                                         : "assets/images/like.png", // Replace with your image path
                                                     width: 30,
@@ -899,11 +901,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                     // Action when pressed
                                                     print("hello");
 
-                                                    setState(() {
-                                                      _like = !_like;
-                                                    });
-                                                    print(
-                                                        "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
+                                                productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.similarProductlist[index]
+                                                          .productId
+                                                          .toString());
                                                   },
                                                 ),
                                               )

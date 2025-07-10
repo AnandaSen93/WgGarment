@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Add%20Edit%20Address/addeditaddress.dart';
+import 'package:wg_garment/Address%20List/addresslist.dart';
+import 'package:wg_garment/Address%20List/addresslist_view_model.dart';
 
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Api%20call/loader.dart';
 import 'package:wg_garment/Category/category.dart';
 import 'package:wg_garment/Category/category_view_model.dart';
+import 'package:wg_garment/Checkout/checkout.dart';
+import 'package:wg_garment/Checkout/checkout_view_model.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
 import 'package:wg_garment/Menu/menu.dart';
@@ -40,6 +45,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => MenuViewModel()),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
         ChangeNotifierProvider(create: (context) => WishlistViewModel()),
+        ChangeNotifierProvider(create: (context) => CheckoutViewModel()),
+        ChangeNotifierProvider(create: (context) => AddresslistViewModel()),
         Provider(create: (context) => ApiServices()), // Non ChangeNotifier provider
       ],
       child: const MyApp(),
@@ -82,6 +89,9 @@ class MyApp extends StatelessWidget {
             'SignupView': (context) => const SignupView(),
             'ProductDetailsView': (context) => const ProductDetailsView(),
             'productList': (context) => const ProductListView(),
+            'checkoutView': (context) => const CheckOutView(),
+            'addresslistView': (context) => const AddresslistView(),
+            'addEditAddressView': (context) => const AddEditAddressView(),
           },
     );
   }

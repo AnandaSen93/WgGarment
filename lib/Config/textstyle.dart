@@ -138,6 +138,13 @@ const textStyleCounter = TextStyle(
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.none);
 
+const textStyleForredText = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 16,
+                            color: pinkcolor,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.none);
+
 
 
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Checkout/checkout.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/cart/cart_model.dart';
 
@@ -16,6 +17,25 @@ String totalsave = "";
 void clearData(){
    cartList = [];
 }
+
+  void navigateToCheckOutView(BuildContext context) async {    
+
+   // Provider.of<ProductListViewModel>(context, listen: false).setcategoryId(selectedSubCatID);
+
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckOutView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
 
 String varientText(String size, String color){
   var str = "";

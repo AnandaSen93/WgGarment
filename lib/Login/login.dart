@@ -140,7 +140,8 @@ class _LoginViewState extends State<LoginView>
                                             'Enter text here', // Optional: hint text for Android
                                       ),
                                     ),
-                                  ))
+                                  )
+                                  )
                             ],
                           ),
                         ),

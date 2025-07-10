@@ -331,6 +331,7 @@ class _CartViewState extends State<CartView> {
                   TextButton(
                     onPressed: () {
                       print("Tap on checkout");
+                      cartViewModel.navigateToCheckOutView(context);
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),
