@@ -15,8 +15,8 @@ class ApiConstant {
   static const String countUrl = "getcount";
   static const String cartlistUrl = "cartlist";
   static const String wishlistUrl = "wishlist";
+  static const String deletecart = "deletecart";
+  static const String quantityaddremove = "quantityaddremove";
 
-  
-  
   static const String addremovewishlistUrl = "addremovewishlist";
 }

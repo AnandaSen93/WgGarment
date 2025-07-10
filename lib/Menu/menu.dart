@@ -20,19 +20,20 @@ class MenuView extends StatefulWidget {
 
 class _MenuViewState extends State<MenuView> with RouteAware{
   int _selectedIndex = 0;
-  var pageList = [
-    HomeView(),
-    CategoryView(),
-    WishlistView(),
-    CartView(),
-    ProfileView(),
-  ];
+  var pageList = [ ];
 
   late MenuViewModel _viewModel;
   bool _isInitialized = false;
   @override
   void initState() {
     super.initState();
+    pageList = [
+    HomeView(),
+    CategoryView(),
+    WishlistView(),
+    CartView(onCButtonPressed: fetchMenuData),
+    ProfileView(),
+  ];
   }
 
   @override
@@ -58,21 +59,23 @@ class _MenuViewState extends State<MenuView> with RouteAware{
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isInitialized) {
-      _viewModel = Provider.of<MenuViewModel>(context, listen: false);
-
-      final response = await _viewModel.countApi();
-      if (response != null) {
-        if (response.responseCode != 1) {
-          Fluttertoast.showToast(msg: response.responseText ?? "");
-        }
-      } else {
-        Fluttertoast.showToast(msg: "Somethings went wrong!");
-      }
-
-      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
-      _isInitialized = true; // Ensure it's called only once
+     await fetchMenuData();
+     _isInitialized = true;
     }
   }
+
+  Future<void> fetchMenuData() async {
+  _viewModel = Provider.of<MenuViewModel>(context, listen: false);
+
+  final response = await _viewModel.countApi();
+  if (response != null) {
+    if (response.responseCode != 1) {
+      Fluttertoast.showToast(msg: response.responseText ?? "");
+    }
+  } else {
+    Fluttertoast.showToast(msg: "Somethings went wrong!");
+  }
+}
 
   @override
   Widget build(BuildContext context) {

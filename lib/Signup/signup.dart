@@ -15,12 +15,10 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-   
-
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-    @override
+  @override
   void initState() {
     super.initState();
   }
@@ -31,7 +29,6 @@ class _SignupViewState extends State<SignupView> {
     _passwordCon.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +49,8 @@ class _SignupViewState extends State<SignupView> {
                   IconButton(
                       onPressed: () {
                         Navigator.pop(context);
-                      }, icon: Icon(Icons.arrow_back_ios_new)),
+                      },
+                      icon: Icon(Icons.arrow_back_ios_new)),
                   Spacer(),
                   Spacer()
                 ],
@@ -103,10 +101,10 @@ class _SignupViewState extends State<SignupView> {
                                   ),
                                   height: 40,
                                   child: PlatformTextField(
-                                   // controller: _emailCon,
+                                    // controller: _emailCon,
                                     onChanged: signuoViewModel.setFirstName,
                                     keyboardType: TextInputType.name,
-                                   //focusNode: FocusNode(),
+                                    //focusNode: FocusNode(),
                                     hintText: 'Please enter your first name...',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
@@ -215,7 +213,8 @@ class _SignupViewState extends State<SignupView> {
                                     onChanged: signuoViewModel.setPhone,
                                     keyboardType: TextInputType.phone,
                                     //focusNode: FocusNode(),
-                                    hintText: 'Please enter your phone number...',
+                                    hintText:
+                                        'Please enter your phone number...',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
                                       decoration: BoxDecoration(
@@ -241,7 +240,7 @@ class _SignupViewState extends State<SignupView> {
                           ),
                         ),
                         SizedBox(height: 15),
-        
+
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
@@ -377,10 +376,12 @@ class _SignupViewState extends State<SignupView> {
                                   height: 40,
                                   child: PlatformTextField(
                                     //controller: _emailCon,
-                                    onChanged: signuoViewModel.setConfirmPassword,
+                                    onChanged:
+                                        signuoViewModel.setConfirmPassword,
                                     keyboardType: TextInputType.visiblePassword,
                                     //focusNode: FocusNode(),
-                                    hintText: 'Please enter your confirm password...',
+                                    hintText:
+                                        'Please enter your confirm password...',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
                                       decoration: BoxDecoration(
@@ -406,13 +407,13 @@ class _SignupViewState extends State<SignupView> {
                           ),
                         ),
                         SizedBox(height: 15),
-        
-                         SizedBox(height: 20),
-                         SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: TextButton(
-                                    onPressed: ()  async {
+
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: TextButton(
+                              onPressed: () async {
                                 if (signuoViewModel.checkValidation() ==
                                     "success") {
                                   NormalModel? response =
@@ -434,34 +435,33 @@ class _SignupViewState extends State<SignupView> {
                                   });
                                 }
                               },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          pinkcolor, // Button background color
-                                      foregroundColor: Colors.white, // Text color
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 15),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            25.0), // Rounded corners
-                                      ),
-                                    ),
-                                    child: Text("Sign Up")),
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    pinkcolor, // Button background color
+                                foregroundColor: Colors.white, // Text color
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      25.0), // Rounded corners
+                                ),
                               ),
-                          TextButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => Signup()));
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("You have an account?"),
-                                  Text(" LOGIN"),
-                                ],
-                              )),
-                        
+                              child: Text("Sign Up")),
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => Signup()));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("You have an account?"),
+                                Text(" LOGIN"),
+                              ],
+                            )),
                       ],
                     ),
                   ),

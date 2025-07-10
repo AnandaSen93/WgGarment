@@ -28,7 +28,7 @@ class ProductDetailsViewModel extends ChangeNotifier {
     productDetailsData = null;
     selectedColorId = '';
     selecetedSizeId = '';
-    cartQuantity = '';
+    cartQuantity = '1';
   }
 
 

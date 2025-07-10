@@ -5,21 +5,19 @@ import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/cart/cart_model.dart';
 import 'package:wg_garment/cart/cart_view_model.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({super.key});
+  final VoidCallback onCButtonPressed;
+  const CartView({super.key, required this.onCButtonPressed});
 
   @override
   State<CartView> createState() => _CartViewState();
 }
 
 class _CartViewState extends State<CartView> {
-  bool _like = true;
-
-
-
   late CartViewModel _viewModel;
   bool _isInitialized = false;
   @override
@@ -33,7 +31,7 @@ class _CartViewState extends State<CartView> {
     super.dispose();
   }
 
-    @override
+  @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isInitialized) {
@@ -64,7 +62,7 @@ class _CartViewState extends State<CartView> {
           children: [
             Expanded(
                 child: ListView.separated(
-                  itemCount: cartViewModel.cartList.length,
+              itemCount: cartViewModel.cartList.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               separatorBuilder: (context, index) {
@@ -93,11 +91,13 @@ class _CartViewState extends State<CartView> {
                               ),
                               child: AspectRatio(
                                   aspectRatio: 1,
-                                  child:
-                                      CustomNetworkImage(imageUrl: cartViewModel.cartList[index].productImage.toString(),
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      )),
+                                  child: CustomNetworkImage(
+                                    imageUrl: cartViewModel
+                                        .cartList[index].productImage
+                                        .toString(),
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                  )),
                             ),
                           ),
                           Expanded(
@@ -109,21 +109,33 @@ class _CartViewState extends State<CartView> {
                                   children: [
                                     Spacer(),
                                     Text(
-                                      cartViewModel.cartList[index].productName.toString(),
+                                      cartViewModel.cartList[index].productName
+                                          .toString(),
                                       style: textStyleForMainProductName,
                                     ),
                                     Spacer(),
                                     Text(
-                                      cartViewModel.cartList[index].productShortDescription.toString(),
+                                      cartViewModel.cartList[index]
+                                          .productShortDescription
+                                          .toString(),
                                       style: textStyleForMainProductDescription,
                                       maxLines: 2,
                                     ),
                                     Spacer(),
                                     Text(
-                                      cartViewModel.varientText(cartViewModel.cartList[index].size.toString(), cartViewModel.cartList[index].color.toString())
-                                      ,
+                                      cartViewModel.varientText(
+                                          cartViewModel.cartList[index].size
+                                              .toString(),
+                                          cartViewModel.cartList[index].color
+                                              .toString()),
                                       style: textStyleForMainProductvarient,
                                       maxLines: 2,
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "\$${cartViewModel.cartList[index].productOriginalPrice.toString()}",
+                                      //"hello",
+                                      style: textStyleForMainPrice,
                                     ),
                                     Spacer(),
                                     Container(
@@ -142,7 +154,31 @@ class _CartViewState extends State<CartView> {
                                             aspectRatio: 1,
                                             child: IconButton(
                                                 onPressed: () {
-                                                  print("remove");
+                                                  if (cartViewModel
+                                                          .cartList[index]
+                                                          .productQuantity
+                                                          .toString() ==
+                                                      "1") {
+                                                    cartViewModel
+                                                        .deleteCartApicall(
+                                                            cartViewModel
+                                                                .cartList[index]
+                                                                .cartId
+                                                                .toString());
+                                                  } else {
+                                                    cartViewModel
+                                                        .addRemoveCartQuantityApicall(
+                                                            cartViewModel
+                                                                .cartList[index]
+                                                                .cartId
+                                                                .toString(),
+                                                            "1",
+                                                            "DEC",
+                                                            cartViewModel
+                                                                .cartList[index]
+                                                                .productId
+                                                                .toString());
+                                                  }
                                                 },
                                                 icon: Icon(
                                                   Icons.remove_circle_outline,
@@ -150,14 +186,53 @@ class _CartViewState extends State<CartView> {
                                                 )),
                                           ),
                                           Text(
-                                            cartViewModel.cartList[index].productQuantity.toString(),
+                                            cartViewModel
+                                                .cartList[index].productQuantity
+                                                .toString(),
                                             style: textStyleForMainPrice,
                                           ),
                                           AspectRatio(
                                             aspectRatio: 1,
                                             child: IconButton(
-                                                onPressed: () {
-                                                  print("add");
+                                                onPressed: () async {
+                                                  NormalModel? response =
+                                                      await cartViewModel
+                                                          .deleteCartApicall(
+                                                              cartViewModel
+                                                                  .cartList[
+                                                                      index]
+                                                                  .cartId
+                                                                  .toString());
+                                                  if (response != null) {
+                                                    if (response.responseCode ==
+                                                        1) {
+                                                      widget.onCButtonPressed();
+                                                      setState(() {
+                                                        Fluttertoast.showToast(
+                                                            msg: response
+                                                                .responseText
+                                                                .toString());
+                                                      });
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg: response
+                                                                  .responseText ??
+                                                              "");
+                                                    }
+                                                    // setState(() {});
+                                                  }
+                                                  cartViewModel
+                                                      .addRemoveCartQuantityApicall(
+                                                          cartViewModel
+                                                              .cartList[index]
+                                                              .cartId
+                                                              .toString(),
+                                                          "1",
+                                                          "INC",
+                                                          cartViewModel
+                                                              .cartList[index]
+                                                              .productId
+                                                              .toString());
                                                 },
                                                 icon: Icon(
                                                     Icons.add_circle_outline,
@@ -181,11 +256,26 @@ class _CartViewState extends State<CartView> {
                           width: 25,
                           height: 25,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           // Action when pressed
                           print("delete");
-
-                          setState(() {});
+                          NormalModel? response =
+                              await cartViewModel.deleteCartApicall(
+                                  cartViewModel.cartList[index].cartId
+                                      .toString());
+                          if (response != null) {
+                            if (response.responseCode == 1) {
+                              widget.onCButtonPressed();
+                              setState(() {
+                                Fluttertoast.showToast(
+                                    msg: response.responseText.toString());
+                              });
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: response.responseText ?? "");
+                            }
+                            // setState(() {});
+                          }
                         },
                       ),
                     ),
@@ -204,18 +294,15 @@ class _CartViewState extends State<CartView> {
                           // Action when pressed
                           print("hello");
 
-                          setState(() {
-                            _like = !_like;
-                          });
-                          print(
-                              "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
+                          cartViewModel.addRemoveWishlistApiCall(cartViewModel
+                              .cartList[index].productId
+                              .toString());
                         },
                       ),
                     )
                   ]),
                 );
               },
-              
             )),
             Container(
               padding: EdgeInsets.all(10),
@@ -227,7 +314,7 @@ class _CartViewState extends State<CartView> {
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment:  CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Total Pay: \$${cartViewModel.totalPay}",

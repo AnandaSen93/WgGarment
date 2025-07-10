@@ -39,7 +39,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => ProductDetailsViewModel()),
         ChangeNotifierProvider(create: (context) => MenuViewModel()),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
-          ChangeNotifierProvider(create: (context) => WishlistViewModel()),
+        ChangeNotifierProvider(create: (context) => WishlistViewModel()),
         Provider(create: (context) => ApiServices()), // Non ChangeNotifier provider
       ],
       child: const MyApp(),

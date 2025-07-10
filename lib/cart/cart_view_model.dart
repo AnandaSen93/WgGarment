@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/cart/cart_model.dart';
 
 class CartViewModel extends ChangeNotifier {
@@ -53,6 +54,78 @@ Future<CartListModel?> cartApicall() async{
     return null;
   }
 }
+
+Future<NormalModel?> addRemoveCartQuantityApicall(String cartID, String quantity,String valueInDe,String productId) async{
+
+  final prefarance = await SharedPreferences.getInstance();
+  String? userID = prefarance.getString("userID");
+    try {
+    final response = await ApiServices().postApiCall({
+      "userId":userID,
+       "sessionId":"",
+       "cartId":cartID,
+       "quantity":quantity,
+       "value":valueInDe,
+       "productId":productId
+    }, ApiConstant.quantityaddremove);
+    print("Response : ${response.runtimeType}");
+    var deleteCartData = normalModelFromJson(response);
+    totalPay = deleteCartData.responseText.toString();
+    await cartApicall();
+    notifyListeners();
+    return deleteCartData;
+  } catch (error) {
+    print("Error:${error}");
+    notifyListeners();
+    return null;
+  }
+}
+
+
+Future<NormalModel?> deleteCartApicall(String cartID) async{
+
+  final prefarance = await SharedPreferences.getInstance();
+  String? userID = prefarance.getString("userID");
+    try {
+    final response = await ApiServices().postApiCall({
+      "userId":userID,
+       "sessionId":"",
+       "cartId":cartID  
+    }, ApiConstant.deletecart);
+    print("Response : ${response.runtimeType}");
+    var deleteCartData = normalModelFromJson(response);
+    totalPay = deleteCartData.responseText.toString();
+    await cartApicall();
+    notifyListeners();
+    return deleteCartData;
+  } catch (error) {
+    print("Error:${error}");
+    notifyListeners();
+    return null;
+  }
+}
+
+  Future<NormalModel?> addRemoveWishlistApiCall(String productID) async {
+     final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+    try {
+      final response = await ApiServices().postApiCall(
+          {"userId": userID, "productId": productID}, ApiConstant.addremovewishlistUrl);
+          
+          print("Response : ${response.runtimeType}");
+          var normalData = normalModelFromJson(response);
+          print(normalData.responseText);
+         
+          await cartApicall();
+          //notifyListeners();
+          print("homeApiCall() executed successfully!");
+          return normalData;
+    } catch (error, stackTrace) {
+    print("Error in addRemoveWishlistApiCall: $error");
+    print(stackTrace);
+    return null;
+  } // Log the full stack trace for debugging
+  }
 
 
 
