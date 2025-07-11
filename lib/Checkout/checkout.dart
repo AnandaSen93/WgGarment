@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:wg_garment/Checkout/checkout_model.dart';
 import 'package:wg_garment/Checkout/checkout_view_model.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Home/home_model.dart';
 
 class CheckOutView extends StatefulWidget {
   const CheckOutView({super.key});
@@ -13,6 +16,34 @@ class CheckOutView extends StatefulWidget {
 }
 
 class _CheckOutViewState extends State<CheckOutView> {
+  bool _isInitialized = false;
+  late CheckoutViewModel _viewModel;
+  @override
+  void dispose() {
+    _viewModel.clearData();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _viewModel = Provider.of<CheckoutViewModel>(context, listen: false);
+
+      final response = await _viewModel.getAddressList();
+      if (response != null) {
+        if (response.responseCode != 1) {
+          Fluttertoast.showToast(msg: response.responseText ?? "");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Somethings went wrong!");
+      }
+
+      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
+      _isInitialized = true; // Ensure it's called only once
+    }
+  }
+
   String dropdownvalue = 'COD';
   var dropdownItems = ["COD", "Online"];
   final FocusNode _focusNode = FocusNode();
@@ -94,7 +125,10 @@ class _CheckOutViewState extends State<CheckOutView> {
                                   Spacer(),
                                   TextButton(
                                     onPressed: () {
-                                      // Your action here
+                                      checkoutViewModel.adddressType =
+                                          "shipping";
+                                      checkoutViewModel
+                                          .navigateToAddressPage(context);
                                     },
                                     child: Row(
                                       mainAxisSize: MainAxisSize
@@ -131,10 +165,37 @@ class _CheckOutViewState extends State<CheckOutView> {
                                     colorBlendMode: BlendMode.srcIn,
                                   ),
                                   Expanded(
-                                    child: Text("addrrrrrress",
-                                        maxLines: 3, // Limit lines (optional)
-                                        overflow: TextOverflow.ellipsis,
-                                        style: textStyleForredText),
+                                    child:
+                                        Text(
+                                            (checkoutViewModel.shippingAddress.houseOne ?? "") +
+                                                "," +
+                                                (checkoutViewModel
+                                                        .shippingAddress
+                                                        .houseTwo ??
+                                                    "") +
+                                                "," +
+                                                (checkoutViewModel
+                                                        .shippingAddress.city ??
+                                                    "") +
+                                                "," +
+                                                (checkoutViewModel
+                                                        .shippingAddress
+                                                        .state ??
+                                                    "") +
+                                                "," +
+                                                (checkoutViewModel
+                                                        .shippingAddress
+                                                        .country ??
+                                                    "") +
+                                                "," +
+                                                (checkoutViewModel
+                                                        .shippingAddress
+                                                        .pincode ??
+                                                    ""),
+                                            maxLines:
+                                                3, // Limit lines (optional)
+                                            overflow: TextOverflow.ellipsis,
+                                            style: textStyleForredText),
                                   )
                                 ],
                               ),
@@ -175,7 +236,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                                   Spacer(),
                                   TextButton(
                                     onPressed: () {
-                                      // Your action here
+                                      checkoutViewModel.adddressType = "billng";
+                                      checkoutViewModel
+                                          .navigateToAddressPage(context);
                                     },
                                     child: Row(
                                       mainAxisSize: MainAxisSize
@@ -212,7 +275,28 @@ class _CheckOutViewState extends State<CheckOutView> {
                                     colorBlendMode: BlendMode.srcIn,
                                   ),
                                   Expanded(
-                                    child: Text("addrrrrrress",
+                                    child: Text(
+                                        (checkoutViewModel.billingAddress.houseOne ?? "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .billingAddress.houseTwo ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .billingAddress.city ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .billingAddress.state ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .billingAddress.country ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .billingAddress.pincode ??
+                                                ""),
                                         maxLines: 3, // Limit lines (optional)
                                         overflow: TextOverflow.ellipsis,
                                         style: textStyleForredText),
@@ -298,10 +382,10 @@ class _CheckOutViewState extends State<CheckOutView> {
                             ),
                             height: 50,
                             child: PlatformTextField(
-                              // controller: _emailCon,
+                              controller:
+                                  checkoutViewModel.couponCodeController,
                               onChanged: checkoutViewModel.setCouponCode,
                               keyboardType: TextInputType.emailAddress,
-
                               onSubmitted: (_) => _toggleKeyboard(),
                               hintText: 'Enter your coupon here',
                               cupertino: (context, platform) =>
@@ -337,12 +421,25 @@ class _CheckOutViewState extends State<CheckOutView> {
                             width: 100,
                             // color: lightgraykcolor,
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                if (checkoutViewModel.isCouponApply) {
+                                  checkoutViewModel.removeCouponCode();
+                                } else {
+                                  CouponModel? response =
+                                      await checkoutViewModel.applyCouponCode();
+                                  if (response != null) {
+                                    Fluttertoast.showToast(
+                                        msg: response.responseText ?? "");
+                                  }
+                                }
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Apply",
+                                    checkoutViewModel.isCouponApply
+                                        ? "Remove"
+                                        : "Apply",
                                     style: textStyleForButton,
                                   )
                                 ],
@@ -388,11 +485,13 @@ class _CheckOutViewState extends State<CheckOutView> {
                     height: 100,
                     child: PlatformTextField(
                       // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                      onChanged:checkoutViewModel.setComments , // Called on text change
+                      onChanged: checkoutViewModel
+                          .setComments, // Called on text change
                       keyboardType: TextInputType.multiline,
-                      minLines: 4,         // Minimum height (optional)
+                      minLines: 4, // Minimum height (optional)
                       maxLines: null,
-                       onSubmitted: (_) => _toggleKeyboard(), // Keyboard optimized for name input
+                      onSubmitted: (_) =>
+                          _toggleKeyboard(), // Keyboard optimized for name input
                       hintText:
                           'Add comments...', // Common hint text (can override per platform)
 
@@ -450,7 +549,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                           children: [
                             Text("Total MRP:", style: textStyleForTextField),
                             Spacer(),
-                            Text("\$50", style: textStyleForTextField)
+                            Text("\$" + checkoutViewModel.totalMRP,
+                                style: textStyleForTextField)
                           ],
                         ),
                         SizedBox(
@@ -461,7 +561,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                             Text("Discount on MRP:",
                                 style: textStyleForTextField),
                             Spacer(),
-                            Text("\$50", style: textStyleForTextField)
+                            Text(
+                                "- \$" + (checkoutViewModel.discountMRP ?? "0"),
+                                style: textStyleForTextField)
                           ],
                         ),
                         SizedBox(
@@ -472,7 +574,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                             Text("Delivary Charge:",
                                 style: textStyleForTextField),
                             Spacer(),
-                            Text("\$50", style: textStyleForTextField)
+                            Text("\$" + checkoutViewModel.deliveryCharge,
+                                style: textStyleForTextField)
                           ],
                         ),
                         SizedBox(
@@ -489,7 +592,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                           children: [
                             Text("Total Amount:", style: textStyleForTextField),
                             Spacer(),
-                            Text("\$50", style: textStyleForTextField)
+                            Text("\$" + checkoutViewModel.totalPayableAmount,
+                                style: textStyleForTextField)
                           ],
                         ),
                         SizedBox(
@@ -510,7 +614,23 @@ class _CheckOutViewState extends State<CheckOutView> {
                       width: double.infinity,
                       // color: lightgraykcolor,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (checkoutViewModel.checkValidation() ==
+                              "success") {
+                            NormalModel? response =
+                                await checkoutViewModel.placeOrder();
+                            if (response != null) {
+                              Fluttertoast.showToast(
+                                  msg: response.responseText ?? "");
+                              Future.delayed(Duration(seconds: 2), () {
+                                checkoutViewModel.navigateMainMenu(context);
+                              });
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: checkoutViewModel.checkValidation());
+                          }
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -6,7 +6,6 @@ import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Product%20List/product_list_view_model.dart';
-import 'package:wg_garment/Profile/profile_view_model.dart';
 
 class ProductListView extends StatefulWidget {
   //final String catID;

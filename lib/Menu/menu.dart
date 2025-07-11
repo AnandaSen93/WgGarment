@@ -43,6 +43,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
   }
 
   void _onItemTapped(int index) {
+    fetchMenuData();
     setState(() {
       _selectedIndex = index;
     });

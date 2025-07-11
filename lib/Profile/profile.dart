@@ -30,8 +30,20 @@ class _ProfileViewState extends State<ProfileView> {
     "Delete Account"
   ];
 
-  bool isNewsLetterSubscribe = false;
-  bool isProductFeedSubscribe = false;
+   var list1 = [
+    "View all orders",
+    "Add and update address",
+    "Change your password",
+    "Please check",
+    "Please check",
+    "Please check",
+    "Please check",
+    "Please check",
+    "",
+    ""
+  ];
+
+ 
 
 
 
@@ -154,11 +166,18 @@ class _ProfileViewState extends State<ProfileView> {
                             IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    isNewsLetterSubscribe = !isNewsLetterSubscribe;
+                                    // api call
+
+                                    profileViewModel.updatenewslatterApi(
+                                      profileViewModel.profileDta?.isProductFeed.toString() ?? "",
+                                      profileViewModel.profileDta?.isNewsLetter.toString() == "1" ? "0" : "1"
+                                       );
+
+
                                   });
                                 },
                                 icon: Icon(
-                                  isNewsLetterSubscribe ? Icons.check_box : Icons.check_box_outline_blank,
+                                  profileViewModel.profileDta?.isNewsLetter.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
                                   size: 30,
                                 )),
                             Text(
@@ -177,11 +196,15 @@ class _ProfileViewState extends State<ProfileView> {
                             IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    isProductFeedSubscribe = !isProductFeedSubscribe;
+                                    // api call
+                                      profileViewModel.updatenewslatterApi(
+                                      profileViewModel.profileDta?.isProductFeed.toString() == "1" ? "0" : "1",
+                                      profileViewModel.profileDta?.isNewsLetter.toString() ?? ""
+                                       );
                                   });
                                 },
                                 icon: Icon(
-                                  isProductFeedSubscribe ? Icons.check_box : Icons.check_box_outline_blank,
+                                  profileViewModel.profileDta?.isProductFeed.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
                                   size: 30,
                                 )),
                             Text(
@@ -252,18 +275,31 @@ class _ProfileViewState extends State<ProfileView> {
                                   builder: (context) => SignupView()));
                         } else if (list[index] == "My Address") {
                           profileViewModel.navigateToAddressList(context);
+                        } else if (list[index] == "Terms And Aonditions" ) {
+                          profileViewModel.navigateToSlugPage(context);
+                        } else if (list[index] == "Privacy Policy" ) {
+                          profileViewModel.navigateToSlugPage(context);
+                        } else if (list[index] == "Who We Are" ) {
+                          profileViewModel.navigateToSlugPage(context);
+                        } else if (list[index] =="Return Policy" ) {
+                          profileViewModel.navigateToSlugPage(context);
+                        } else if (list[index] == "Privacy" ){
+                          profileViewModel.navigateToChangePassword(context);
+                        } else if (list[index] == "My Order"){
+                          profileViewModel.navigateToMyOrder(context);
                         }
+
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                         Container(
-                          // padding: EdgeInsets.all(10),
+                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: lightgraykcolor,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          height: 50,
+                         // height: 50,
                           // color: lightgraykcolor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -279,7 +315,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 style: textStyleForTextField,
                               ),
                                Text(
-                                list[index],
+                                list1[index],
                                 style: textstyleSmall,
                               ),
                                 ],

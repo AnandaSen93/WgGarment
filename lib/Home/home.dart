@@ -5,9 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
-import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
-import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class HomeView extends StatefulWidget {

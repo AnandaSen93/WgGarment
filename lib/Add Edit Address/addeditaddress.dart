@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_garment/Add%20Edit%20Address/addedit_address_view_model.dart';
+import 'package:wg_garment/Category/category_view_model.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Home/home_model.dart';
 
 class AddEditAddressView extends StatefulWidget {
   const AddEditAddressView({super.key});
@@ -11,17 +16,27 @@ class AddEditAddressView extends StatefulWidget {
 }
 
 class _AddEditAddressViewState extends State<AddEditAddressView> {
-  String dropdownCountryvalue = 'India';
-  var dropdownCountryItems = ["India"];
+  bool _isInitialized = false;
 
-  String dropdownCityvalue = 'City 1';
-  var dropdownCityItems = ["City 1", "City 2"];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      Provider.of<AddeditAddressViewModel>(context, listen: false)
+          .getCountryList();
+
+      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
+      _isInitialized = true; // Ensure it's called only once
+    }
+  }
+
   bool isChecked = false;
   final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-  
+    final addeditAddressViewModel =
+        Provider.of<AddeditAddressViewModel>(context);
 
     void _toggleKeyboard() {
       if (_focusNode.hasFocus) {
@@ -77,7 +92,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setFirstName , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -125,7 +140,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setLastName , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -174,7 +189,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setCompany , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -223,7 +238,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setAddress1 , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -272,7 +287,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setAddress2 , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -321,7 +336,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setCity , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -370,7 +385,7 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         ),
                         child: PlatformTextField(
                           // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                          // onChanged:checkoutViewModel.setComments , // Called on text change
+                           onChanged:addeditAddressViewModel.setPostCode , // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -420,8 +435,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         child: Material(
                           child: DropdownButton(
                               isExpanded: true,
-                              value: dropdownCountryvalue,
-                              items: dropdownCountryItems
+                              value: addeditAddressViewModel.countryName,
+                              items: addeditAddressViewModel.countryList.map((country) => country.countryName as String)
+                                  .toList()
                                   .map(
                                     (e) => DropdownMenuItem(
                                         child: Text(
@@ -433,8 +449,14 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                   )
                                   .toList(),
                               onChanged: (value) {
-                                setState(() {
-                                  dropdownCountryvalue = value.toString();
+
+                                addeditAddressViewModel.countryName = value.toString();
+                                debugPrint("hello");
+                                addeditAddressViewModel.setCountryID(value.toString());
+                                
+
+
+                                setState(() { 
                                 });
                               }),
                         ),
@@ -457,8 +479,10 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         child: Material(
                           child: DropdownButton(
                               isExpanded: true,
-                              value: dropdownCityvalue,
-                              items: dropdownCityItems
+                              value: addeditAddressViewModel.stateName,
+                              items: addeditAddressViewModel.stateList
+                                  .map((state) => state.stateName as String)
+                                  .toList()
                                   .map(
                                     (e) => DropdownMenuItem(
                                         child: Text(
@@ -470,8 +494,11 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                   )
                                   .toList(),
                               onChanged: (value) {
+                                addeditAddressViewModel.stateName =
+                                      value.toString();
+                                  addeditAddressViewModel.setStateID(value.toString());
+                                  
                                 setState(() {
-                                  dropdownCityvalue = value.toString();
                                 });
                               }),
                         ),
@@ -487,12 +514,19 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                           children: [
                             IconButton(
                                 onPressed: () {
+                                  if (addeditAddressViewModel.isDefault == "1"){
+                                    addeditAddressViewModel.isDefault = "0";
+                                  }else{
+                                    addeditAddressViewModel.isDefault = "1";
+                                  }
                                   setState(() {
-                                    isChecked = !isChecked;
+                                    
                                   });
                                 },
                                 icon: Icon(
-                                  isChecked ? Icons.check_box : Icons.check_box_outline_blank,
+                                  (addeditAddressViewModel.isDefault == "1")
+                                      ? Icons.check_box
+                                      : Icons.check_box_outline_blank,
                                   size: 30,
                                 )),
                             Text(
@@ -509,10 +543,33 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         color: pinkcolor,
                         height: 50,
                         width: double.infinity,
-                        child: TextButton(onPressed: (){
-
-                        }, child: Text("Add/Edit Address",
-                        style: textStyleForButton,)),
+                        child: TextButton(
+                            onPressed: () async {
+                                if (addeditAddressViewModel.checkValidation() ==
+                                    "success") {
+                                  NormalModel? response =
+                                      await addeditAddressViewModel.addAddress();
+                                  if (response != null) {
+                                    if (response.responseCode == 1) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: response.responseText ?? "");
+                                    }
+                                  } else {
+                                    print("Login failed");
+                                  }
+                                } else {
+                                  setState(() {
+                                    Fluttertoast.showToast(
+                                        msg: addeditAddressViewModel.checkValidation());
+                                  });
+                                }
+                              },
+                            child: Text(
+                              "Add/Edit Address",
+                              style: textStyleForButton,
+                            )),
                       )
 
                       //sadsas

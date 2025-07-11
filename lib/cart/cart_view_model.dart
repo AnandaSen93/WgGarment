@@ -1,10 +1,12 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Checkout/checkout.dart';
+import 'package:wg_garment/Checkout/checkout_view_model.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/cart/cart_model.dart';
 
@@ -14,13 +16,17 @@ List<CartProductData> cartList = [];
 String totalPay = "";
 String totalsave = "";
 
+
+
 void clearData(){
    cartList = [];
 }
 
   void navigateToCheckOutView(BuildContext context) async {    
 
-   // Provider.of<ProductListViewModel>(context, listen: false).setcategoryId(selectedSubCatID);
+    String cartIds = cartList.map((item) => item.cartId.toString()).toList().join(',');
+
+    Provider.of<CheckoutViewModel>(context, listen: false).setCartIdsAndPrice(cartIds, totalPay);
 
 
     // Push the second screen and pass the user data

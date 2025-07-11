@@ -3,10 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
-import 'package:wg_garment/Api%20call/loader.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
-import 'package:wg_garment/Product%20Details/product_details_model.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 
 class HomeViewModel extends ChangeNotifier {

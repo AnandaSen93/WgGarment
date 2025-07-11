@@ -6,8 +6,6 @@ import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Category/category_view_model.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
-import 'package:wg_garment/Product%20Details/product_details.dart';
-import 'package:wg_garment/Product%20List/product_list.dart';
 
 class CategoryView extends StatefulWidget {
   const CategoryView({super.key});

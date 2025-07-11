@@ -319,6 +319,7 @@ class _SignupViewState extends State<SignupView> {
                                   ),
                                   height: 40,
                                   child: PlatformTextField(
+                                    obscureText: true,
                                     //controller: _passwordCon,
                                     onChanged: signuoViewModel.setPassword,
                                     keyboardType: TextInputType.visiblePassword,
@@ -375,6 +376,7 @@ class _SignupViewState extends State<SignupView> {
                                   ),
                                   height: 40,
                                   child: PlatformTextField(
+                                    obscureText: true,
                                     //controller: _emailCon,
                                     onChanged:
                                         signuoViewModel.setConfirmPassword,
