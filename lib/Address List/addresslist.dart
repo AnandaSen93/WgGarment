@@ -70,7 +70,7 @@ class _AddresslistViewState extends State<AddresslistView> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.black, // Black border color
-                        width: 0.5, // Border width
+                        width: 1, // Border width
                       ),
                       borderRadius: BorderRadius.circular(
                           5.0), // Optional: Rounded corners
@@ -100,7 +100,8 @@ class _AddresslistViewState extends State<AddresslistView> {
                                   if (addresslistViewModel.addressType != "") {
                                     Navigator.pop(context, {
                                       'form': addresslistViewModel.addressType,
-                                      'address': addresslistViewModel.addressList[index],
+                                      'address': addresslistViewModel
+                                          .addressList[index],
                                     });
                                   }
                                 },
@@ -109,13 +110,21 @@ class _AddresslistViewState extends State<AddresslistView> {
                                     Container(
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors
-                                              .black, // Black border color
-                                          width: 0.5, // Border width
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                            5.0), // Optional: Rounded corners
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black12, // shadow color
+                                            spreadRadius:
+                                                2, // how much the shadow spreads
+                                            blurRadius:
+                                                5, // how soft the shadow is
+                                            offset: Offset(
+                                                2, 3), // shadow position (x, y)
+                                          ),
+                                        ], // Optional: Rounded corners
                                       ),
                                       child: Container(
                                         padding: EdgeInsets.all(10),
@@ -147,12 +156,19 @@ class _AddresslistViewState extends State<AddresslistView> {
                                                   ),
                                                   Spacer(),
                                                   IconButton(
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        addresslistViewModel
+                                                            .navigateToAddEditAddressWithData(
+                                                                addresslistViewModel
+                                                                        .addressList[
+                                                                    index],
+                                                                context);
+                                                      },
                                                       icon: Icon(
                                                         Icons.edit,
                                                         size:
                                                             20, // This controls both width and height (icons are square)
-                                                        color: Colors.black45,
+                                                        color: Colors.green,
                                                       )),
                                                   addresslistViewModel
                                                               .addressList[
@@ -201,38 +217,42 @@ class _AddresslistViewState extends State<AddresslistView> {
                                             SizedBox(
                                               height: 10,
                                             ),
-                                            Text(
-                                              (addresslistViewModel
-                                                          .addressList[index]
-                                                          .houseOne ??
-                                                      "") +
-                                                  "," +
-                                                  (addresslistViewModel
-                                                          .addressList[index]
-                                                          .houseTwo ??
-                                                      "") +
-                                                  "," +
-                                                  (addresslistViewModel
-                                                          .addressList[index]
-                                                          .city ??
-                                                      "") +
-                                                  "," +
-                                                  (addresslistViewModel
-                                                          .addressList[index]
-                                                          .state ??
-                                                      "") +
-                                                  "," +
-                                                  (addresslistViewModel
-                                                          .addressList[index]
-                                                          .country ??
-                                                      "") +
-                                                  "," +
-                                                  (addresslistViewModel
-                                                          .addressList[index]
-                                                          .pincode ??
-                                                      ""),
-                                              style:
-                                                  textStyleForMainProductDescription,
+                                            Container(
+                                              width: double.infinity,
+                                              child: Text(
+                                                (addresslistViewModel
+                                                            .addressList[index]
+                                                            .houseOne ??
+                                                        "") +
+                                                    "," +
+                                                    (addresslistViewModel
+                                                            .addressList[index]
+                                                            .houseTwo ??
+                                                        "") +
+                                                    "," +
+                                                    (addresslistViewModel
+                                                            .addressList[index]
+                                                            .city ??
+                                                        "") +
+                                                    "," +
+                                                    (addresslistViewModel
+                                                            .addressList[index]
+                                                            .state ??
+                                                        "") +
+                                                    "," +
+                                                    (addresslistViewModel
+                                                            .addressList[index]
+                                                            .country ??
+                                                        "") +
+                                                    "," +
+                                                    (addresslistViewModel
+                                                            .addressList[index]
+                                                            .pincode ??
+                                                        ""),
+                                                style:
+                                                    textStyleForMainProductDescription,
+                                                textAlign: TextAlign.left,
+                                              ),
                                             )
                                           ],
                                         ),

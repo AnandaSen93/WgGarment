@@ -402,8 +402,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 decoration: InputDecoration(
                                   filled:
                                       false, // Remove the background color for Android
-                                  border:
-                                      OutlineInputBorder(), // You can add a border if needed
+                                  border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // You can add a border if needed
                                   hintText:
                                       'Enter your coupon here', // Optional: hint text for Android
                                 ),

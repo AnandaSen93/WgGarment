@@ -1,21 +1,23 @@
 // countryId = 99
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Add%20Edit%20Address/address_model.dart';
+import 'package:wg_garment/Address%20List/address_model.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
 
 class AddeditAddressViewModel extends ChangeNotifier {
-  String firstName = '';
-  String lastName = '';
-  String company = '';
-  String address1 = '';
-  String address2 = '';
-  String city = '';
-  String postCode = '';
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController companyController = TextEditingController();
+  final TextEditingController address1Controller = TextEditingController();
+  final TextEditingController address2Controller = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController postCodeController = TextEditingController();
+
+  AddressDetailsData? addressFull = AddressDetailsData();
 
   String isDefault = "0";
 
@@ -27,59 +29,68 @@ class AddeditAddressViewModel extends ChangeNotifier {
   String countryID = '99';
   String countryName = '';
 
-  void setFirstName(String firstNameT) {
-    firstName = firstNameT;
-    print(firstName);
-    notifyListeners();
-  }
+  void clearData(){
+    addressFull = AddressDetailsData();
+    countryList = [];
+    countryID = '';
+    countryName = '';
+    stateList = [];
+    stateID = '';
+    stateName = '';
 
-  void setLastName(String lastNameT) {
-    lastName = lastNameT;
-    notifyListeners();
-  }
+    firstNameController.text = "";
+    lastNameController.text = "";
+    companyController.text = "";
+    address1Controller.text = "";
+    address2Controller.text = "";
+    cityController.text = "";
+    postCodeController.text = "";
+    isDefault =  addressFull?.isDefault ?? "0";
 
-  void setCompany(String companyT) {
-    company = companyT;
-    notifyListeners();
-  }
+}
 
-  void setAddress1(String addressT) {
-    address1 = addressT;
-    notifyListeners();
-  }
+  void setAddressForUpdate(AddressDetailsData address) {
+    addressFull = address;
+    firstNameController.text = addressFull?.firstName ?? "";
+    lastNameController.text = addressFull?.lastName ?? "";
+    companyController.text = addressFull?.company ?? "";
+    address1Controller.text = addressFull?.houseOne ?? "";
+    address2Controller.text = addressFull?.houseTwo ?? "";
+    cityController.text = addressFull?.city ?? "";
+    postCodeController.text = addressFull?.pincode ?? "";
 
-  void setAddress2(String addressT) {
-    address2 = addressT;
-    notifyListeners();
-  }
+    stateID = addressFull?.stateId ?? "";
+    stateName = addressFull?.state ?? "";
 
-  void setCity(String cityT) {
-    city = cityT;
-    notifyListeners();
-  }
+    countryID = addressFull?.countryId ?? "";
+    countryName = addressFull?.country ?? "";
+    isDefault =  addressFull?.isDefault ?? "0";
 
-  void setPostCode(String postcodeT) {
-    postCode = postcodeT;
-    notifyListeners();
+    getCountryList();
+    getStateList();
+
+    
   }
 
   void setCountryID(String countryName) {
     var matchedCountry = countryList.firstWhere(
-  (state) => state.countryName!.toLowerCase() == countryName.toLowerCase(),
-  orElse: () => CountryDetailsData(),
+      (state) => state.countryName!.toLowerCase() == countryName.toLowerCase(),
+      orElse: () => CountryDetailsData(),
     );
     countryID = matchedCountry.countryId ?? "";
     debugPrint(countryID);
     getStateList();
+    
   }
 
-   void setStateID(String StateName) {
+  void setStateID(String StateName) {
     var matchedState = stateList.firstWhere(
-  (state) => state.stateName!.toLowerCase() == stateName.toLowerCase(),
-  orElse: () => StateModelData(),
+      (state) => state.stateName!.toLowerCase() == stateName.toLowerCase(),
+      orElse: () => StateModelData(),
     );
     stateID = matchedState.stateId ?? "";
     debugPrint(matchedState.stateId);
+    notifyListeners();
   }
 
   void setisDefault(String isdefault) {
@@ -89,16 +100,16 @@ class AddeditAddressViewModel extends ChangeNotifier {
 
   String checkValidation() {
     String str = "";
-   // print(firstName);
-    if (firstName == "") {
+    // print(firstName);
+    if (firstNameController.text == "") {
       str = "Please enter your first name.";
-    } else if (lastName == "") {
+    } else if (lastNameController.text == "") {
       str = "Please enter your last name.";
-    } else if (address1 == "") {
+    } else if (address1Controller.text == "") {
       str = "Please enter your address 1.";
-    } else if (city == "") {
+    } else if (cityController.text == "") {
       str = "Please enter city.";
-    } else if (postCode == "") {
+    } else if (postCodeController.text == "") {
       str = "Please enter your postcode.";
     } else if (countryID == "") {
       str = "Please select your country.";
@@ -115,12 +126,14 @@ class AddeditAddressViewModel extends ChangeNotifier {
       var response = await ApiServices()
           .postApiCall({"countryId": countryID}, ApiConstant.getstate);
 
-      print("Response Type: ${response.runtimeType}");
+      print("Response Type: ${response}");
       var _responseData = cityModelFromJson(response);
       stateList = _responseData.responseData ?? [];
-      if (stateList.length != 0) {
-        stateID = stateList[0].stateId ?? "";
-        stateName = stateList[0].stateName ?? "";
+      if (addressFull?.addressId == null) {
+          if (stateList.length != 0) {
+            stateID = stateList[0].stateId ?? "";
+            stateName = stateList[0].stateName ?? "";
+          }
       }
 
       notifyListeners();
@@ -137,13 +150,17 @@ class AddeditAddressViewModel extends ChangeNotifier {
       var response =
           await ApiServices().postApiCall({}, ApiConstant.getcountry);
 
-      print("Response Type: ${response.runtimeType}");
+      print("Response Type: ${response}");
       var _responseData = countryListModelFromJson(response);
       countryList = _responseData.responseData ?? [];
-      if (countryList.length != 0) {
-        stateID = countryList[0].countryId ?? "";
-        countryName = countryList[0].countryName ?? "";
-        getStateList();
+
+      if (addressFull?.addressId == null) {
+        if (countryList.length != 0) {
+          countryID = "99";
+          //countryList[0].countryId ?? "";
+          countryName = "India";
+          getStateList();
+        }
       }
 
       notifyListeners();
@@ -162,17 +179,49 @@ class AddeditAddressViewModel extends ChangeNotifier {
     try {
       var response = await ApiServices().postApiCall({
         "userId": userID,
-        "firstName": firstName,
-        "lastName": lastName,
-        "pincode": postCode,
+        "firstName": firstNameController.text,
+        "lastName": lastNameController.text,
+        "pincode": postCodeController.text,
         "stateId": stateID,
         "isDefault": isDefault,
         "countryId": countryID,
-        "city": city,
-        "houseOne": address1,
-        "houseTwo": address2,
-        "company": company,
+        "city": cityController.text,
+        "houseOne": address1Controller.text,
+        "houseTwo": address2Controller.text,
+        "company": companyController.text,
       }, ApiConstant.addaddress);
+
+      print("Response Type: ${response.runtimeType}");
+      var _responseData = normalModelFromJson(response);
+
+      notifyListeners();
+      return _responseData;
+    } catch (error) {
+      print("Error: $error");
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<NormalModel?> updateAddress() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+
+    try {
+      var response = await ApiServices().postApiCall({
+        "userId": userID,
+        "addressId": addressFull?.addressId ?? "",
+        "firstName": firstNameController.text,
+        "lastName": lastNameController.text,
+        "pincode": postCodeController.text,
+        "stateId": stateID,
+        "isDefault": isDefault,
+        "countryId": countryID,
+        "city": cityController.text,
+        "houseOne": address1Controller.text,
+        "houseTwo": address2Controller.text,
+        "company": companyController.text,
+      }, ApiConstant.updateaddress);
 
       print("Response Type: ${response.runtimeType}");
       var _responseData = normalModelFromJson(response);

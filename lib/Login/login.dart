@@ -17,10 +17,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   final FocusNode _focusNode = FocusNode();
+  
   @override
   void initState() {
     super.initState();
@@ -30,7 +31,7 @@ class _LoginViewState extends State<LoginView>
   @override
   void dispose() {
     _controller.dispose();
-    
+
     super.dispose();
   }
 
@@ -49,7 +50,7 @@ class _LoginViewState extends State<LoginView>
     return PlatformScaffold(
       body: GestureDetector(
         onTap: () {
-           FocusManager.instance.primaryFocus?.unfocus();
+          FocusManager.instance.primaryFocus?.unfocus();
         },
         child: SafeArea(
             child: Column(
@@ -111,11 +112,11 @@ class _LoginViewState extends State<LoginView>
                                   ),
                                   height: 40,
                                   child: PlatformTextField(
-                                   // controller: _emailCon,
+                                    // controller: _emailCon,
                                     onChanged: loginViewModel.setEmail,
                                     keyboardType: TextInputType.emailAddress,
-                                   
-                                     onSubmitted: (_) => _toggleKeyboard(),
+
+                                    onSubmitted: (_) => _toggleKeyboard(),
                                     hintText: 'Please enter email address',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
@@ -131,14 +132,14 @@ class _LoginViewState extends State<LoginView>
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Enter text here', // Optional: hint text for Android
                                       ),
                                     ),
-                                  )
-                                  )
+                                  ))
                             ],
                           ),
                         ),
@@ -168,7 +169,7 @@ class _LoginViewState extends State<LoginView>
                                   height: 40,
                                   child: PlatformTextField(
                                     obscureText: true,
-                                    textInputAction: TextInputAction.done,                                   
+                                    textInputAction: TextInputAction.done,
                                     //controller: _passwordCon,
                                     onChanged: loginViewModel.setPassword,
                                     keyboardType: TextInputType.emailAddress,
@@ -191,8 +192,9 @@ class _LoginViewState extends State<LoginView>
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // You can add a border if needed
                                         hintText:
                                             'Please enter password here....', // Optional: hint text for Android
                                       ),
@@ -229,7 +231,8 @@ class _LoginViewState extends State<LoginView>
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => MenuView()));
+                                              builder: (context) =>
+                                                  MenuView()));
                                     } else {
                                       Fluttertoast.showToast(
                                           msg: response.responseText ?? "");
@@ -238,8 +241,8 @@ class _LoginViewState extends State<LoginView>
                                     print("Login failed");
                                   }
                                 } else {
-                                    Fluttertoast.showToast(
-                                        msg: loginViewModel.checkValidation());
+                                  Fluttertoast.showToast(
+                                      msg: loginViewModel.checkValidation());
                                 }
                               },
                               style: TextButton.styleFrom(

@@ -120,8 +120,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter your first name...', // Optional: hint text for Android
                                       ),
@@ -174,8 +175,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter your last name...', // Optional: hint text for Android
                                       ),
@@ -229,8 +231,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter your phone number...', // Optional: hint text for Android
                                       ),
@@ -284,8 +287,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter email address...', // Optional: hint text for Android
                                       ),
@@ -341,8 +345,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter password here....', // Optional: hint text for Android
                                       ),
@@ -398,8 +403,9 @@ class _SignupViewState extends State<SignupView> {
                                       decoration: InputDecoration(
                                         filled:
                                             false, // Remove the background color for Android
-                                        border:
-                                            OutlineInputBorder(), // You can add a border if needed
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.all(
+                                            10), // You can add a border if needed
                                         hintText:
                                             'Please enter confirm password...', // Optional: hint text for Android
                                       ),

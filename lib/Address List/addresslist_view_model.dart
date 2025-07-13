@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Add%20Edit%20Address/addedit_address_view_model.dart';
 import 'package:wg_garment/Add%20Edit%20Address/addeditaddress.dart';
 import 'package:wg_garment/Address%20List/address_model.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
@@ -64,6 +66,21 @@ class AddresslistViewModel extends ChangeNotifier {
 
   void navigateToAddEditAddress(BuildContext context) async {
     // Provider.of<ProductListViewModel>(context, listen: false).setcategoryId(selectedSubCatID);
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddEditAddressView(),
+      ),
+    ).then((_) {
+      // Refresh after coming back
+      getAddressList();
+    });
+  }
+
+    void navigateToAddEditAddressWithData(AddressDetailsData address,BuildContext context) async {
+     Provider.of<AddeditAddressViewModel>(context, listen: false).setAddressForUpdate(address);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(

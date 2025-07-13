@@ -28,7 +28,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
   void initState() {
     super.initState();
     pageList = [
-    HomeView(),
+    HomeView(onCButtonPressed: fetchMenuData),
     CategoryView(),
     WishlistView(),
     CartView(onCButtonPressed: fetchMenuData),

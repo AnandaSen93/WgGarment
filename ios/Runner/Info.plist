@@ -45,5 +45,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+<string>We need camera access to take pictures</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library</string>
 </dict>
 </plist>

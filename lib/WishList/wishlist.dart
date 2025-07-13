@@ -64,182 +64,182 @@ class _WishlistViewState extends State<WishlistView> {
               childAspectRatio: 0.5, // Makes items square
             ),
             itemBuilder: (context, index) {
-              return Container(
-                color: Colors.transparent,
-                child: Column(
-                  children: [
-                    Container(
-                      color: productbackgroundcolor,
-                      child: AspectRatio(
-                        aspectRatio: 0.65,
-                        child: Stack(children: [
-                          CustomNetworkImage(
-                            imageUrl: wishlistViewModel
-                                .wishListProduct[index].productImage
-                                .toString(),
-                            height: double.infinity,
-                            width: double.infinity,
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: IconButton(
-                              icon: Image.asset(
-                                "assets/images/remove_cart.png", // Replace with your image path
-                                width: 30,
-                                height: 30,
-                              ),
-                              onPressed: () {
-                                // Action when pressed
-                                print("hello");
-
-                                setState(() {});
-                              },
+              return GestureDetector(
+                onTap: (){
+                  wishlistViewModel.navigateToProductDetails(wishlistViewModel.wishListProduct[index].productId ?? "", context);
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: Column(
+                    children: [
+                      Container(
+                        color: productbackgroundcolor,
+                        child: AspectRatio(
+                          aspectRatio: 0.65,
+                          child: Stack(children: [
+                            CustomNetworkImage(
+                              imageUrl: wishlistViewModel
+                                  .wishListProduct[index].productImage
+                                  .toString(),
+                              height: double.infinity,
+                              width: double.infinity,
                             ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: IconButton(
-                              icon: Image.asset(
-                                (wishlistViewModel.wishListProduct[index]
-                                            .isWishlist !=
-                                        "1")
-                                    ? "assets/images/dislike.png"
-                                    : "assets/images/like.png", // Replace with your image path
-                                width: 30,
-                                height: 30,
-                              ),
-                              onPressed: () {
-                                // Action when pressed
-                                print("hello");
-
-                                setState(() {
-                                  _like = !_like;
-                                });
-                                print(
-                                    "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
-                              },
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                               child:
+                              // IconButton(
+                              //   icon: 
+                                Image.asset(
+                                  "assets/images/remove_cart.png", // Replace with your image path
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              //   onPressed: () {
+                              //     // Action when pressed
+                              //     print("hello");
+                
+                              //     setState(() {});
+                              //   },
+                              // ),
                             ),
-                          )
-                        ]),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.transparent,
-                      child: AspectRatio(
-                        aspectRatio: 4,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                wishlistViewModel
-                                    .wishListProduct[index].productName
-                                    .toString(),
-                                style: textStyleForProductName,
-                              ),
-                            ),
-                            AspectRatio(
-                              aspectRatio: 1.5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: Image.asset(
                                   (wishlistViewModel.wishListProduct[index]
-                                                  .productSellPrice
-                                                  .toString() !=
-                                              "" &&
-                                          wishlistViewModel
-                                                  .wishListProduct[index]
-                                                  .productSellPrice
-                                                  .toString() !=
-                                              "0.00")
-                                      ? Text(
-                                          wishlistViewModel
-                                              .wishListProduct[index]
-                                              .productSellPrice
-                                              .toString(),
-                                          style: textStyleForMainPrice,
-                                          maxLines: 1,
-                                        )
-                                      : Text(
-                                          wishlistViewModel
-                                              .wishListProduct[index]
-                                              .productOriginalPrice
-                                              .toString(),
-                                          style: textStyleForMainPrice,
-                                          maxLines: 1,
-                                        ),
-                                  (wishlistViewModel.wishListProduct[index]
-                                                  .productSellPrice
-                                                  .toString() ==
-                                              "" ||
-                                          wishlistViewModel
-                                                  .wishListProduct[index]
-                                                  .productSellPrice
-                                                  .toString() !=
-                                              "0.00")
-                                      ? Text(
-                                          "",
-                                          style: textStyleForCutPrice,
-                                          maxLines: 1,
-                                        )
-                                      : Text(
-                                          wishlistViewModel
-                                              .wishListProduct[index]
-                                              .productOriginalPrice
-                                              .toString(),
-                                          style: textStyleForCutPrice,
-                                          maxLines: 1,
-                                        )
-                                ],
+                                              .isWishlist !=
+                                          "1")
+                                      ? "assets/images/dislike.png"
+                                      : "assets/images/like.png", // Replace with your image path
+                                  width: 30,
+                                  height: 30,
+                                ),
+                                onPressed: () {
+                                  wishlistViewModel.addRemoveWishlistApiCall(wishlistViewModel.wishListProduct[index].productId ?? "");
+                                },
                               ),
                             )
-                          ],
+                          ]),
                         ),
                       ),
-                    ),
-                    Container(
-                      color: Colors.transparent,
-                      child: AspectRatio(
-                        aspectRatio: 5,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: wishlistViewModel.wishListProduct[index].colorList?.length,
-                            itemBuilder: (context, index1) {
-                              return Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    padding: EdgeInsets.all(1),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape
-                                          .circle, // Ensures circular border
-                                      border: Border.all(
-                                          color: Colors
-                                              .black54, // Border color for selection
-                                          width:
-                                              1.0 // Border width when selected
+                      Container(
+                        color: Colors.transparent,
+                        child: AspectRatio(
+                          aspectRatio: 4,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  wishlistViewModel
+                                      .wishListProduct[index].productName
+                                      .toString(),
+                                  style: textStyleForProductName,
+                                ),
+                              ),
+                              AspectRatio(
+                                aspectRatio: 1.5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    (wishlistViewModel.wishListProduct[index]
+                                                    .productSellPrice
+                                                    .toString() !=
+                                                "" &&
+                                            wishlistViewModel
+                                                    .wishListProduct[index]
+                                                    .productSellPrice
+                                                    .toString() !=
+                                                "0.00")
+                                        ? Text(
+                                            wishlistViewModel
+                                                .wishListProduct[index]
+                                                .productSellPrice
+                                                .toString(),
+                                            style: textStyleForMainPrice,
+                                            maxLines: 1,
+                                          )
+                                        : Text(
+                                            wishlistViewModel
+                                                .wishListProduct[index]
+                                                .productOriginalPrice
+                                                .toString(),
+                                            style: textStyleForMainPrice,
+                                            maxLines: 1,
                                           ),
-                                    ),
-                                    child: FittedBox(
-                                      child: Icon(
-                                        Icons.circle,
-                                        //color: Colors.red,
-                                        color: hexToColor(wishlistViewModel
-                                            .wishListProduct[index]
-                                            .colorList![index1]
-                                            .code
-                                            .toString()),
+                                    (wishlistViewModel.wishListProduct[index]
+                                                    .productSellPrice
+                                                    .toString() ==
+                                                "" ||
+                                            wishlistViewModel
+                                                    .wishListProduct[index]
+                                                    .productSellPrice
+                                                    .toString() !=
+                                                "0.00")
+                                        ? Text(
+                                            "",
+                                            style: textStyleForCutPrice,
+                                            maxLines: 1,
+                                          )
+                                        : Text(
+                                            wishlistViewModel
+                                                .wishListProduct[index]
+                                                .productOriginalPrice
+                                                .toString(),
+                                            style: textStyleForCutPrice,
+                                            maxLines: 1,
+                                          )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: Colors.transparent,
+                        child: AspectRatio(
+                          aspectRatio: 5,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: wishlistViewModel.wishListProduct[index].colorList?.length,
+                              itemBuilder: (context, index1) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      padding: EdgeInsets.all(1),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Ensures circular border
+                                        border: Border.all(
+                                            color: Colors
+                                                .black54, // Border color for selection
+                                            width:
+                                                1.0 // Border width when selected
+                                            ),
+                                      ),
+                                      child: FittedBox(
+                                        child: Icon(
+                                          Icons.circle,
+                                          //color: Colors.red,
+                                          color: hexToColor(wishlistViewModel
+                                              .wishListProduct[index]
+                                              .colorList![index1]
+                                              .code
+                                              .toString()),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }),
-                      ),
-                    )
-                  ],
+                                );
+                              }),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             }),

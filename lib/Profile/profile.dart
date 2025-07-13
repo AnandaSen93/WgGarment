@@ -142,16 +142,15 @@ class _ProfileViewState extends State<ProfileView> {
                   bottom: 0,
                   right: 0,
                   child: IconButton(
+                    onPressed: () {
+                     profileViewModel.navigateToEditProfile(context);
+                    },
                     icon: Image.asset(
                       "assets/images/edit_text.png", // Replace with your image path
                       width: 25,
                       height: 25,
                     ),
-                    onPressed: () {
-                      // Action when pressed
-                      print("delete");
-                      setState(() {});
-                    },
+                    
                   ),
                 ),
               ]),

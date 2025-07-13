@@ -11,12 +11,15 @@ class ApiConstant {
 
   static const String categorylistUrl = "categorylist";
   static const String productllistingurl = "productllisting";
+  static const String searchList = "search";
   static const String productdetailsUrl = "productdetails";
 
 
   static const String profiledetailsUrl = "profiledetails";
   static const String changepassword = "changepassword";
   static const String updatenewslatter = "updatenewslatter";
+  static const String editprofile = "editprofile";
+  static const String editemail = "editemail";
 
   static const String addToCartUrl = "addtocart";
   static const String countUrl = "getcount";
@@ -28,6 +31,7 @@ class ApiConstant {
   static const String applyCoupon = "coupon";
   static const String placedorder = "placedorder";
   static const String orderlist = "orderlist";
+  static const String orderdetails = "orderdetails";
 
 
   static const String addresslist = "addresslist";

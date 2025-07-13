@@ -9,6 +9,13 @@ const textStyleForTextField = TextStyle(
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.none);
 
+const textStyleForHeading = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.none);
+
 const textStyleForHomePageHeading = TextStyle(
                             fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
                             fontSize: 30,

@@ -9,7 +9,10 @@ import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+
+  final VoidCallback onCButtonPressed;
+  const HomeView({super.key, required this.onCButtonPressed});
+
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -86,26 +89,32 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               // Search Start
-              Container(
+             
+               TextButton(
+                  onPressed: (){
+                    homeViewModel.navigateToSearchage(context);
+                  },
                 child: Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: lightgraykcolor,
-                    borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: lightgraykcolor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      height: 50,
+                      // color: lightgraykcolor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search),
+                          Text(
+                            "What are you looking for?",
+                            style: textStyleForTextField,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  height: 50,
-                  // color: lightgraykcolor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.search),
-                      Text(
-                        "What are you looking for?",
-                        style: textStyleForTextField,
-                      )
-                    ],
-                  ),
-                ),
               ),
               //Search End
 
@@ -246,8 +255,8 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: () {
-                                homeViewModel.navigateToProductDetails(
+                              onTap: () async {
+                               homeViewModel.navigateToProductDetails(
                                     homeViewModel.newArrival[index].productId
                                         .toString(),
                                     context);

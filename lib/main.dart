@@ -14,6 +14,7 @@ import 'package:wg_garment/Change%20Password/changepassword.dart';
 import 'package:wg_garment/Change%20Password/changepassword_view_model.dart';
 import 'package:wg_garment/Checkout/checkout.dart';
 import 'package:wg_garment/Checkout/checkout_view_model.dart';
+import 'package:wg_garment/Edit%20Profile/editprofile_view_model.dart';
 import 'package:wg_garment/Forgot%20Password/forgotpassword_view_model.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
@@ -23,11 +24,13 @@ import 'package:wg_garment/Home/home.dart';
 import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Menu/menu_view_model.dart';
 import 'package:wg_garment/My%20Order/myorder_view_model.dart';
+import 'package:wg_garment/Order%20Details/orderdetails_view_model.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 import 'package:wg_garment/Product%20List/product_list.dart';
 import 'package:wg_garment/Product%20List/product_list_view_model.dart';
 import 'package:wg_garment/Profile/profile_view_model.dart';
+import 'package:wg_garment/Search%20View/search_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
 import 'package:wg_garment/Signup/signup_view_model.dart';
 import 'package:wg_garment/Slug%20Page/slugview.dart';
@@ -56,6 +59,9 @@ void main() {
         ChangeNotifierProvider(create: (context) => MyorderViewModel()),
         ChangeNotifierProvider(create: (context) => ChangepasswordViewModel()),
         ChangeNotifierProvider(create: (context) => ForgotpasswordViewModel()),
+        ChangeNotifierProvider(create: (context) => SearchViewModel()),
+        ChangeNotifierProvider(create: (context) => OrderdetailsViewModel()),
+        ChangeNotifierProvider(create: (context) => EditprofileViewModel()),
 
 
         
@@ -95,7 +101,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: GlobalLoader().navigatorKey,
           home:  Splash(),
           routes: {
-            'HomeView': (context) =>  HomeView(),
+            'HomeView': (context) =>  HomeView(onCButtonPressed: (){}),
             'MenuView': (context) => MenuView(),
             'LoginView': (context) => LoginView(),
             'Splash': (context) => Splash(),

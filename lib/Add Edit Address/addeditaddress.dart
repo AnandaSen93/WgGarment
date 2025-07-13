@@ -3,7 +3,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_garment/Add%20Edit%20Address/addedit_address_view_model.dart';
-import 'package:wg_garment/Category/category_view_model.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
@@ -17,13 +16,19 @@ class AddEditAddressView extends StatefulWidget {
 
 class _AddEditAddressViewState extends State<AddEditAddressView> {
   bool _isInitialized = false;
+  late AddeditAddressViewModel _viewModel;
+    @override
+  void dispose() {
+    _viewModel.clearData();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_isInitialized) {
-      Provider.of<AddeditAddressViewModel>(context, listen: false)
-          .getCountryList();
+      _viewModel = Provider.of<AddeditAddressViewModel>(context, listen: false);
+      _viewModel.getCountryList();
 
       //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
       _isInitialized = true; // Ensure it's called only once
@@ -91,38 +96,41 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setFirstName , // Called on text change
-                          keyboardType: TextInputType.emailAddress,
-                          // minLines: 4,         // Minimum height (optional)
-                          // maxLines: null, // Keyboard optimized for name input
-                          onSubmitted: (_) => _toggleKeyboard(),
-                          hintText:
-                              'First Name', // Common hint text (can override per platform)
+                            controller: addeditAddressViewModel
+                                .firstNameController, // (Optional: TextEditingController, currently commented)
+                            // onChanged: addeditAddressViewModel.setFirstName, // Called on text change
+                            keyboardType: TextInputType.emailAddress,
+                            // minLines: 4,         // Minimum height (optional)
+                            // maxLines: null, // Keyboard optimized for name input
+                            onSubmitted: (_) => _toggleKeyboard(),
+                            hintText:
+                                'First Name', // Common hint text (can override per platform)
 
-                          // iOS Specific Customization
-                          cupertino: (context, platform) =>
-                              CupertinoTextFieldData(
-                            decoration: BoxDecoration(
-                              color: Colors
-                                  .transparent, // No background color for iOS field
-                            ),
-                            style: TextStyle(
-                                color: Colors.black), // Text color on iOS
-                          ),
+                            // iOS Specific Customization
+                            cupertino: (context, platform) =>
+                                CupertinoTextFieldData(
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .transparent, // No background color for iOS field
+                                  ),
+                                  style: TextStyle(
+                                      color: Colors.black), // Text color on iOS
+                                ),
 
-                          // Android Specific Customization
-                          material: (context, platform) =>
-                              MaterialTextFieldData(
-                            decoration: InputDecoration(
-                              filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
-                              hintText:
-                                  'First Name', // Hint text (optional, also passed above)
-                            ),
-                          ),
-                        ),
+                            // Android Specific Customization
+                            material: (context, platform) =>
+                                MaterialTextFieldData(
+                                  decoration: InputDecoration(
+                                    hintText: 'First Name',
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    filled: false, // No background fill
+                                    contentPadding: EdgeInsets.all(10),
+                                    // Optional: reduce padding
+                                  ),
+                                )),
                       ),
 
                       SizedBox(height: 10),
@@ -139,8 +147,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setLastName , // Called on text change
+                          controller: addeditAddressViewModel
+                              .lastNameController, // (Optional: TextEditingController, currently commented)
+                          //onChanged: addeditAddressViewModel.setLastName, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -164,8 +173,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'Last Name', // Hint text (optional, also passed above)
                             ),
@@ -188,8 +198,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setCompany , // Called on text change
+                          controller: addeditAddressViewModel
+                              .companyController, // (Optional: TextEditingController, currently commented)
+                          //onChanged: addeditAddressViewModel.setCompany, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -213,8 +224,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'Company', // Hint text (optional, also passed above)
                             ),
@@ -237,8 +249,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setAddress1 , // Called on text change
+                          controller: addeditAddressViewModel
+                              .address1Controller, // (Optional: TextEditingController, currently commented)
+                          //onChanged: addeditAddressViewModel.setAddress1, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -262,8 +275,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'Address 1', // Hint text (optional, also passed above)
                             ),
@@ -286,8 +300,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setAddress2 , // Called on text change
+                          controller: addeditAddressViewModel
+                              .address2Controller, // (Optional: TextEditingController, currently commented)
+                          //onChanged: addeditAddressViewModel.setAddress2, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -311,8 +326,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'Address 2', // Hint text (optional, also passed above)
                             ),
@@ -335,8 +351,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setCity , // Called on text change
+                          controller: addeditAddressViewModel
+                              .cityController, // (Optional: TextEditingController, currently commented)
+                          //onChanged: addeditAddressViewModel/.setCity, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -360,8 +377,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'City', // Hint text (optional, also passed above)
                             ),
@@ -384,8 +402,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               0.0), // Optional: Rounded corners
                         ),
                         child: PlatformTextField(
-                          // controller: _emailCon, // (Optional: TextEditingController, currently commented)
-                           onChanged:addeditAddressViewModel.setPostCode , // Called on text change
+                          controller: addeditAddressViewModel
+                              .postCodeController, // (Optional: TextEditingController, currently commented)
+                          // onChanged: addeditAddressViewModel.setPostCode, // Called on text change
                           keyboardType: TextInputType.emailAddress,
                           // minLines: 4,         // Minimum height (optional)
                           // maxLines: null, // Keyboard optimized for name input
@@ -409,8 +428,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                               MaterialTextFieldData(
                             decoration: InputDecoration(
                               filled: false, // No fill color
-                              border:
-                                  OutlineInputBorder(), // Shows border around text field
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(
+                                  10), // Shows border around text field
                               hintText:
                                   'Post Code', // Hint text (optional, also passed above)
                             ),
@@ -436,7 +456,9 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                           child: DropdownButton(
                               isExpanded: true,
                               value: addeditAddressViewModel.countryName,
-                              items: addeditAddressViewModel.countryList.map((country) => country.countryName as String)
+                              items: addeditAddressViewModel.countryList
+                                  .map((country) =>
+                                      country.countryName as String)
                                   .toList()
                                   .map(
                                     (e) => DropdownMenuItem(
@@ -449,15 +471,13 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                   )
                                   .toList(),
                               onChanged: (value) {
-
-                                addeditAddressViewModel.countryName = value.toString();
+                                addeditAddressViewModel.countryName =
+                                    value.toString();
                                 debugPrint("hello");
-                                addeditAddressViewModel.setCountryID(value.toString());
-                                
+                                addeditAddressViewModel
+                                    .setCountryID(value.toString());
 
-
-                                setState(() { 
-                                });
+                                setState(() {});
                               }),
                         ),
                       ),
@@ -495,11 +515,11 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                   .toList(),
                               onChanged: (value) {
                                 addeditAddressViewModel.stateName =
-                                      value.toString();
-                                  addeditAddressViewModel.setStateID(value.toString());
-                                  
-                                setState(() {
-                                });
+                                    value.toString();
+                                addeditAddressViewModel
+                                    .setStateID(value.toString());
+
+                                setState(() {});
                               }),
                         ),
                       ),
@@ -514,14 +534,13 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  if (addeditAddressViewModel.isDefault == "1"){
+                                  if (addeditAddressViewModel.isDefault ==
+                                      "1") {
                                     addeditAddressViewModel.isDefault = "0";
-                                  }else{
+                                  } else {
                                     addeditAddressViewModel.isDefault = "1";
                                   }
-                                  setState(() {
-                                    
-                                  });
+                                  setState(() {});
                                 },
                                 icon: Icon(
                                   (addeditAddressViewModel.isDefault == "1")
@@ -545,10 +564,13 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                         width: double.infinity,
                         child: TextButton(
                             onPressed: () async {
-                                if (addeditAddressViewModel.checkValidation() ==
-                                    "success") {
+                              if (addeditAddressViewModel.checkValidation() ==
+                                  "success") {
+                                if (addeditAddressViewModel.addressFull?.addressId ==
+                                    null) {
                                   NormalModel? response =
-                                      await addeditAddressViewModel.addAddress();
+                                      await addeditAddressViewModel
+                                          .addAddress();
                                   if (response != null) {
                                     if (response.responseCode == 1) {
                                       Navigator.pop(context);
@@ -560,12 +582,28 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                     print("Login failed");
                                   }
                                 } else {
-                                  setState(() {
-                                    Fluttertoast.showToast(
-                                        msg: addeditAddressViewModel.checkValidation());
-                                  });
+                                  NormalModel? response =
+                                      await addeditAddressViewModel
+                                          .updateAddress();
+                                  if (response != null) {
+                                    if (response.responseCode == 1) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: response.responseText ?? "");
+                                    }
+                                  } else {
+                                    print("Login failed");
+                                  }
                                 }
-                              },
+                              } else {
+                                setState(() {
+                                  Fluttertoast.showToast(
+                                      msg: addeditAddressViewModel
+                                          .checkValidation());
+                                });
+                              }
+                             },
                             child: Text(
                               "Add/Edit Address",
                               style: textStyleForButton,

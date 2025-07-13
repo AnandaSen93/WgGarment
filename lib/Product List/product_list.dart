@@ -101,6 +101,8 @@ class _ProductListViewState extends State<ProductListView> {
                       _selectedRange = tempRange;
                     });
                     Navigator.pop(context);
+
+                    
                   },
                   child: Text("Done"),
                 ),
@@ -142,81 +144,84 @@ class _ProductListViewState extends State<ProductListView> {
                 ],
               ),
             ),
-            SizedBox(height: 15),
-            Container(
-              color: Colors.transparent,
-              height: 40,
-              child: Row(
-                children: [
-                  SizedBox(width: 5),
-                  GestureDetector(
-                    onTap: _showRangeSliderDialog,
-                    child: Container(
-                        height: double.infinity,
-                         width: screenWidth * 0.45,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(width: 5),
-                            Icon(Icons.sort),
-                            Spacer(),
-                            Text("Sort",
-                              style: textStyleForCategorytName,
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        )),
-                  ),
-                  Spacer(),
-                  Container(
-                      height: double.infinity,
-                      width: screenWidth * 0.45,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      padding: EdgeInsets.only(left: 10,right: 5),
-                      child: Material(
-                        child: DropdownButton(
-                          isExpanded: true,
-                          value: dropdownvalue,
-                          items: dropdownItems.map((e) => DropdownMenuItem(
-                          child: Text(
-                            e,style: textStyleForTextField,
-                            maxLines: 1,
-                            ), value:e),
-                        ).toList(), onChanged:(value){
-                          setState(() {
-                            dropdownvalue = value.toString();
-                          });
+            // SizedBox(height: 15),
+            // Container(
+            //   color: Colors.transparent,
+            //   height: 40,
+            //   child: Row(
+            //     children: [
+            //       SizedBox(width: 5),
+            //       GestureDetector(
+            //         onTap: _showRangeSliderDialog,
+            //         child: Container(
+            //             height: double.infinity,
+            //              width: screenWidth * 0.45,
+            //             decoration: BoxDecoration(
+            //               border: Border.all(),
+            //               borderRadius: BorderRadius.circular(5),
+            //             ),
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width: 5),
+            //                 Icon(Icons.sort),
+            //                 Spacer(),
+            //                 Text("Sort",
+            //                   style: textStyleForCategorytName,
+            //                 ),
+            //                 Spacer(),
+            //                 Icon(Icons.arrow_drop_down),
+            //               ],
+            //             )),
+            //       ),
+            //       Spacer(),
+            //       Container(
+            //           height: double.infinity,
+            //           width: screenWidth * 0.45,
+            //           decoration: BoxDecoration(
+            //             border: Border.all(),
+            //             borderRadius: BorderRadius.circular(5),
+            //           ),
+            //           padding: EdgeInsets.only(left: 10,right: 5),
+            //           child: Material(
+            //             child: DropdownButton(
+            //               isExpanded: true,
+            //               value: dropdownvalue,
+            //               items: dropdownItems.map((e) => DropdownMenuItem(
+            //               child: Text(
+            //                 e,style: textStyleForTextField,
+            //                 maxLines: 1,
+            //                 ), value:e),
+            //             ).toList(), onChanged:(value){
+            //               setState(() {
+            //                 dropdownvalue = value.toString();
+            //                 productListViewModel.sortBy = value.toString();
+            //                 productListViewModel.productListApi();
+            //               });
                           
-                        }),
-                      )
+            //             }),
+            //           )
                       
-                      // Row(
-                      //   children: [
-                      //     SizedBox(width: 5),
-                      //     Icon(Icons.sort),
-                      //     Text(
-                      //       "Filter     ",
-                      //       style: textStyleForCategorytName,
-                      //     ),
-                      //     Icon(Icons.arrow_drop_down),
-                      //   ],
-                      // )
+            //           // Row(
+            //           //   children: [
+            //           //     SizedBox(width: 5),
+            //           //     Icon(Icons.sort),
+            //           //     Text(
+            //           //       "Filter     ",
+            //           //       style: textStyleForCategorytName,
+            //           //     ),
+            //           //     Icon(Icons.arrow_drop_down),
+            //           //   ],
+            //           // )
                       
-                      ),
+            //           ),
 
                   
-                  SizedBox(width: 5),
-                ],
-              ),
-            ),
+            //       SizedBox(width: 5),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 15),
+            (productListViewModel.productList.length != 0) ?
             Expanded(
                 child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -227,136 +232,149 @@ class _ProductListViewState extends State<ProductListView> {
                     ),
                     itemCount: productListViewModel.productList.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        color: Colors.transparent,
-                        child: Column(
-                          children: [
-                            Container(
-                              color: productbackgroundcolor,
-                              child: AspectRatio(
-                                aspectRatio: 0.65,
-                                child: Stack(children: [
-                                  //Image.network(productListViewModel.productList[index].productImage.toString()),
-                                  CustomNetworkImage(
-                                    imageUrl: productListViewModel
-                                        .productList[index].productImage
-                                        .toString(),
-                                    height: double.infinity,
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: IconButton(
-                                      icon: Image.asset(
-                                        (productListViewModel.productList[index]
-                                                    .isWishlist
-                                                    .toString() !=
-                                                "1")
-                                            ? "assets/images/dislike.png"
-                                            : "assets/images/like.png", // Replace with your image path
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                      onPressed: () {
-                                        // Action when pressed
-                                      },
+                      return GestureDetector(
+                          onTap: (){
+                            productListViewModel.navigateToProductDetails(productListViewModel.productList[index].productId ?? "", context);
+                          },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Container(
+                                color: productbackgroundcolor,
+                                child: AspectRatio(
+                                  aspectRatio: 0.65,
+                                  child: Stack(children: [
+                                    //Image.network(productListViewModel.productList[index].productImage.toString()),
+                                    CustomNetworkImage(
+                                      imageUrl: productListViewModel
+                                          .productList[index].productImage
+                                          .toString(),
+                                      height: double.infinity,
                                     ),
-                                  )
-                                ]),
-                              ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              child: AspectRatio(
-                                aspectRatio: 4,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        productListViewModel
-                                            .productList[index].productName
-                                            .toString(),
-                                        style: textStyleForProductName,
-                                      ),
-                                    ),
-                                    AspectRatio(
-                                      aspectRatio: 1.5,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          (productListViewModel.productList[index] .productSellPrice.toString() != "" && productListViewModel.productList[index] .productSellPrice.toString() != "0.00")
-                                              ? Text(
-                                                  productListViewModel
-                                                      .productList[index]
-                                                      .productSellPrice
-                                                      .toString(),
-                                                  style: textStyleForMainPrice,
-                                                  maxLines: 1,
-                                                )
-                                              : Text(
-                                                  productListViewModel
-                                                      .productList[index]
-                                                      .productOriginalPrice
-                                                      .toString(),
-                                                  style: textStyleForMainPrice,
-                                                  maxLines: 1),
-                                          (productListViewModel.productList[index].productSellPrice.toString() == "" || productListViewModel.productList[index].productSellPrice.toString() == "0.00")
-                                              ? Text("",
-                                                  style: textStyleForCutPrice,
-                                                  maxLines: 1)
-                                              : Text(
-                                                  productListViewModel
-                                                      .productList[index]
-                                                      .productOriginalPrice
-                                                      .toString(),
-                                                  style: textStyleForCutPrice,
-                                                  maxLines: 1)
-                                        ],
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: IconButton(
+                                        icon: Image.asset(
+                                          (productListViewModel.productList[index]
+                                                      .isWishlist
+                                                      .toString() !=
+                                                  "1")
+                                              ? "assets/images/dislike.png"
+                                              : "assets/images/like.png", // Replace with your image path
+                                          width: 30,
+                                          height: 30,
+                                        ),
+                                        onPressed: () {
+                                          // Action when pressed
+                                        },
                                       ),
                                     )
-                                  ],
+                                  ]),
                                 ),
                               ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              child: AspectRatio(
-                                aspectRatio: 5,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: productListViewModel
-                                            .productList[index]
-                                            .colorList
-                                            ?.length ??
-                                        0,
-                                    itemBuilder: (context, index1) {
-                                      return Container(
-                                        //padding: EdgeInsets.only(right: 2),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.grey,
-                                            width: 1,
-                                          ),
+                              Container(
+                                color: Colors.transparent,
+                                child: AspectRatio(
+                                  aspectRatio: 4,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          productListViewModel
+                                              .productList[index].productName
+                                              .toString(),
+                                          style: textStyleForProductName,
                                         ),
-                                        child: Icon(
-                                          Icons.circle,
-                                          size: 35,
-                                          color: hexToColor(productListViewModel
-                                              .productList[index]
-                                              .colorList![index1]
-                                              .code
-                                              .toString()),
+                                      ),
+                                      AspectRatio(
+                                        aspectRatio: 1.5,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            (productListViewModel.productList[index] .productSellPrice.toString() != "" && productListViewModel.productList[index] .productSellPrice.toString() != "0.00")
+                                                ? Text(
+                                                    productListViewModel
+                                                        .productList[index]
+                                                        .productSellPrice
+                                                        .toString(),
+                                                    style: textStyleForMainPrice,
+                                                    maxLines: 1,
+                                                  )
+                                                : Text(
+                                                    productListViewModel
+                                                        .productList[index]
+                                                        .productOriginalPrice
+                                                        .toString(),
+                                                    style: textStyleForMainPrice,
+                                                    maxLines: 1),
+                                            (productListViewModel.productList[index].productSellPrice.toString() == "" || productListViewModel.productList[index].productSellPrice.toString() == "0.00")
+                                                ? Text("",
+                                                    style: textStyleForCutPrice,
+                                                    maxLines: 1)
+                                                : Text(
+                                                    productListViewModel
+                                                        .productList[index]
+                                                        .productOriginalPrice
+                                                        .toString(),
+                                                    style: textStyleForCutPrice,
+                                                    maxLines: 1)
+                                          ],
                                         ),
-                                      );
-                                    }),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
-                            )
-                          ],
+                              Container(
+                                color: Colors.transparent,
+                                child: AspectRatio(
+                                  aspectRatio: 5,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: productListViewModel
+                                              .productList[index]
+                                              .colorList
+                                              ?.length ??
+                                          0,
+                                      itemBuilder: (context, index1) {
+                                        return Container(
+                                          //padding: EdgeInsets.only(right: 2),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.circle,
+                                            size: 35,
+                                            color: hexToColor(productListViewModel
+                                                .productList[index]
+                                                .colorList![index1]
+                                                .code
+                                                .toString()),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     }))
+                    : Expanded(
+                        child: Center(
+                          child: Text(
+                            "NO Data Found",
+                            style: textStyleForMainProductName,
+                          ),
+                        ),
+                      )
           ],
         ),
       )),

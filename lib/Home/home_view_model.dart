@@ -6,6 +6,7 @@ import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
+import 'package:wg_garment/Search%20View/search.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeModel homeModel = HomeModel();
@@ -28,6 +29,29 @@ class HomeViewModel extends ChangeNotifier {
       context,
       MaterialPageRoute(
         builder: (context) => ProductDetailsView(),
+      ),
+    ).then((_) {
+      // Refresh after coming back
+      
+    });;
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
+
+
+   void navigateToSearchage(BuildContext context) async {    
+
+   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SearchView(),
       ),
     );
 

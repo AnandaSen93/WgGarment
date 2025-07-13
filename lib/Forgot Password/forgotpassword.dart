@@ -14,21 +14,19 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-
-    final FocusNode _focusNode = FocusNode();
-      void _toggleKeyboard() {
-      if (_focusNode.hasFocus) {
-        _focusNode.unfocus(); // Hide keyboard
-      } else {
-        FocusScope.of(context).requestFocus(_focusNode); // Show keyboard
-      }
+  final FocusNode _focusNode = FocusNode();
+  void _toggleKeyboard() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus(); // Hide keyboard
+    } else {
+      FocusScope.of(context).requestFocus(_focusNode); // Show keyboard
     }
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
-    final forgotpasswordViewModel = Provider.of<ForgotpasswordViewModel>(context);
+    final forgotpasswordViewModel =
+        Provider.of<ForgotpasswordViewModel>(context);
     return PlatformScaffold(
       body: SafeArea(
           child: Column(
@@ -102,8 +100,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       material: (context, platform) => MaterialTextFieldData(
                         decoration: InputDecoration(
                           filled: false, // No fill color
-                          border:
-                              OutlineInputBorder(), // Shows border around text field
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(
+                              10), // Shows border around text field
                           hintText:
                               'Confirm new Password', // Hint text (optional, also passed above)
                         ),

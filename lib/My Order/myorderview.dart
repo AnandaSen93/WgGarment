@@ -57,138 +57,170 @@ class _MyOrderListViewState extends State<MyOrderListView> {
               ? Expanded(
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    child: ListView.builder(
+                    child: ListView.separated(
                         scrollDirection: Axis.vertical,
                         itemCount: myorderViewModel.orderList.length,
+                        separatorBuilder: (context, index) {
+                          return SizedBox(
+                              height: 10); // Adds space between items
+                        },
                         itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black, // Black border color
-                                    width: 0.5, // Border width
+                          return GestureDetector(
+                            onTap: () {
+                              myorderViewModel.navigateToOrderDetails(myorderViewModel.orderList[index].orderId ?? "", context);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                // border: Border.all(
+                                //   color: Colors.black, // Black border color
+                                //   width: 0.5, // Border width
+                                // ),
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26, // shadow color
+                                    spreadRadius:
+                                        2, // how much the shadow spreads
+                                    blurRadius: 5, // how soft the shadow is
+                                    offset:
+                                        Offset(2, 3), // shadow position (x, y)
                                   ),
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Optional: Rounded corners
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        child: AspectRatio(
-                                          aspectRatio: 1,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.black,
-                                                width: 0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              color: Colors.blue,
+                                ], // Optional: Rounded corners
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 120,
+                                      child: AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black,
+                                              width: 0,
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(
-                                                  10.0), // Same radius as container
-                                              child: CustomNetworkImage(
-                                                imageUrl: myorderViewModel
-                                                    .orderList[index]
-                                                    .orderProductImage
-                                                    .toString(),
-                                                height: double.infinity,
-                                                width: double.infinity,
-                                                fit: BoxFit.cover,
-                                              ),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                10.0), // Same radius as container
+                                            child: CustomNetworkImage(
+                                              imageUrl: myorderViewModel
+                                                  .orderList[index]
+                                                  .orderProductImage
+                                                  .toString(),
+                                              height: double.infinity,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Order ID:",
-                                                    style:
-                                                        textStyleForMainProductName,
-                                                  ),
-                                                  Text(
-                                                    myorderViewModel
-                                                        .orderList[index]
-                                                        .orderId
-                                                        .toString(),
-                                                    style:
-                                                        textStyleForMainProductDescription,
-                                                  )
-                                                ],
-                                              ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Order ID: ",
+                                                  style:
+                                                      textStyleForMainProductName,
+                                                ),
+                                                Text(
+                                                  myorderViewModel
+                                                      .orderList[index].orderId
+                                                      .toString(),
+                                                  style:
+                                                      textStyleForMainProductDescription,
+                                                )
+                                              ],
                                             ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Order Date:",
-                                                    style:
-                                                        textStyleForMainProductName,
-                                                  ),
-                                                  Spacer(),
-                                                ],
-                                              ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Order Date: ",
+                                                  style:
+                                                      textStyleForMainProductName,
+                                                ),
+                                                Spacer(),
+                                              ],
                                             ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              width: double.infinity,
-                                              child: Text(
-                                                myorderViewModel
-                                                    .orderList[index]
-                                                    .orderDateTime
-                                                    .toString(),
-                                                style:
-                                                    textStyleForMainProductDescription,
-                                                overflow: TextOverflow
-                                                    .ellipsis, // ✅ Adds '...'
-                                                maxLines: 1,
-                                                textAlign: TextAlign.right,
-                                              ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            width: double.infinity,
+                                            child: Text(
+                                              myorderViewModel
+                                                  .orderList[index].orderDateTime
+                                                  .toString(),
+                                              style:
+                                                  textStyleForMainProductDescription,
+                                              overflow: TextOverflow
+                                                  .ellipsis, // ✅ Adds '...'
+                                              maxLines: 1,
+                                              textAlign: TextAlign.right,
                                             ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Order Price:",
-                                                    style:
-                                                        textStyleForMainProductName,
-                                                  ),
-                                                  Text(
-                                                    "\$" +
-                                                        (myorderViewModel
-                                                            .orderList[index]
-                                                            .orderPrice
-                                                            .toString()),
-                                                    style:
-                                                        textStyleForMainProductDescription,
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Order Price: ",
+                                                  style:
+                                                      textStyleForMainProductName,
+                                                ),
+                                                Text(
+                                                  "\$" +
+                                                      (myorderViewModel
+                                                          .orderList[index]
+                                                          .orderPrice
+                                                          .toString()),
+                                                  style:
+                                                      textStyleForMainProductDescription,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Payment Type: ",
+                                                  style:
+                                                      textStyleForMainProductName,
+                                                ),
+                                                Text(
+                                                  "\$" +
+                                                      (myorderViewModel
+                                                          .orderList[index]
+                                                          .paymentMethod
+                                                          .toString()),
+                                                  style:
+                                                      textStyleForMainProductDescription,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(height: 10)
-                            ],
+                            ),
                           );
                         }),
                   ),

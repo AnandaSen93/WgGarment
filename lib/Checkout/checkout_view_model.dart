@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Checkout/checkout_model.dart';
 import 'package:wg_garment/Home/home_model.dart';
-import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/My%20Order/myorderview.dart';
 
 class CheckoutViewModel extends ChangeNotifier {

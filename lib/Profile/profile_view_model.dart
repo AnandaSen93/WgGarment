@@ -4,6 +4,7 @@ import 'package:wg_garment/Address%20List/addresslist.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Change%20Password/changepassword.dart';
+import 'package:wg_garment/Edit%20Profile/editprofile.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/My%20Order/myorderview.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
@@ -11,6 +12,24 @@ import 'package:wg_garment/Slug%20Page/slugview.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   UserData? profileDta;
+
+
+     void navigateToEditProfile(BuildContext context) async {
+   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
 
 
    void navigateToMyOrder(BuildContext context) async {
