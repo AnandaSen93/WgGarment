@@ -1,9 +1,17 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'dart:async';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({super.key});
@@ -15,6 +23,7 @@ class ProductDetailsView extends StatefulWidget {
 }
 
 class _ProductDetailsViewState extends State<ProductDetailsView> {
+  bool _isInitialized = false;
   PageController pageController = PageController();
   int currentPageIndex = 0;
   Timer? _timer;
@@ -22,37 +31,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   var _selectedIndex = 0;
 
   int item_count = 1;
-
-  var starArray = ["5", "4", "3", "2", "1"];
-
+  late ProductDetailsViewModel _viewModel;
   var listForPageView = [
     "Description",
     "Highlights",
     "Material and Care",
     "Other Info"
-  ];
-
-  var list = [
-    Image.asset(
-      'assets/images/banner.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/banner.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/banner.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/banner.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/banner.png',
-      fit: BoxFit.fill,
-    ),
   ];
 
   @override
@@ -66,22 +50,39 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   void dispose() {
     _timer?.cancel();
     pageController.dispose();
+    _viewModel.clearData();
     super.dispose();
   }
 
-  void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      currentPageIndex = currentPageIndex + 1;
-      if (currentPageIndex >= list.length) {
-        currentPageIndex = 0;
+   
+
+  @override
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+       _viewModel = Provider.of<ProductDetailsViewModel>(context, listen: false);
+
+      final response = await _viewModel.productDetailsApi();
+       if (response != null) {
+        if (response.responseCode != 1) {
+          Fluttertoast.showToast(msg: response.responseText ?? "");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Somethings went wrong!");
       }
-      // pageController.animateToPage(
-      //   currentPageIndex,
-      //   duration: Duration(milliseconds: 500),
-      //   curve: Curves.easeIn,
-      // );
-    });
+
+      _isInitialized = true; // Ensure it's called only once
+    }
   }
+
+  // void _startTimer() {
+  //   _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+  //     currentPageIndex = currentPageIndex + 1;
+  //     if (currentPageIndex >= list.length) {
+  //       currentPageIndex = 0;
+  //     }
+  //   });
+  // }
 
   double getStringWidth(String text, TextStyle style) {
     final TextPainter textPainter = TextPainter(
@@ -95,6 +96,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    final productDetailsViewModel = Provider.of<ProductDetailsViewModel>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return PlatformScaffold(
@@ -111,39 +114,33 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       aspectRatio: 2,
                       child: Container(
                         color: Colors.transparent,
-                        child: PageView(
-                          controller: pageController,
-                          onPageChanged: (int index) {
-                            setState(() {
-                              currentPageIndex = index;
-                            });
-                          },
-                          children: list,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 10,
-                      child: SizedBox(
-                        height: 40, // Give it a height
-                        width: list.length * 20,
-                        child: ListView.builder(
-                          itemCount: list.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2),
-                              child: Icon(
-                                Icons.circle,
-                                size: 10,
-                                color: index == currentPageIndex
-                                    ? Colors.red
-                                    : Colors.grey,
+                        child: (productDetailsViewModel.bannerImage.length != 0)
+                            ? ImageSlideshow(
+                                indicatorColor: pinkcolor,
+                                onPageChanged: (value) {},
+                                autoPlayInterval: 3000,
+                                isLoop: true,
+                                children: productDetailsViewModel.bannerImage
+                                        .map((imageUrl) {
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: CustomNetworkImage(
+                                          imageUrl: imageUrl
+                                              .toString(), // Convert String to Widget
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      );
+                                    }).toList() ??
+                                    [],
+                              )
+                            : Container(
+                                color: Colors.grey[300],
+                                child: Center(
+                                  child: Text(""),
+                                ),
                               ),
-                            );
-                          },
-                        ),
                       ),
                     ),
                     Positioned(
@@ -161,9 +158,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         bottom: 0,
                         right: 10,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.productId);
+                          },
                           icon: Image.asset(
-                            _like
+                            (productDetailsViewModel
+                                        .productDetailsData?.isWishlist
+                                        .toString() ==
+                                    "0")
                                 ? "assets/images/dislike.png"
                                 : "assets/images/like.png", // Replace with your image path
                             width: 30,
@@ -179,20 +181,68 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       children: [
                         Expanded(
                             child: Text(
-                          "Tristique Mauris Sollicitudin",
-                          style: textStyleForProductName,
+                          productDetailsViewModel
+                                  .productDetailsData?.productName
+                                  .toString() ??
+                              "",
+                          style: textStyleForMainProductName,
                         )),
                         AspectRatio(
                           aspectRatio: 1,
                           child: Container(
-                            color: Colors.transparent,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "599 SEK",
-                              style: textStyleForMainPrice,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                              color: Colors.transparent,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  (productDetailsViewModel.productDetailsData
+                                                  ?.productSellPrice
+                                                  .toString() !=
+                                              "" &&
+                                          productDetailsViewModel
+                                                  .productDetailsData
+                                                  ?.productSellPrice
+                                                  .toString() !=
+                                              "0.00")
+                                      ? Text(
+                                          productDetailsViewModel
+                                                  .productDetailsData
+                                                  ?.productSellPrice
+                                                  .toString() ??
+                                              "",
+                                          style: textStyleForMainPrice,
+                                          maxLines: 1,
+                                        )
+                                      : Text(
+                                          productDetailsViewModel
+                                                  .productDetailsData
+                                                  ?.productOriginalPrice
+                                                  .toString() ??
+                                              "",
+                                          style: textStyleForMainPrice,
+                                          maxLines: 1),
+                                  (productDetailsViewModel.productDetailsData
+                                                  ?.productSellPrice
+                                                  .toString() ==
+                                              "" ||
+                                          productDetailsViewModel
+                                                  .productDetailsData
+                                                  ?.productSellPrice
+                                                  .toString() ==
+                                              "0.00")
+                                      ? Text("",
+                                          style: textStyleForCutPrice,
+                                          maxLines: 1)
+                                      : Text(
+                                          productDetailsViewModel
+                                                  .productDetailsData
+                                                  ?.productOriginalPrice
+                                                  .toString() ??
+                                              "",
+                                          style: textStyleForCutPrice,
+                                          maxLines: 1)
+                                ],
+                              )),
                         )
                       ],
                     ),
@@ -207,13 +257,22 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         RatingBar.readOnly(
                           filledIcon: Icons.star,
                           emptyIcon: Icons.star_border,
-                          initialRating: 4,
+                          initialRating: ((productDetailsViewModel
+                                          .productDetailsData?.productRating
+                                          .toString() ??
+                                      "0") !=
+                                  "")
+                              ? double.parse(productDetailsViewModel
+                                      .productDetailsData?.productRating
+                                      .toString() ??
+                                  "0")
+                              : 0,
                           maxRating: 5,
                           size: 20,
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "(15)",
+                          "(${productDetailsViewModel.productDetailsData?.productReviewCount.toString() ?? "0"})",
                           style: textStyleForMainProductDescription,
                         ),
                         Spacer(),
@@ -238,6 +297,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             item_count = (item_count - 1);
                                           }
                                         });
+                                        productDetailsViewModel
+                                            .updateQuantity("${item_count}");
                                       },
                                       icon: Icon(Icons.remove)),
                                 ),
@@ -268,6 +329,165 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ),
                   SizedBox(height: 15),
+                  // Color and Size List
+
+                  if (productDetailsViewModel.colorList.length != 0)
+                    Container(
+                        height: 50,
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        color: Colors.transparent,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Color:",
+                              style: textStyleForMainProductName,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      productDetailsViewModel.colorList.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        productDetailsViewModel
+                                            .updateSelectedColorId(
+                                                productDetailsViewModel
+                                                    .colorList[index].valueId
+                                                    .toString());
+                                      },
+                                      child: Container(
+                                        decoration:BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Ensures circular border
+                                        border: Border.all(
+                                          color:(productDetailsViewModel
+                                                          .selectedColorId ==
+                                                      productDetailsViewModel
+                                                          .colorList[index]
+                                                          .valueId)
+                                              ? Colors.black
+                                              : Colors
+                                                  .transparent, // Border color for selection
+                                          width: (productDetailsViewModel
+                                                          .selectedColorId ==
+                                                      productDetailsViewModel
+                                                          .colorList[index]
+                                                          .valueId)
+                                              ? 1.0
+                                              : 0.0, // Border width when selected
+                                        ),
+                                      ),
+                                      child: Icon(
+                                        Icons.circle,
+                                        size: 35,
+                                        color: hexToColor(
+                                            productDetailsViewModel
+                                                .colorList[index].code
+                                                .toString()),
+                                      ),
+                                      )
+                                    );
+                                  }),
+                            ))
+                          ],
+                        )),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (productDetailsViewModel.SizeList.length != 0)
+                    Container(
+                        height: 40,
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        color: Colors.transparent,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Size:",
+                              style: textStyleForMainProductName,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                child: Container(
+                              width: double.infinity,
+                              color: Colors.transparent,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      productDetailsViewModel.SizeList.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        productDetailsViewModel
+                                            .updateSelectedSizeId(
+                                                productDetailsViewModel
+                                                    .SizeList[index].valueId
+                                                    .toString());
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 8),
+                                            decoration: BoxDecoration(
+                                              color: (productDetailsViewModel
+                                                          .selecetedSizeId ==
+                                                      productDetailsViewModel
+                                                          .SizeList[index]
+                                                          .valueId)
+                                                  ? Colors.black
+                                                  : Colors
+                                                      .white, // Background color
+                                              borderRadius: BorderRadius.circular(
+                                                  8), // Rounded corners (radius 2)
+                                              border: Border.all(
+                                                  color: Colors.black,
+                                                  width:
+                                                      1), // Border color & width
+                                            ),
+                                            child: Text(
+                                              productDetailsViewModel
+                                                  .SizeList[index].name
+                                                  .toString(),
+                                              style: (productDetailsViewModel
+                                                          .selecetedSizeId ==
+                                                      productDetailsViewModel
+                                                          .SizeList[index]
+                                                          .valueId)
+                                                  ? textStyleForSelected
+                                                  : textStyleForDeSelected,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ))
+                          ],
+                        )),
+
+                  SizedBox(
+                    height: 10,
+                  ),
+
                   // pageview
                   Container(
                       height: 40,
@@ -312,17 +532,21 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   SizedBox(height: 15),
                   Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
+                    width: double.infinity,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Product Description",
+                          listForPageView[_selectedIndex],
                           style: textStyleForCategorytName2,
                         ),
                         SizedBox(height: 15),
-                        Text(
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                          style: textStyleForMainProductDescription,
+                        HtmlWidget(
+                          productDetailsViewModel
+                                  .productDetailsData?.productDescription
+                                  .toString() ??
+                              "",
+                          textStyle: textStyleForCategorytName,
                         )
                       ],
                     ),
@@ -370,7 +594,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         Text("Overall Rating",
                                             style: textStyleForCategorytName2),
                                         SizedBox(height: 15),
-                                        Text("4.2/5", style: textstyleLarge),
+                                        Text(
+                                            "${(productDetailsViewModel.productDetailsData?.productRating?.toString().isEmpty ?? true) ? "0" : productDetailsViewModel.productDetailsData?.productRating}/5",
+                                            style: textstyleLarge),
                                         SizedBox(height: 5),
                                         RatingBar.readOnly(
                                           filledIcon: Icons.star,
@@ -380,7 +606,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                           size: 20,
                                         ),
                                         SizedBox(height: 5),
-                                        Text("Based on 15 reviews",
+                                        Text(
+                                            "Based on ${productDetailsViewModel.productDetailsData?.productReviewCount.toString() ?? ""} reviews",
                                             style: textstyleSmall),
                                       ],
                                     ),
@@ -393,48 +620,55 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                     child: Container(
                                       color: Colors.transparent,
                                       alignment: Alignment.center,
-                                      child: ListView.builder(
-                                          itemCount: starArray.length,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 5),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    starArray[index],
-                                                    style:
-                                                        textStyleForCategorytName,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Icon(Icons.star,
-                                                      size: 20,
-                                                      color: Colors.amber),
-                                                  SizedBox(width: 5),
-                                                  Expanded(
-                                                    child: Container(
-                                                      height: 5,
-                                                      child:
-                                                          LinearProgressIndicator(
-                                                        value: 0.5,
-                                                        color: Colors.amber,
-                                                        backgroundColor:
-                                                            Colors.grey[200],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  Text(
-                                                    "${index}",
-                                                    style:
-                                                        textStyleForCategorytName,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                ],
-                                              ),
-                                            );
-                                          }),
+                                      child: Column(
+                                        children: [
+                                          RatingSlideBar(
+                                              ratingLabel: "5",
+                                              progressValue: double.parse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.ratingAll
+                                                          ?.five ??
+                                                      "0"),
+                                              index: 0),
+                                          RatingSlideBar(
+                                              ratingLabel: "4",
+                                              progressValue: double.parse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.ratingAll
+                                                          ?.four ??
+                                                      "0"),
+                                              index: 0),
+                                          RatingSlideBar(
+                                              ratingLabel: "3",
+                                              progressValue: double.parse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.ratingAll
+                                                          ?.three ??
+                                                      "0"),
+                                              index: 0),
+                                          RatingSlideBar(
+                                              ratingLabel: "2",
+                                              progressValue: double.parse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.ratingAll
+                                                          ?.two ??
+                                                      "0"),
+                                              index: 0),
+                                          RatingSlideBar(
+                                              ratingLabel: "1",
+                                              progressValue: double.parse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.ratingAll
+                                                          ?.one ??
+                                                      "0"),
+                                              index: 0),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 )
@@ -454,7 +688,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               true, // Ensures ListView takes up space only for its children
                           physics:
                               NeverScrollableScrollPhysics(), // Disables internal scrolling
-                          itemCount: 2, // Number of items
+                          itemCount: (productDetailsViewModel.productDetailsData
+                                          ?.productReviewList?.length ??
+                                      0) >
+                                  2
+                              ? 2
+                              : productDetailsViewModel.productDetailsData
+                                      ?.productReviewList?.length ??
+                                  0, // Number of items
                           itemBuilder: (context, index) {
                             return AspectRatio(
                               aspectRatio: 2,
@@ -483,8 +724,17 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                               child: ClipOval(
                                                 child: AspectRatio(
                                                     aspectRatio: 1,
-                                                    child: Image.asset(
-                                                        "assets/images/product.png")),
+                                                    child: CustomNetworkImage(
+                                                        imageUrl: productDetailsViewModel
+                                                                .productDetailsData
+                                                                ?.productReviewList?[
+                                                                    index]
+                                                                .userImage
+                                                                .toString() ??
+                                                            "",
+                                                            height: double.infinity,
+                                                            width: double.infinity,
+                                                            )),
                                               ),
                                             ),
                                           )),
@@ -496,20 +746,40 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text("Overall Rating",
+                                              Text(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.productReviewList?[
+                                                              index]
+                                                          .userName
+                                                          .toString() ??
+                                                      "",
                                                   style:
                                                       textStyleForCategorytName2),
                                               SizedBox(height: 5),
                                               RatingBar.readOnly(
                                                 filledIcon: Icons.star,
                                                 emptyIcon: Icons.star_border,
-                                                initialRating: 4,
+                                                initialRating: double.parse(
+                                                    productDetailsViewModel
+                                                            .productDetailsData
+                                                            ?.productReviewList?[
+                                                                index]
+                                                            .rating
+                                                            .toString() ??
+                                                        "0.0"),
                                                 maxRating: 5,
                                                 size: 20,
                                               ),
                                               SizedBox(height: 5),
                                               Text(
-                                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.productReviewList?[
+                                                              index]
+                                                          .review
+                                                          .toString() ??
+                                                      "",
                                                   style:
                                                       textStyleForProductName),
                                             ],
@@ -524,26 +794,30 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           },
                         ),
                         SizedBox(height: 10),
-                        SizedBox(
+                        if (productDetailsViewModel
+                                .productDetailsData?.isAlreadyBuy
+                                .toString() ==
+                            "1")
+                          SizedBox(
                             height: 50,
                             width: double.infinity,
-                              child: TextButton(
-                                  onPressed: () {
-                                    debugPrint("Login tapped");
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        pinkcolor, // Button background color
-                                    foregroundColor: Colors.white, // Text color
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 15),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          5.0), // Rounded corners
-                                    ),
+                            child: TextButton(
+                                onPressed: () {
+                                  debugPrint("add review");
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      pinkcolor, // Button background color
+                                  foregroundColor: Colors.white, // Text color
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        5.0), // Rounded corners
                                   ),
-                                  child: Text("Add Review")),
-                            ),
+                                ),
+                                child: Text("Add Review")),
+                          ),
                       ],
                     ),
                   ),
@@ -555,154 +829,258 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ),
 
-                  Container(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Similar Products ",
-                              style: textStyleForHomePageHeading,
-                            ),
-                            Spacer(),
-                            TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "View All",
-                                  style: textStyleForViewAll,
-                                ))
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          color: Colors.transparent,
-                          height: screenWidth - 30,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 4,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: EdgeInsets.only(right: 8),
-                                  height: double.infinity,
-                                  width: ((screenWidth / 2.07)),
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        color: productbackgroundcolor,
-                                        child: AspectRatio(
-                                          aspectRatio: 0.65,
-                                          child: Stack(children: [
-                                            Image.asset(
-                                                'assets/images/product.png'),
-                                            Positioned(
-                                              bottom: 0,
-                                              right: 0,
-                                              child: IconButton(
-                                                icon: Image.asset(
-                                                  _like
-                                                      ? "assets/images/dislike.png"
-                                                      : "assets/images/like.png", // Replace with your image path
-                                                  width: 30,
-                                                  height: 30,
-                                                ),
-                                                onPressed: () {
-                                                  // Action when pressed
-                                                  print("hello");
+                  if (productDetailsViewModel.similarProductlist.length != 0)
+                    Container(
+                      color: Colors.transparent,
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Similar Products ",
+                                style: textStyleForHomePageHeading,
+                              ),
+                              Expanded(
+                                child: TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "View All",
+                                      style: textStyleForViewAll,
+                                    )),
+                              )
+                            ],
+                          ),
+                          Container(
+                            color: Colors.transparent,
+                            height: screenWidth - 30,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: productDetailsViewModel
+                                    .similarProductlist.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(right: 8),
+                                    height: double.infinity,
+                                    width: ((screenWidth / 2.07)),
+                                    color: Colors.transparent,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          color: productbackgroundcolor,
+                                          child: AspectRatio(
+                                            aspectRatio: 0.65,
+                                            child: Stack(children: [
+                                              CustomNetworkImage(
+                                                  imageUrl:
+                                                      productDetailsViewModel
+                                                          .similarProductlist[
+                                                              index]
+                                                          .productImage
+                                                          .toString(),
+                                                          height: double.infinity,
+                                                            width: double.infinity,
+                                                          ),
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                child: IconButton(
+                                                  icon: Image.asset(
+                                                    productDetailsViewModel
+                                                                .similarProductlist[
+                                                                    index]
+                                                                .isWishlist ==
+                                                            "0"
+                                                        ? "assets/images/dislike.png"
+                                                        : "assets/images/like.png", // Replace with your image path
+                                                    width: 30,
+                                                    height: 30,
+                                                  ),
+                                                  onPressed: () {
+                                                    // Action when pressed
+                                                    print("hello");
 
-                                                  setState(() {
-                                                    _like = !_like;
-                                                  });
-                                                  print(
-                                                      "Button Pressed: ${_like ? 'Liked' : 'Disliked'}");
-                                                },
-                                              ),
-                                            )
-                                          ]),
-                                        ),
-                                      ),
-                                      Container(
-                                        color: Colors.transparent,
-                                        child: AspectRatio(
-                                          aspectRatio: 4,
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Tristique Mauris Sollicitudin',
-                                                  style:
-                                                      textStyleForProductName,
-                                                ),
-                                              ),
-                                              AspectRatio(
-                                                aspectRatio: 1.5,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text('kr 40.00',
-                                                        style:
-                                                            textStyleForMainPrice),
-                                                    Text('kr 55.00',
-                                                        style:
-                                                            textStyleForCutPrice)
-                                                  ],
+                                                productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.similarProductlist[index]
+                                                          .productId
+                                                          .toString());
+                                                  },
                                                 ),
                                               )
-                                            ],
+                                            ]),
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        color: Colors.transparent,
-                                        child: AspectRatio(
-                                          aspectRatio: 5,
-                                          child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: 4,
-                                              itemBuilder: (context, index) {
-                                                return Icon(
-                                                  Icons.circle,
-                                                  size: 35,
-                                                  color: Colors.red,
-                                                );
-                                              }),
+                                        Container(
+                                          color: Colors.transparent,
+                                          child: AspectRatio(
+                                            aspectRatio: 4,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    productDetailsViewModel
+                                                        .similarProductlist[
+                                                            index]
+                                                        .productName
+                                                        .toString(),
+                                                    style:
+                                                        textStyleForProductName,
+                                                  ),
+                                                ),
+                                                AspectRatio(
+                                                  aspectRatio: 1.5,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      (productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productSellPrice
+                                                                      .toString() !=
+                                                                  "" &&
+                                                              productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productSellPrice
+                                                                      .toString() !=
+                                                                  "0.00")
+                                                          ? Text(
+                                                              productDetailsViewModel
+                                                                  .similarProductlist[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString(),
+                                                              style:
+                                                                  textStyleForMainPrice,
+                                                              maxLines: 1,
+                                                            )
+                                                          : Text(
+                                                              productDetailsViewModel
+                                                                  .similarProductlist[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
+                                                              style:
+                                                                  textStyleForMainPrice,
+                                                              maxLines: 1),
+                                                      (productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productSellPrice
+                                                                      .toString() ==
+                                                                  "" ||
+                                                              productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productSellPrice
+                                                                      .toString() ==
+                                                                  "0.00")
+                                                          ? Text("",
+                                                              style:
+                                                                  textStyleForCutPrice,
+                                                              maxLines: 1)
+                                                          : Text(
+                                                              productDetailsViewModel
+                                                                  .similarProductlist[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
+                                                              style:
+                                                                  textStyleForCutPrice,
+                                                              maxLines: 1)
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ),
-                      ],
+                                        Container(
+                                          color: Colors.transparent,
+                                          child: AspectRatio(
+                                            aspectRatio: 5,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    productDetailsViewModel
+                                                            .similarProductlist[
+                                                                index]
+                                                            .colorList
+                                                            ?.length ??
+                                                        0,
+                                                itemBuilder: (context, index1) {
+                                                  return Icon(
+                                                    Icons.circle,
+                                                    size: 35,
+                                                    color: hexToColor(
+                                                        productDetailsViewModel
+                                                            .similarProductlist[
+                                                                index]
+                                                            .colorList![index1]
+                                                            .code
+                                                            .toString()),
+                                                  );
+                                                }),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
 
                   SizedBox(height: 15),
 
                   Container(
                     padding: EdgeInsets.all(10),
                     child: SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                          child: TextButton(
-                              onPressed: () {
-                                debugPrint("Login tapped");
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor:
-                                    pinkcolor, // Button background color
-                                foregroundColor: Colors.white, // Text color
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      5.0), // Rounded corners
-                                ),
-                              ),
-                              child: Text("Add To Cart")),
-                        ),
+                      height: 50,
+                      width: double.infinity,
+                      child: TextButton(
+                          onPressed: () async {
+                            if (productDetailsViewModel.checkValidation() ==
+                                "success") {
+                              NormalModel? response =
+                                  await productDetailsViewModel.addToCartApi();
+                              if (response != null) {
+                                if (response.responseCode == 1) {
+                                  setState(() {
+                                    Fluttertoast.showToast(
+                                        msg: response.responseText.toString());
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: response.responseText ?? "");
+                                }
+                              } else {
+                                print("Login failed");
+                              }
+                            } else {
+                              setState(() {
+                                Fluttertoast.showToast(
+                                    msg: productDetailsViewModel
+                                        .checkValidation());
+                              });
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                pinkcolor, // Button background color
+                            foregroundColor: Colors.white, // Text color
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                            ),
+                          ),
+                          child: Text("Add To Cart")),
+                    ),
                   ),
                 ],
               ),
@@ -723,6 +1101,54 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               )),
         ],
       )),
+    );
+  }
+}
+
+class RatingSlideBar extends StatelessWidget {
+  final String ratingLabel;
+  final double progressValue;
+  final int index;
+
+  const RatingSlideBar({
+    Key? key,
+    required this.ratingLabel,
+    required this.progressValue,
+    required this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 5),
+      child: Row(
+        children: [
+          SizedBox(width: 5),
+          Text(
+            ratingLabel,
+            style: textStyleForCategorytName,
+          ),
+          SizedBox(width: 5),
+          Icon(Icons.star, size: 20, color: Colors.amber),
+          SizedBox(width: 5),
+          Expanded(
+            child: Container(
+              height: 5,
+              child: LinearProgressIndicator(
+                value: progressValue / 5, // Dynamic progress value
+                color: Colors.amber,
+                backgroundColor: Colors.grey[200],
+              ),
+            ),
+          ),
+          SizedBox(width: 10),
+          Text(
+            "$index",
+            style: textStyleForCategorytName,
+          ),
+          SizedBox(width: 5),
+        ],
+      ),
     );
   }
 }

@@ -26,7 +26,7 @@ class LoginViewModel extends ChangeNotifier {
     String str = "";
     if (_email.isEmpty) {
       str = "Please enter your email.";
-    } else if (!isValidEmail(_email)) {
+    } else if (!Helper.isValidEmail(_email)) {
       str = "Please enter your valid email.";
     } else if (_password == "") {
       str = "Please enter your password.";
@@ -36,12 +36,7 @@ class LoginViewModel extends ChangeNotifier {
     return str;
   }
 
-  bool isValidEmail(String email) {
-    // Regular expression for email validation
-    String pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-    RegExp regex = RegExp(pattern);
-    return regex.hasMatch(email);
-  }
+ 
 
   Future<LoginModel?> loginApiCall() async {
     print('_email: $_email');
@@ -62,6 +57,7 @@ class LoginViewModel extends ChangeNotifier {
         if (loginModel.responseCode == 1){
           var share = await SharedPreferences.getInstance();
           share.setBool("isLoggedIn", true);
+          share.setString("userID",loginModel.responseData?.userId ?? "");
           print("isLoggedIn");
         }
         

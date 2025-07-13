@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Product%20Details/product_details.dart';
+import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 
 class HomeViewModel extends ChangeNotifier {
   HomeModel homeModel = HomeModel();
@@ -13,10 +17,34 @@ class HomeViewModel extends ChangeNotifier {
 
   List<BannerClass> allBanner = [];
 
+
+    void navigateToProductDetails(String ProductID,BuildContext context) async {    
+
+    Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductDetailsView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
+
+
+
   Future<HomeModel?> homeApiCall() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
     try {
       final response = await ApiServices().postApiCall(
-          {"userId": "1", "deviceToken": "", "deviceType": "I"},
+          {"userId": userID, "deviceToken": "", "deviceType": "I"},
           ApiConstant.homeUrl);
 
       print("Response Type: ${response.runtimeType}");
@@ -27,7 +55,7 @@ class HomeViewModel extends ChangeNotifier {
       allBanner = homeModel.responseData?.normalBanner ?? [];
       mostWanted = homeModel.responseData?.mostWanted ?? [];
       backInaStack = homeModel.responseData?.backInStock ?? [];
-
+     
       print("allBanner: ${newArrival}");
       notifyListeners();
       return HomeModel();
@@ -39,11 +67,13 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<NormalModel?> addRemoveWishlistApiCall(String productID) async {
+     final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
     try {
       final response = await ApiServices().postApiCall(
-          {"userId": "1", "productId": productID}, ApiConstant.addremovewishlistUrl);
+          {"userId": userID, "productId": productID}, ApiConstant.addremovewishlistUrl);
+          
           print("Response : ${response.runtimeType}");
-
           var normalData = normalModelFromJson(response);
           print(normalData.responseText);
          

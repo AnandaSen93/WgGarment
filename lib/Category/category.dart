@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Category/category_view_model.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
-import 'package:wg_garment/Product%20List/product_list.dart';
 
 class CategoryView extends StatefulWidget {
   const CategoryView({super.key});
@@ -107,12 +107,9 @@ class _CategoryState extends State<CategoryView> {
                 itemBuilder: (context, index1){
                 return GestureDetector(
                   onTap: (){
-                    Fluttertoast.showToast(msg: categoryViewModel.subCategory_list[index1].subcategoryName.toString());
-                     Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductListView()));
+                    Fluttertoast.showToast(msg: categoryViewModel.subCategory_list[index1].subcategoryId.toString());
+                    categoryViewModel.selectedSubCatID = categoryViewModel.subCategory_list[index1].subcategoryId.toString();
+                    categoryViewModel.navigateToProductListing(context);
                   },
                   child: Column(
                     children:[ Container(
@@ -127,7 +124,14 @@ class _CategoryState extends State<CategoryView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(width: 10),
-                            Icon(Icons.deblur),
+                            CustomNetworkImage(
+                             imageUrl: categoryViewModel.subCategory_list[index1].subcategoryImage.toString(),
+                        height: 30,
+                        width: 30,
+                        fit: BoxFit.fill,
+                        ),
+                            
+                            //Icon(Icons.deblur),
                             SizedBox(width: 10),
                             Text(
                               categoryViewModel.subCategory_list[index1].subcategoryName.toString(),

@@ -11,7 +11,7 @@ const textStyleForTextField = TextStyle(
 
 const textStyleForHomePageHeading = TextStyle(
                             fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
-                            fontSize: 37,
+                            fontSize: 30,
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.none);
@@ -62,7 +62,7 @@ const textStyleForCategorytName = TextStyle(
 
 const textStyleForCategorytName2 = TextStyle(
                             fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
-                            fontSize: 17,
+                            fontSize: 16,
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.none);
@@ -113,6 +113,38 @@ const textstyleSmall = TextStyle(
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.none
 );
+
+const textStyleForSelected = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 15,
+                           // backgroundColor: Colors.black,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.none
+                            );
+const textStyleForDeSelected = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 15,
+                            //backgroundColor: Colors.white,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.none
+                            );
+
+const textStyleCounter = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.none);
+
+const textStyleForredText = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 16,
+                            color: pinkcolor,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.none);
+
 
 
 

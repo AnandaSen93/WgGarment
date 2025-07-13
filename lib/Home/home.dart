@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
-import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,17 +16,35 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  
   bool _isInitialized = false;
-
 
   @override
   void initState() {
     super.initState();
-     loadData();
+
+    //  lodder();
+
+    loadData();
   }
 
- 
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing when tapping outside
+      builder: (context) {
+        return AlertDialog(
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 20),
+              Text("Loading..."),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -44,13 +62,11 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-   Future<void> loadData() async {
-  final prefs = await SharedPreferences.getInstance();
-
- 
-  bool? isLoggedIn = prefs.getBool('isLoggedIn');
-  print('Is Logged In: $isLoggedIn');
-}
+  Future<void> loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool? isLoggedIn = prefs.getBool('isLoggedIn');
+    print('Is Logged In: $isLoggedIn');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +118,7 @@ class _HomeViewState extends State<HomeView> {
                 color: Colors.transparent,
                 child: (homeViewModel.topbanner.length != 0)
                     ? ImageSlideshow(
-                        indicatorColor: Colors.blue,
+                        indicatorColor: pinkcolor,
                         onPageChanged: (value) {},
                         autoPlayInterval: 3000,
                         isLoop: true,
@@ -111,8 +127,8 @@ class _HomeViewState extends State<HomeView> {
                                 ?.map((imageUrl) {
                               return ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  imageUrl.image
+                                child: CustomNetworkImage(
+                                  imageUrl: imageUrl.image
                                       .toString(), // Convert String to Widget
                                   fit: BoxFit.cover,
                                   width: double.infinity,
@@ -124,7 +140,7 @@ class _HomeViewState extends State<HomeView> {
                     : Container(
                         color: Colors.grey[300],
                         child: Center(
-                          child: Text("No images available"),
+                          child: Text(""),
                         ),
                       ),
               ),
@@ -166,8 +182,8 @@ class _HomeViewState extends State<HomeView> {
                                 color: Colors.transparent,
                                 child: Column(
                                   children: [
-                                    Image.network(
-                                      homeViewModel
+                                    CustomNetworkImage(
+                                      imageUrl: homeViewModel
                                           .topCategory[index].categoryImage
                                           .toString(),
                                       height: 120,
@@ -216,7 +232,8 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 10),
                     Container(
                       color: Colors.transparent,
-                      height: ((((screenWidth - 30) / 2) * 2.06) * (homeViewModel.newArrival.length/2).ceil()), 
+                      height: ((((screenWidth - 30) / 2) * 2.06) *
+                          (homeViewModel.newArrival.length / 2).ceil()),
                       child: GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: homeViewModel.newArrival.length,
@@ -230,11 +247,10 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                                homeViewModel.navigateToProductDetails(
+                                    homeViewModel.newArrival[index].productId
+                                        .toString(),
+                                    context);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -245,8 +261,8 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(
-                                            homeViewModel
+                                          CustomNetworkImage(
+                                            imageUrl: homeViewModel
                                                 .newArrival[index].productImage
                                                 .toString(),
                                             height: double.infinity,
@@ -269,8 +285,12 @@ class _HomeViewState extends State<HomeView> {
                                                 // Action when pressed
                                                 print("hello");
 
-                                                homeViewModel.addRemoveWishlistApiCall(homeViewModel.newArrival[index].productId.toString());
-                                                
+                                                homeViewModel
+                                                    .addRemoveWishlistApiCall(
+                                                        homeViewModel
+                                                            .newArrival[index]
+                                                            .productId
+                                                            .toString());
                                               },
                                             ),
                                           )
@@ -299,39 +319,58 @@ class _HomeViewState extends State<HomeView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   (homeViewModel
-                                                              .newArrival[index]
-                                                              .productSellPrice
-                                                              .toString() !=
-                                                          "")
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "" &&
+                                                          homeViewModel
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "0.00")
                                                       ? Text(
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productSellPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1,)
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1,
+                                                        )
                                                       : Text(
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1),
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1),
                                                   (homeViewModel
-                                                              .newArrival[index]
-                                                              .productSellPrice
-                                                              .toString() ==
-                                                          "")
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() ==
+                                                              "" ||
+                                                          homeViewModel
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() ==
+                                                              "0.00")
                                                       ? Text("",
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1)
                                                       : Text(
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1)
                                                 ],
                                               ),
                                             )
@@ -349,15 +388,39 @@ class _HomeViewState extends State<HomeView> {
                                                 .newArrival[index]
                                                 .colorList
                                                 ?.length,
-                                            itemBuilder: (context, index2) {
-                                              return Icon(
-                                                Icons.circle,
-                                                size: 35,
-                                                color: hexToColor(homeViewModel
-                                                    .newArrival[index]
-                                                    .colorList![index2]
-                                                    .code
-                                                    .toString()),
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5),
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(1),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape
+                                                          .circle, // Ensures circular border
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .black54, // Border color for selection
+                                                          width:
+                                                              1.0 // Border width when selected
+                                                          ),
+                                                    ),
+                                                    child: FittedBox(
+                                                      child: Icon(
+                                                        Icons.circle,
+                                                        color: hexToColor(
+                                                            homeViewModel
+                                                                .newArrival[
+                                                                    index]
+                                                                .colorList![
+                                                                    index1]
+                                                                .code
+                                                                .toString()),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -381,8 +444,8 @@ class _HomeViewState extends State<HomeView> {
                   ? Container(
                       height: 200,
                       color: Colors.red,
-                      child: Image.network(
-                        homeViewModel.allBanner[0].image.toString(),
+                      child: CustomNetworkImage(
+                        imageUrl: homeViewModel.allBanner[0].image.toString(),
                         height: double.infinity,
                         width: double.infinity,
                         fit: BoxFit.fill,
@@ -421,11 +484,10 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                                homeViewModel.navigateToProductDetails(
+                                    homeViewModel.mostWanted[index].productId
+                                        .toString(),
+                                    context);
                               },
                               child: Container(
                                 padding: EdgeInsets.only(right: 8),
@@ -439,20 +501,21 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(homeViewModel
-                                              .mostWanted[index].productImage
-                                              .toString(),
-                                              height: double.infinity,
-                                              width: double.infinity,
-                                              fit: BoxFit.fill,
-                                              ),
+                                          CustomNetworkImage(
+                                            imageUrl: homeViewModel
+                                                .mostWanted[index].productImage
+                                                .toString(),
+                                            height: double.infinity,
+                                            width: double.infinity,
+                                            fit: BoxFit.fill,
+                                          ),
                                           Positioned(
                                             bottom: 0,
                                             right: 0,
                                             child: IconButton(
                                               icon: Image.asset(
                                                 (homeViewModel.mostWanted[index]
-                                                            .isWishlist ==
+                                                            .isWishlist !=
                                                         "1")
                                                     ? "assets/images/dislike.png"
                                                     : "assets/images/like.png", // Replace with your image path
@@ -461,7 +524,12 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               onPressed: () {
                                                 // Action when pressed
-                                                  homeViewModel.addRemoveWishlistApiCall(homeViewModel.mostWanted[index].productId.toString());
+                                                homeViewModel
+                                                    .addRemoveWishlistApiCall(
+                                                        homeViewModel
+                                                            .mostWanted[index]
+                                                            .productId
+                                                            .toString());
                                               },
                                             ),
                                           )
@@ -489,39 +557,62 @@ class _HomeViewState extends State<HomeView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   (homeViewModel
-                                                              .mostWanted[index]
-                                                              .productSellPrice
-                                                              .toString() !=
-                                                          "")
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "" &&
+                                                          homeViewModel
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "0.00")
                                                       ? Text(
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productSellPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1,)
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1,
+                                                        )
                                                       : Text(
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1,),
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1,
+                                                        ),
                                                   (homeViewModel
-                                                              .mostWanted[index]
-                                                              .productSellPrice
-                                                              .toString() ==
-                                                          "")
-                                                      ? Text("",
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() ==
+                                                              "" ||
+                                                          homeViewModel
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "0.00")
+                                                      ? Text(
+                                                          "",
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1,)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1,
+                                                        )
                                                       : Text(
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1,)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1,
+                                                        )
                                                 ],
                                               ),
                                             )
@@ -539,15 +630,39 @@ class _HomeViewState extends State<HomeView> {
                                                 .mostWanted[index]
                                                 .colorList
                                                 ?.length,
-                                            itemBuilder: (context, index2) {
-                                              return Icon(
-                                                Icons.circle,
-                                                size: 35,
-                                                color: hexToColor(homeViewModel
-                                                    .mostWanted[index]
-                                                    .colorList![index2]
-                                                    .code
-                                                    .toString()),
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5),
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(1),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape
+                                                          .circle, // Ensures circular border
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .black54, // Border color for selection
+                                                          width:
+                                                              1.0 // Border width when selected
+                                                          ),
+                                                    ),
+                                                    child: FittedBox(
+                                                      child: Icon(
+                                                        Icons.circle,
+                                                        color: hexToColor(
+                                                            homeViewModel
+                                                                .mostWanted[
+                                                                    index]
+                                                                .colorList![
+                                                                    index1]
+                                                                .code
+                                                                .toString()),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -569,8 +684,8 @@ class _HomeViewState extends State<HomeView> {
                   ? Container(
                       height: 200,
                       color: Colors.red,
-                      child: Image.network(
-                        homeViewModel.allBanner[1].image.toString(),
+                      child: CustomNetworkImage(
+                        imageUrl: homeViewModel.allBanner[1].image.toString(),
                         height: double.infinity,
                         width: double.infinity,
                         fit: BoxFit.fill,
@@ -602,7 +717,8 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 10),
                     Container(
                       color: Colors.transparent,
-                      height: ((((screenWidth - 30) / 2) * 2.06) * (homeViewModel.backInaStack.length/2).ceil()),
+                      height: ((((screenWidth - 30) / 2) * 2.06) *
+                          (homeViewModel.backInaStack.length / 2).ceil()),
                       child: GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: homeViewModel.backInaStack.length,
@@ -616,11 +732,10 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsView()));
+                                homeViewModel.navigateToProductDetails(
+                                    homeViewModel.backInaStack[index].productId
+                                        .toString(),
+                                    context);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -631,9 +746,10 @@ class _HomeViewState extends State<HomeView> {
                                       child: AspectRatio(
                                         aspectRatio: 0.65,
                                         child: Stack(children: [
-                                          Image.network(
-                                            homeViewModel
-                                                .backInaStack[index].productImage
+                                          CustomNetworkImage(
+                                            imageUrl: homeViewModel
+                                                .backInaStack[index]
+                                                .productImage
                                                 .toString(),
                                             height: double.infinity,
                                             fit: BoxFit.fill,
@@ -643,7 +759,8 @@ class _HomeViewState extends State<HomeView> {
                                             right: 0,
                                             child: IconButton(
                                               icon: Image.asset(
-                                                (homeViewModel.backInaStack[index]
+                                                (homeViewModel
+                                                            .backInaStack[index]
                                                             .isWishlist ==
                                                         "0")
                                                     ? "assets/images/dislike.png"
@@ -653,7 +770,12 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               onPressed: () {
                                                 // Action when pressed
-                                                   homeViewModel.addRemoveWishlistApiCall(homeViewModel.backInaStack[index].productId.toString());
+                                                homeViewModel
+                                                    .addRemoveWishlistApiCall(
+                                                        homeViewModel
+                                                            .backInaStack[index]
+                                                            .productId
+                                                            .toString());
                                               },
                                             ),
                                           )
@@ -668,7 +790,8 @@ class _HomeViewState extends State<HomeView> {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                homeViewModel.backInaStack[index]
+                                                homeViewModel
+                                                    .backInaStack[index]
                                                     .productName
                                                     .toString(),
                                                 maxLines: 2,
@@ -682,39 +805,61 @@ class _HomeViewState extends State<HomeView> {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   (homeViewModel
-                                                              .backInaStack[index]
-                                                              .productSellPrice
-                                                              .toString() !=
-                                                          "")
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "" &&
+                                                          homeViewModel
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "")
                                                       ? Text(
                                                           homeViewModel
-                                                              .backInaStack[index]
+                                                              .backInaStack[
+                                                                  index]
                                                               .productSellPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1,)
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1,
+                                                        )
                                                       : Text(
                                                           homeViewModel
-                                                              .backInaStack[index]
+                                                              .backInaStack[
+                                                                  index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForMainPrice,maxLines: 1),
+                                                              textStyleForMainPrice,
+                                                          maxLines: 1),
                                                   (homeViewModel
-                                                              .backInaStack[index]
-                                                              .productSellPrice
-                                                              .toString() ==
-                                                          "")
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() ==
+                                                              "" ||
+                                                          homeViewModel
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString() !=
+                                                              "0.00")
                                                       ? Text("",
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1)
                                                       : Text(
                                                           homeViewModel
-                                                              .backInaStack[index]
+                                                              .backInaStack[
+                                                                  index]
                                                               .productOriginalPrice
                                                               .toString(),
                                                           style:
-                                                              textStyleForCutPrice,maxLines: 1)
+                                                              textStyleForCutPrice,
+                                                          maxLines: 1)
                                                 ],
                                               ),
                                             )
@@ -732,15 +877,39 @@ class _HomeViewState extends State<HomeView> {
                                                 .backInaStack[index]
                                                 .colorList
                                                 ?.length,
-                                            itemBuilder: (context, index2) {
-                                              return Icon(
-                                                Icons.circle,
-                                                size: 35,
-                                                color: hexToColor(homeViewModel
-                                                    .backInaStack[index]
-                                                    .colorList![index2]
-                                                    .code
-                                                    .toString()),
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5),
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(1),
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape
+                                                          .circle, // Ensures circular border
+                                                      border: Border.all(
+                                                          color: Colors
+                                                              .black54, // Border color for selection
+                                                          width:
+                                                              1.0 // Border width when selected
+                                                          ),
+                                                    ),
+                                                    child: FittedBox(
+                                                      child: Icon(
+                                                        Icons.circle,
+                                                        color: hexToColor(
+                                                            homeViewModel
+                                                                .backInaStack[
+                                                                    index]
+                                                                .colorList![
+                                                                    index1]
+                                                                .code
+                                                                .toString()),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -762,5 +931,3 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
-
