@@ -6,6 +6,7 @@ import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Change%20Password/changepassword.dart';
 import 'package:wg_garment/Edit%20Profile/editprofile.dart';
 import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/My%20Order/myorderview.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
 import 'package:wg_garment/Slug%20Page/slugview.dart';
@@ -13,9 +14,8 @@ import 'package:wg_garment/Slug%20Page/slugview.dart';
 class ProfileViewModel extends ChangeNotifier {
   UserData? profileDta;
 
-
-     void navigateToEditProfile(BuildContext context) async {
-   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+  void navigateToEditProfile(BuildContext context) async {
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
@@ -32,8 +32,26 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
 
-   void navigateToMyOrder(BuildContext context) async {
-   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+   void navigateToLoginPage(BuildContext context) async {
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+    final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('isLoggedIn');
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
+
+  void navigateToMyOrder(BuildContext context) async {
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
@@ -50,7 +68,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void navigateToAddressList(BuildContext context) async {
-   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
@@ -67,7 +85,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void navigateToChangePassword(BuildContext context) async {
-   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
@@ -83,9 +101,8 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-
-    void navigateToSlugPage(BuildContext context) async {
-   // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+  void navigateToSlugPage(BuildContext context) async {
+    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
@@ -101,34 +118,80 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<UserModel?> profileApiCall() async {
-       final prefs = await SharedPreferences.getInstance();
+  Future<NormalModel?> deleteYourAccountApi() async {
+    final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");
     try {
-      final response = await ApiServices()
-          .postApiCall({"userId": userID}, ApiConstant.profiledetailsUrl);
+      final response = await ApiServices().postApiCall({
+        "userId": userID,
+        "deviceToken": "",
+        "deviceType": "I",
+      }, ApiConstant.profiledetailsUrl);
       print("Response Type: ${response.runtimeType}");
-      final profileApiData = userModelFromJson(response);
-      profileDta = profileApiData.responseData;
+      final _responseData = normalModelFromJson(response);
+      
+
+     
 
       notifyListeners();
-      return profileApiData;
+      return _responseData;
     } catch (error) {
       print("Error parse: $error");
       notifyListeners();
       return null;
     }
   }
-   Future<NormalModel?> updatenewslatterApi(String productFeed,String newsLetter ) async {
-      final prefs = await SharedPreferences.getInstance();
+
+  Future<NormalModel?> logOutApi() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+    try {
+      final response = await ApiServices().postApiCall({
+        "userId": userID,
+        "deviceToken": "",
+        "deviceType": "I",
+      }, ApiConstant.logout);
+      print("Response Type: ${response.runtimeType}");
+      final _responseData = normalModelFromJson(response);
+
+
+      notifyListeners();
+      return _responseData;
+    } catch (error) {
+      print("Error parse: $error");
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<UserModel?> profileApiCall() async {
+    final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");
     try {
       final response = await ApiServices()
-          .postApiCall({
-            "userId": userID,
-            "productFeed":productFeed,
-            "newsLetter":newsLetter
-            }, ApiConstant.updatenewslatter);
+          .postApiCall({"userId": userID}, ApiConstant.profiledetailsUrl);
+      print("Response Type: ${response.runtimeType}");
+      final _responseData = userModelFromJson(response);
+      profileDta = _responseData.responseData;
+      notifyListeners();
+      return _responseData;
+    } catch (error) {
+      print("Error parse: $error");
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<NormalModel?> updatenewslatterApi(
+      String productFeed, String newsLetter) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+    try {
+      final response = await ApiServices().postApiCall({
+        "userId": userID,
+        "productFeed": productFeed,
+        "newsLetter": newsLetter
+      }, ApiConstant.updatenewslatter);
       print("Response Type: ${response.runtimeType}");
       final responseData = normalModelFromJson(response);
 
@@ -142,7 +205,4 @@ class ProfileViewModel extends ChangeNotifier {
       return null;
     }
   }
-
-
-
 }

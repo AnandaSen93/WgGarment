@@ -195,7 +195,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                             maxLines:
                                                 3, // Limit lines (optional)
                                             overflow: TextOverflow.ellipsis,
-                                            style: textStyleForredText),
+                                            style: textStyleForMainProductDescription),
                                   )
                                 ],
                               ),
@@ -299,7 +299,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                 ""),
                                         maxLines: 3, // Limit lines (optional)
                                         overflow: TextOverflow.ellipsis,
-                                        style: textStyleForredText),
+                                        style: textStyleForMainProductDescription),
                                   )
                                 ],
                               ),

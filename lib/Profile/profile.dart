@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Profile/profile_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
@@ -241,13 +242,13 @@ class _ProfileViewState extends State<ProfileView> {
                                 onPressed: () async {
                                   print("Yes");
                                   Navigator.pop(context);
-                                  final prefs =
-                                      await SharedPreferences.getInstance();
-                                  await prefs.remove('isLoggedIn');
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginView()));
+
+                                  NormalModel? _data = await profileViewModel.logOutApi();
+                                  if (_data != null){
+                                    if (_data.responseCode == "1"){
+                                      profileViewModel.navigateToLoginPage(context);
+                                    }
+                                  }
 
                                   // Close the alert
                                 },
@@ -268,10 +269,51 @@ class _ProfileViewState extends State<ProfileView> {
                             ],
                           ).show();
                         } else if (list[index] == "Delete Account") {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignupView()));
+
+                          Alert(
+                            context: context,
+                            type: AlertType
+                                .warning, // You can change the type (success, error, info, etc.)
+                            title: "Delete Account",
+                            desc: "Are you sure you want to delete your account?",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () async {
+                                  print("Yes");
+                                  Navigator.pop(context);
+                                     NormalModel? _data = await profileViewModel.deleteYourAccountApi();
+                                  if (_data != null){
+                                    if (_data.responseCode == "1"){
+                                      profileViewModel.navigateToLoginPage(context);
+                                    }
+                                  }
+                              
+
+                                  // Close the alert
+                                },
+                                color: Colors.green,
+                              ),
+                              DialogButton(
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  print("No");
+                                  Navigator.pop(context); // Close the alert
+                                },
+                                color: Colors.red,
+                              )
+                            ],
+                          ).show();
+
+
                         } else if (list[index] == "My Address") {
                           profileViewModel.navigateToAddressList(context);
                         } else if (list[index] == "Terms And Aonditions" ) {
@@ -311,11 +353,12 @@ class _ProfileViewState extends State<ProfileView> {
                                 children: [
                                    Text(
                                 list[index],
-                                style: textStyleForTextField,
+                                style: textStyleForCategorytName2,
                               ),
+                              SizedBox(height: 5,),
                                Text(
                                 list1[index],
-                                style: textstyleSmall,
+                                style: textStyleForMainProductDescription,
                               ),
                                 ],
                               ),

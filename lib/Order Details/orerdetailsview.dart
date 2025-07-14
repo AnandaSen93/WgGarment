@@ -81,23 +81,11 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                       ),
                       child: Row(
                         children: [
-                          Row(
-                            children: [
-                              Text('Order Id: '),
-                              Text(
-                                  orderdetailsViewModel.ordreDetails?.orderId ??
-                                      ""),
-                            ],
-                          ),
+                          Text('Order Id: ${orderdetailsViewModel.ordreDetails?.orderId ?? ""}',
+                              style:textStyleForMainProductDescription,),
                           Spacer(),
-                          Row(
-                            children: [
-                              Text('Order On: '),
-                              Text(orderdetailsViewModel
-                                      .ordreDetails?.orderDateTime ??
-                                  ""),
-                            ],
-                          )
+                          Text('Order On: ${orderdetailsViewModel.ordreDetails?.orderDateTime ??""}',
+                          style:textStyleForMainProductDescription,),
                         ],
                       ),
                     ),
@@ -435,27 +423,38 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Sub total"),
+                              Text("Sub total",
+                              style: textStyleForProductName,
+                              ),
                               Spacer(),
                               Text(
-                                "\$" + (orderdetailsViewModel.ordreDetails?.totalMrp ?? "")
-                              )
+                                "\$ ${orderdetailsViewModel.ordreDetails?.totalMrp ?? ""}",
+                                style:textStyleForMainProductDescription,
+                                )
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Delivert Charge"),
+                              Text("Delivert Charge",
+                              style: textStyleForProductName,
+                              ),
                               Spacer(),
-                              Text("\$" + (orderdetailsViewModel.ordreDetails?.deliveryCharge ?? "")),
+                              Text("\$ ${orderdetailsViewModel.ordreDetails?.deliveryCharge ?? ""}",
+                              style:textStyleForMainProductDescription,
+                              ),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Discount"),
+                              Text("Discount",
+                              style: textStyleForProductName,
+                              ),
                               Spacer(),
-                              Text("\$" + (orderdetailsViewModel.ordreDetails?.discountMrp ?? "")),
+                              Text("\$ ${orderdetailsViewModel.ordreDetails?.discountMrp ?? ""}",
+                              style:textStyleForMainProductDescription,
+                              ),
                             ],
                           ),
                           SizedBox(height: 5),

@@ -20,6 +20,8 @@ class ApiConstant {
   static const String updatenewslatter = "updatenewslatter";
   static const String editprofile = "editprofile";
   static const String editemail = "editemail";
+  static const String logout = "logout";
+  static const String deleteaccount = "deleteaccount";
 
   static const String addToCartUrl = "addtocart";
   static const String countUrl = "getcount";

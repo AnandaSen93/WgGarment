@@ -198,13 +198,11 @@ class _MyOrderListViewState extends State<MyOrderListView> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  "Payment Type: ",
+                                                  "Pay Using: ",
                                                   style:
                                                       textStyleForMainProductName,
                                                 ),
-                                                Text(
-                                                  "\$" +
-                                                      (myorderViewModel
+                                                Text((myorderViewModel
                                                           .orderList[index]
                                                           .paymentMethod
                                                           .toString()),

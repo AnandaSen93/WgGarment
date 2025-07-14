@@ -172,7 +172,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                                       onPressed: () async {
                                         print("Yes");
                                         Navigator.pop(context);
-                                        // pickImage(ImageSource.camera);
+                                        pickImage(ImageSource.camera);
                                       },
                                       color: Colors.white,
                                     ),
@@ -184,7 +184,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                                       ),
                                       onPressed: () {
                                         print("No");
-                                        //pickImage(ImageSource.gallery);
+                                        pickImage(ImageSource.gallery);
                                         Navigator.pop(
                                             context); // Close the alert
                                       },
@@ -365,6 +365,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                                   children: [
                                     Expanded(
                                       child: Container(
+                                        height: 50,
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             color: Colors
@@ -465,6 +466,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                                   children: [
                                     Expanded(
                                       child: Container(
+                                        height: 50,
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             color: Colors
