@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -54,16 +53,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     super.dispose();
   }
 
-   
-
   @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isInitialized) {
-       _viewModel = Provider.of<ProductDetailsViewModel>(context, listen: false);
+      _viewModel = Provider.of<ProductDetailsViewModel>(context, listen: false);
 
       final response = await _viewModel.productDetailsApi();
-       if (response != null) {
+      if (response != null) {
         if (response.responseCode != 1) {
           Fluttertoast.showToast(msg: response.responseText ?? "");
         }
@@ -96,7 +93,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    final productDetailsViewModel = Provider.of<ProductDetailsViewModel>(context);
+    final productDetailsViewModel =
+        Provider.of<ProductDetailsViewModel>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -159,7 +157,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         right: 10,
                         child: IconButton(
                           onPressed: () {
-                            productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.productId);
+                            productDetailsViewModel.addRemoveWishlistApiCall(
+                                productDetailsViewModel.productId);
                           },
                           icon: Image.asset(
                             (productDetailsViewModel
@@ -257,6 +256,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         RatingBar.readOnly(
                           filledIcon: Icons.star,
                           emptyIcon: Icons.star_border,
+                          emptyColor: pinkcolor,
+                          filledColor: pinkcolor,
                           initialRating: ((productDetailsViewModel
                                           .productDetailsData?.productRating
                                           .toString() ??
@@ -358,45 +359,44 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       productDetailsViewModel.colorList.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () {
-                                        productDetailsViewModel
-                                            .updateSelectedColorId(
+                                        onTap: () {
+                                          productDetailsViewModel
+                                              .updateSelectedColorId(
+                                                  productDetailsViewModel
+                                                      .colorList[index].valueId
+                                                      .toString());
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape
+                                                .circle, // Ensures circular border
+                                            border: Border.all(
+                                              color: (productDetailsViewModel
+                                                          .selectedColorId ==
+                                                      productDetailsViewModel
+                                                          .colorList[index]
+                                                          .valueId)
+                                                  ? Colors.black
+                                                  : Colors
+                                                      .transparent, // Border color for selection
+                                              width: (productDetailsViewModel
+                                                          .selectedColorId ==
+                                                      productDetailsViewModel
+                                                          .colorList[index]
+                                                          .valueId)
+                                                  ? 1.0
+                                                  : 0.0, // Border width when selected
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.circle,
+                                            size: 35,
+                                            color: hexToColor(
                                                 productDetailsViewModel
-                                                    .colorList[index].valueId
-                                                    .toString());
-                                      },
-                                      child: Container(
-                                        decoration:BoxDecoration(
-                                        shape: BoxShape
-                                            .circle, // Ensures circular border
-                                        border: Border.all(
-                                          color:(productDetailsViewModel
-                                                          .selectedColorId ==
-                                                      productDetailsViewModel
-                                                          .colorList[index]
-                                                          .valueId)
-                                              ? Colors.black
-                                              : Colors
-                                                  .transparent, // Border color for selection
-                                          width: (productDetailsViewModel
-                                                          .selectedColorId ==
-                                                      productDetailsViewModel
-                                                          .colorList[index]
-                                                          .valueId)
-                                              ? 1.0
-                                              : 0.0, // Border width when selected
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        Icons.circle,
-                                        size: 35,
-                                        color: hexToColor(
-                                            productDetailsViewModel
-                                                .colorList[index].code
-                                                .toString()),
-                                      ),
-                                      )
-                                    );
+                                                    .colorList[index].code
+                                                    .toString()),
+                                          ),
+                                        ));
                                   }),
                             ))
                           ],
@@ -560,6 +560,53 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
                   ),
                   SizedBox(height: 15),
+
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: TextButton(
+                          onPressed: () async {
+                            if (productDetailsViewModel.checkValidation() ==
+                                "success") {
+                              NormalModel? response =
+                                  await productDetailsViewModel.addToCartApi();
+                              if (response != null) {
+                                if (response.responseCode == 1) {
+                                  setState(() {
+                                    Fluttertoast.showToast(
+                                        msg: response.responseText.toString());
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: response.responseText ?? "");
+                                }
+                              } else {
+                                print("Login failed");
+                              }
+                            } else {
+                              setState(() {
+                                Fluttertoast.showToast(
+                                    msg: productDetailsViewModel
+                                        .checkValidation());
+                              });
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                pinkcolor, // Button background color
+                            foregroundColor: Colors.white, // Text color
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                            ),
+                          ),
+                          child: Text("Add To Cart")),
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
                     width: double.infinity,
@@ -601,7 +648,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         RatingBar.readOnly(
                                           filledIcon: Icons.star,
                                           emptyIcon: Icons.star_border,
-                                          initialRating: 4,
+                                          filledColor: pinkcolor,
+                                          emptyColor: pinkcolor,
+                                          initialRating: double.tryParse(
+                                                  productDetailsViewModel
+                                                          .productDetailsData
+                                                          ?.productRating ??
+                                                      "0") ??
+                                              0.0,
                                           maxRating: 5,
                                           size: 20,
                                         ),
@@ -683,7 +737,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        ListView.builder(
+                        ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                                height: 10); // Adds space between items
+                          },
                           shrinkWrap:
                               true, // Ensures ListView takes up space only for its children
                           physics:
@@ -697,113 +755,111 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       ?.productReviewList?.length ??
                                   0, // Number of items
                           itemBuilder: (context, index) {
-                            return AspectRatio(
-                              aspectRatio: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Colors.black26,
-                                      width: 1.0,
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.black26,
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    child: Container(
+                                      // padding: EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          shape: BoxShape.circle),
+                                      child: ClipOval(
+                                        child: Container(
+                                            height: 80,
+                                            width: 80,
+                                            child: CustomNetworkImage(
+                                              imageUrl: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.productReviewList?[
+                                                          index]
+                                                      .userImage
+                                                      .toString() ??
+                                                  "",
+                                              height: double.infinity,
+                                              width: double.infinity,
+                                            )),
+                                      ),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      AspectRatio(
-                                          aspectRatio: 0.8,
-                                          child: Container(
-                                            padding: EdgeInsets.all(15),
-                                            child: Container(
-                                              padding: EdgeInsets.all(20),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.black,
-                                                  shape: BoxShape.circle),
-                                              child: ClipOval(
-                                                child: AspectRatio(
-                                                    aspectRatio: 1,
-                                                    child: CustomNetworkImage(
-                                                        imageUrl: productDetailsViewModel
-                                                                .productDetailsData
-                                                                ?.productReviewList?[
-                                                                    index]
-                                                                .userImage
-                                                                .toString() ??
-                                                            "",
-                                                            height: double.infinity,
-                                                            width: double.infinity,
-                                                            )),
-                                              ),
-                                            ),
-                                          )),
-                                      Expanded(
-                                        child: Container(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  productDetailsViewModel
-                                                          .productDetailsData
-                                                          ?.productReviewList?[
-                                                              index]
-                                                          .userName
-                                                          .toString() ??
-                                                      "",
-                                                  style:
-                                                      textStyleForCategorytName2),
-                                              SizedBox(height: 5),
-                                              RatingBar.readOnly(
-                                                filledIcon: Icons.star,
-                                                emptyIcon: Icons.star_border,
-                                                initialRating: double.parse(
-                                                    productDetailsViewModel
-                                                            .productDetailsData
-                                                            ?.productReviewList?[
-                                                                index]
-                                                            .rating
-                                                            .toString() ??
-                                                        "0.0"),
-                                                maxRating: 5,
-                                                size: 20,
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                  productDetailsViewModel
-                                                          .productDetailsData
-                                                          ?.productReviewList?[
-                                                              index]
-                                                          .review
-                                                          .toString() ??
-                                                      "",
-                                                  style:
-                                                      textStyleForProductName),
-                                            ],
+                                  Expanded(
+                                    child: Container(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.productReviewList?[
+                                                          index]
+                                                      .userName
+                                                      .toString() ??
+                                                  "",
+                                              style:
+                                                  textStyleForCategorytName2),
+                                          SizedBox(height: 5),
+                                          RatingBar.readOnly(
+                                            filledIcon: Icons.star,
+                                            emptyIcon: Icons.star_border,
+                                            emptyColor: pinkcolor,
+                                            filledColor: pinkcolor,
+                                            initialRating: double.parse(
+                                                productDetailsViewModel
+                                                        .productDetailsData
+                                                        ?.productReviewList?[
+                                                            index]
+                                                        .rating
+                                                        .toString() ??
+                                                    "0.0"),
+                                            maxRating: 5,
+                                            size: 20,
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            padding: EdgeInsets.all(5),
+                                            child: Text(
+                                                productDetailsViewModel
+                                                        .productDetailsData
+                                                        ?.productReviewList?[
+                                                            index]
+                                                        .review
+                                                        .toString() ??
+                                                    "",
+                                                style: textStyleForProductName),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             );
                           },
                         ),
                         SizedBox(height: 10),
-                        if (productDetailsViewModel
-                                .productDetailsData?.isAlreadyBuy
-                                .toString() ==
-                            "1")
+                        // if (productDetailsViewModel
+                        //         .productDetailsData?.isAlreadyBuy
+                        //         .toString() ==
+                        //     "1")
                           SizedBox(
                             height: 50,
                             width: double.infinity,
                             child: TextButton(
                                 onPressed: () {
-                                  debugPrint("add review");
+                                  productDetailsViewModel
+                                      .navigateToReviewPage(context);
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor:
@@ -841,16 +897,17 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 "Similar Products ",
                                 style: textStyleForHomePageHeading,
                               ),
-                              Expanded(
-                                child: TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      "View All",
-                                      style: textStyleForViewAll,
-                                    )),
-                              )
+                              // Expanded(
+                              //   child: TextButton(
+                              //       onPressed: () {},
+                              //       child: Text(
+                              //         "View All",
+                              //         style: textStyleForViewAll,
+                              //       )),
+                              // )
                             ],
                           ),
+                          SizedBox(height: 10),
                           Container(
                             color: Colors.transparent,
                             height: screenWidth - 30,
@@ -872,15 +929,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             aspectRatio: 0.65,
                                             child: Stack(children: [
                                               CustomNetworkImage(
-                                                  imageUrl:
-                                                      productDetailsViewModel
-                                                          .similarProductlist[
-                                                              index]
-                                                          .productImage
-                                                          .toString(),
-                                                          height: double.infinity,
-                                                            width: double.infinity,
-                                                          ),
+                                                imageUrl:
+                                                    productDetailsViewModel
+                                                        .similarProductlist[
+                                                            index]
+                                                        .productImage
+                                                        .toString(),
+                                                height: double.infinity,
+                                                width: double.infinity,
+                                              ),
                                               Positioned(
                                                 bottom: 0,
                                                 right: 0,
@@ -900,9 +957,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                     // Action when pressed
                                                     print("hello");
 
-                                                productDetailsViewModel.addRemoveWishlistApiCall(productDetailsViewModel.similarProductlist[index]
-                                                          .productId
-                                                          .toString());
+                                                    productDetailsViewModel
+                                                        .addRemoveWishlistApiCall(
+                                                            productDetailsViewModel
+                                                                .similarProductlist[
+                                                                    index]
+                                                                .productId
+                                                                .toString());
                                                   },
                                                 ),
                                               )
@@ -1035,53 +1096,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     ),
 
                   SizedBox(height: 15),
-
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: SizedBox(
-                      height: 50,
-                      width: double.infinity,
-                      child: TextButton(
-                          onPressed: () async {
-                            if (productDetailsViewModel.checkValidation() ==
-                                "success") {
-                              NormalModel? response =
-                                  await productDetailsViewModel.addToCartApi();
-                              if (response != null) {
-                                if (response.responseCode == 1) {
-                                  setState(() {
-                                    Fluttertoast.showToast(
-                                        msg: response.responseText.toString());
-                                  });
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: response.responseText ?? "");
-                                }
-                              } else {
-                                print("Login failed");
-                              }
-                            } else {
-                              setState(() {
-                                Fluttertoast.showToast(
-                                    msg: productDetailsViewModel
-                                        .checkValidation());
-                              });
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                pinkcolor, // Button background color
-                            foregroundColor: Colors.white, // Text color
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(5.0), // Rounded corners
-                            ),
-                          ),
-                          child: Text("Add To Cart")),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -1129,14 +1143,14 @@ class RatingSlideBar extends StatelessWidget {
             style: textStyleForCategorytName,
           ),
           SizedBox(width: 5),
-          Icon(Icons.star, size: 20, color: Colors.amber),
+          Icon(Icons.star, size: 20, color: pinkcolor),
           SizedBox(width: 5),
           Expanded(
             child: Container(
               height: 5,
               child: LinearProgressIndicator(
                 value: progressValue / 5, // Dynamic progress value
-                color: Colors.amber,
+                color: pinkcolor,
                 backgroundColor: Colors.grey[200],
               ),
             ),

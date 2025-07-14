@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Product%20Details/product_details_model.dart';
 import 'package:wg_garment/Product%20List/product_list_model.dart';
+import 'package:wg_garment/Review/reviewlist.dart';
+import 'package:wg_garment/Review/reviewlist_view_model.dart';
 
 class ProductDetailsViewModel extends ChangeNotifier {
   String productId = "";
@@ -58,6 +61,26 @@ class ProductDetailsViewModel extends ChangeNotifier {
     productId = productID;
     notifyListeners(); // Notify UI to update
   }
+
+     void navigateToReviewPage(BuildContext context) async {    
+
+    Provider.of<ReviewlistViewModel>(context, listen: false).setProductID(productId);
+
+      print("Received Data:");
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReviewListView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
+
 
   String checkValidation() {
     String str = "";

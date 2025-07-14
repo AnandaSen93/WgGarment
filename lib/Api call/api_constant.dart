@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class ApiConstant {
   static const String baseUrl =
       "https://developersatwork.com/projects/f4/david_alame_live/index.php?route=appapi/";
@@ -13,6 +15,8 @@ class ApiConstant {
   static const String productllistingurl = "productllisting";
   static const String searchList = "search";
   static const String productdetailsUrl = "productdetails";
+  static const String reviewlist = "reviewlist";
+  static const String addreview = "addreview";
 
 
   static const String profiledetailsUrl = "profiledetails";

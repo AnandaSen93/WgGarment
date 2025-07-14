@@ -18,7 +18,7 @@ class ProductListView extends StatefulWidget {
 }
 
 class _ProductListViewState extends State<ProductListView> {
-  RangeValues _selectedRange = RangeValues(20, 80);
+  RangeValues _selectedRange = RangeValues(500, 5000);
   String dropdownvalue = 'Newest';
   var dropdownItems = [
     "Price Low To Hight","Price Hight To Low","Newest" 
@@ -76,8 +76,10 @@ class _ProductListViewState extends State<ProductListView> {
                   RangeSlider(
                     values: tempRange,
                     min: 0,
-                    max: 100,
-                    divisions: 10,
+                    max: 10000,
+                    divisions: 500,
+                    activeColor: pinkcolor,
+                    inactiveColor: Colors.grey,
                     labels: RangeLabels(
                       tempRange.start.round().toString(),
                       tempRange.end.round().toString(),
@@ -93,7 +95,9 @@ class _ProductListViewState extends State<ProductListView> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context), // ❌ Close without saving
-                  child: Text("Cancel"),
+                  child: Text("Cancel",
+                  style: textStyleForredText,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -102,9 +106,14 @@ class _ProductListViewState extends State<ProductListView> {
                     });
                     Navigator.pop(context);
 
+                    _viewModel.lowerPrice = _selectedRange.start.toString();
+                    _viewModel.upperPrice = _selectedRange.end.toString();
+                    _viewModel.productListApi();
+
                     
                   },
-                  child: Text("Done"),
+                  child: Text("Done",
+                  style: textStyleForredText,),
                 ),
               ],
             );
@@ -144,82 +153,82 @@ class _ProductListViewState extends State<ProductListView> {
                 ],
               ),
             ),
-            // SizedBox(height: 15),
-            // Container(
-            //   color: Colors.transparent,
-            //   height: 40,
-            //   child: Row(
-            //     children: [
-            //       SizedBox(width: 5),
-            //       GestureDetector(
-            //         onTap: _showRangeSliderDialog,
-            //         child: Container(
-            //             height: double.infinity,
-            //              width: screenWidth * 0.45,
-            //             decoration: BoxDecoration(
-            //               border: Border.all(),
-            //               borderRadius: BorderRadius.circular(5),
-            //             ),
-            //             child: Row(
-            //               children: [
-            //                 SizedBox(width: 5),
-            //                 Icon(Icons.sort),
-            //                 Spacer(),
-            //                 Text("Sort",
-            //                   style: textStyleForCategorytName,
-            //                 ),
-            //                 Spacer(),
-            //                 Icon(Icons.arrow_drop_down),
-            //               ],
-            //             )),
-            //       ),
-            //       Spacer(),
-            //       Container(
-            //           height: double.infinity,
-            //           width: screenWidth * 0.45,
-            //           decoration: BoxDecoration(
-            //             border: Border.all(),
-            //             borderRadius: BorderRadius.circular(5),
-            //           ),
-            //           padding: EdgeInsets.only(left: 10,right: 5),
-            //           child: Material(
-            //             child: DropdownButton(
-            //               isExpanded: true,
-            //               value: dropdownvalue,
-            //               items: dropdownItems.map((e) => DropdownMenuItem(
-            //               child: Text(
-            //                 e,style: textStyleForTextField,
-            //                 maxLines: 1,
-            //                 ), value:e),
-            //             ).toList(), onChanged:(value){
-            //               setState(() {
-            //                 dropdownvalue = value.toString();
-            //                 productListViewModel.sortBy = value.toString();
-            //                 productListViewModel.productListApi();
-            //               });
+            SizedBox(height: 15),
+            Container(
+              color: Colors.transparent,
+              height: 40,
+              child: Row(
+                children: [
+                  SizedBox(width: 5),
+                  GestureDetector(
+                    onTap: _showRangeSliderDialog,
+                    child: Container(
+                        height: double.infinity,
+                         width: screenWidth * 0.45,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(width: 5),
+                            Icon(Icons.sort),
+                            Spacer(),
+                            Text("Sort",
+                              style: textStyleForCategorytName,
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_drop_down),
+                          ],
+                        )),
+                  ),
+                  Spacer(),
+                  Container(
+                      height: double.infinity,
+                      width: screenWidth * 0.45,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      padding: EdgeInsets.only(left: 10,right: 5),
+                      child: Material(
+                        child: DropdownButton(
+                          isExpanded: true,
+                          value: dropdownvalue,
+                          items: dropdownItems.map((e) => DropdownMenuItem(
+                          child: Text(
+                            e,style: textStyleForTextField,
+                            maxLines: 1,
+                            ), value:e),
+                        ).toList(), onChanged:(value){
+                          setState(() {
+                            dropdownvalue = value.toString();
+                            productListViewModel.sortBy = value.toString();
+                            productListViewModel.productListApi();
+                          });
                           
-            //             }),
-            //           )
+                        }),
+                      )
                       
-            //           // Row(
-            //           //   children: [
-            //           //     SizedBox(width: 5),
-            //           //     Icon(Icons.sort),
-            //           //     Text(
-            //           //       "Filter     ",
-            //           //       style: textStyleForCategorytName,
-            //           //     ),
-            //           //     Icon(Icons.arrow_drop_down),
-            //           //   ],
-            //           // )
+                      // Row(
+                      //   children: [
+                      //     SizedBox(width: 5),
+                      //     Icon(Icons.sort),
+                      //     Text(
+                      //       "Filter     ",
+                      //       style: textStyleForCategorytName,
+                      //     ),
+                      //     Icon(Icons.arrow_drop_down),
+                      //   ],
+                      // )
                       
-            //           ),
+                      ),
 
                   
-            //       SizedBox(width: 5),
-            //     ],
-            //   ),
-            // ),
+                  SizedBox(width: 5),
+                ],
+              ),
+            ),
             SizedBox(height: 15),
             (productListViewModel.productList.length != 0) ?
             Expanded(

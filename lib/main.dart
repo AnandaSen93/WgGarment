@@ -30,6 +30,7 @@ import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 import 'package:wg_garment/Product%20List/product_list.dart';
 import 'package:wg_garment/Product%20List/product_list_view_model.dart';
 import 'package:wg_garment/Profile/profile_view_model.dart';
+import 'package:wg_garment/Review/reviewlist_view_model.dart';
 import 'package:wg_garment/Search%20View/search_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
 import 'package:wg_garment/Signup/signup_view_model.dart';
@@ -62,6 +63,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => SearchViewModel()),
         ChangeNotifierProvider(create: (context) => OrderdetailsViewModel()),
         ChangeNotifierProvider(create: (context) => EditprofileViewModel()),
+        ChangeNotifierProvider(create: (context) => ReviewlistViewModel()),
 
 
         

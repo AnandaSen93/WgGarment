@@ -152,6 +152,14 @@ const textStyleForredText = TextStyle(
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.none);
 
+const textstyleNormalBlackText = TextStyle(
+    fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.none
+);
+
 
 
 
