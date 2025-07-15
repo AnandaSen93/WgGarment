@@ -28,9 +28,20 @@ class _EditProfileViewState extends State<EditProfileView> {
     final XFile? pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      setState(() {
+      setState(() async {
         _imageFile = pickedFile;
-        _viewModel.uploadprofileImage(File(_imageFile?.path ?? ""));
+        NormalModel? response =
+            await _viewModel.uploadprofileImage(File(_imageFile?.path ?? ""));
+        if (response != null) {
+          if (response.responseCode == 1) {
+            Fluttertoast.showToast(msg: response.responseText ?? "");
+          } else {
+            Fluttertoast.showToast(msg: response.responseText ?? "");
+          }
+          _viewModel.navigateMainMenu(context);
+        } else {
+          Fluttertoast.showToast(msg: "Something went wrong");
+        }
       });
     }
   }
@@ -41,7 +52,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     if (!_isInitialized) {
       _viewModel = Provider.of<EditprofileViewModel>(context, listen: false);
 
-          _viewModel.profileApiCall();
+      _viewModel.profileApiCall();
 
       //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
       _isInitialized = true; // Ensure it's called only once
@@ -337,8 +348,10 @@ class _EditProfileViewState extends State<EditProfileView> {
                                                     "");
                                           } else {
                                             Fluttertoast.showToast(
-                                                msg: "Somethings Went Wrong");
+                                                msg: response.responseText ??
+                                                    "");
                                           }
+                                           editProfileViewModel.navigateMainMenu(context);
                                         }
                                       } else {
                                         Fluttertoast.showToast(
@@ -446,6 +459,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                                                       msg:
                                                           "Somethings Went Wrong");
                                                 }
+                                                editProfileViewModel.navigateMainMenu(context);
                                               }
                                             } else {
                                               Fluttertoast.showToast(
@@ -545,8 +559,11 @@ class _EditProfileViewState extends State<EditProfileView> {
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg:
-                                                          "Somethings Went Wrong");
+                                                          response
+                                                              .responseText ??
+                                                          "");
                                                 }
+                                                editProfileViewModel.navigateMainMenu(context);
                                               }
                                             } else {
                                               Fluttertoast.showToast(

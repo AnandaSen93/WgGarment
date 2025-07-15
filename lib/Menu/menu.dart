@@ -19,7 +19,10 @@ class MenuView extends StatefulWidget {
 }
 
 class _MenuViewState extends State<MenuView> with RouteAware{
-  int _selectedIndex = 0;
+
+
+
+  
   var pageList = [ ];
 
   late MenuViewModel _viewModel;
@@ -45,7 +48,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
   void _onItemTapped(int index) {
     fetchMenuData();
     setState(() {
-      _selectedIndex = index;
+      _viewModel.selectedIndex = index;
     });
   }
 
@@ -103,7 +106,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
               ],
             ),
           ),
-          Expanded(child: pageList[_selectedIndex]),
+          Expanded(child: pageList[menuViewModel.selectedIndex]),
           Container(
             height: 60,
             color: Colors.white,
@@ -121,14 +124,14 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                       children: [
                         Container(
                           height: 2,
-                          color: _selectedIndex == 0
+                          color: menuViewModel.selectedIndex == 0
                               ? pinkcolor
                               : Colors.transparent,
                         ),
                         Spacer(),
                         Icon(
                           Icons.home_outlined,
-                          color: _selectedIndex == 0 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 0 ? pinkcolor : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -159,14 +162,14 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                       children: [
                         Container(
                           height: 2,
-                          color: _selectedIndex == 1
+                          color: menuViewModel.selectedIndex == 1
                               ? pinkcolor
                               : Colors.transparent,
                         ),
                         Spacer(),
                         Icon(
                           Icons.category_outlined,
-                          color: _selectedIndex == 1 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 1 ? pinkcolor : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -197,14 +200,14 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                       children: [
                         Container(
                           height: 2,
-                          color: _selectedIndex == 2
+                          color: menuViewModel.selectedIndex == 2
                               ? pinkcolor
                               : Colors.transparent,
                         ),
                         Spacer(),
                         ImageIcon(
                           AssetImage('assets/images/heart.png'),
-                          color: _selectedIndex == 2 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 2 ? pinkcolor : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -236,7 +239,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                         children: [
                           Container(
                             height: 2,
-                            color: _selectedIndex == 3
+                            color: menuViewModel.selectedIndex == 3
                                 ? pinkcolor
                                 : Colors.transparent,
                           ),
@@ -244,7 +247,7 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                           ImageIcon(
                             AssetImage('assets/images/shopping_bags.png'),
                             color:
-                                _selectedIndex == 3 ? pinkcolor : Colors.grey,
+                                menuViewModel.selectedIndex == 3 ? pinkcolor : Colors.grey,
                             size: 30,
                           ),
                           Spacer(),
@@ -291,14 +294,14 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                       children: [
                         Container(
                           height: 2,
-                          color: _selectedIndex == 4
+                          color: menuViewModel.selectedIndex == 4
                               ? pinkcolor
                               : Colors.transparent,
                         ),
                         Spacer(),
                         ImageIcon(
                           AssetImage('assets/images/profile.png'),
-                          color: _selectedIndex == 4 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 4 ? pinkcolor : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),

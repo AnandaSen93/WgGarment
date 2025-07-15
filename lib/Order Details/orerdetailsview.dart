@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
+import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Order%20Details/orderdetails_view_model.dart';
 
 class OrderDetailsView extends StatefulWidget {
@@ -81,11 +84,15 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                       ),
                       child: Row(
                         children: [
-                          Text('Order Id: ${orderdetailsViewModel.ordreDetails?.orderId ?? ""}',
-                              style:textStyleForMainProductDescription,),
+                          Text(
+                            'Order Id: ${orderdetailsViewModel.ordreDetails?.orderId ?? ""}',
+                            style: textStyleForMainProductDescription,
+                          ),
                           Spacer(),
-                          Text('Order On: ${orderdetailsViewModel.ordreDetails?.orderDateTime ??""}',
-                          style:textStyleForMainProductDescription,),
+                          Text(
+                            'Order On: ${orderdetailsViewModel.ordreDetails?.orderDateTime ?? ""}',
+                            style: textStyleForMainProductDescription,
+                          ),
                         ],
                       ),
                     ),
@@ -423,37 +430,42 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Sub total",
-                              style: textStyleForProductName,
+                              Text(
+                                "Sub total",
+                                style: textStyleForProductName,
                               ),
                               Spacer(),
                               Text(
                                 "\$ ${orderdetailsViewModel.ordreDetails?.totalMrp ?? ""}",
-                                style:textStyleForMainProductDescription,
-                                )
+                                style: textStyleForMainProductDescription,
+                              )
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Delivert Charge",
-                              style: textStyleForProductName,
+                              Text(
+                                "Delivert Charge",
+                                style: textStyleForProductName,
                               ),
                               Spacer(),
-                              Text("\$ ${orderdetailsViewModel.ordreDetails?.deliveryCharge ?? ""}",
-                              style:textStyleForMainProductDescription,
+                              Text(
+                                "\$ ${orderdetailsViewModel.ordreDetails?.deliveryCharge ?? ""}",
+                                style: textStyleForMainProductDescription,
                               ),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              Text("Discount",
-                              style: textStyleForProductName,
+                              Text(
+                                "Discount",
+                                style: textStyleForProductName,
                               ),
                               Spacer(),
-                              Text("\$ ${orderdetailsViewModel.ordreDetails?.discountMrp ?? ""}",
-                              style:textStyleForMainProductDescription,
+                              Text(
+                                "\$ ${orderdetailsViewModel.ordreDetails?.discountMrp ?? ""}",
+                                style: textStyleForMainProductDescription,
                               ),
                             ],
                           ),
@@ -470,15 +482,105 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                 style: textStyleForredText,
                               ),
                               Spacer(),
-                              Text( "\$" + (orderdetailsViewModel.ordreDetails?.totalPayableAmount ?? ""),
-                              style: textStyleForProductName,
+                              Text(
+                                "\$" +
+                                    (orderdetailsViewModel
+                                            .ordreDetails?.totalPayableAmount ??
+                                        ""),
+                                style: textStyleForProductName,
                               ),
                             ],
                           ),
                           SizedBox(height: 10),
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12, // shadow color
+                            spreadRadius: 2, // how much the shadow spreads
+                            blurRadius: 5, // how soft the shadow is
+                            offset: Offset(2, 3), // shadow position (x, y)
+                          ),
+                        ], // Optional: Rounded corners
+                      ),
+                      child: Row(
+                        children: [
+                          TextButton(
+                              onPressed: () async{
+                                 NormalModel? _data = await orderdetailsViewModel.cancelOrder();
+                                 if (_data != null){
+                                  if (_data.responseCode == "1"){
+                                    Fluttertoast.showToast(
+                                          msg: _data.responseText ?? "");
+                                  }else{
+                                    Fluttertoast.showToast(
+                                          msg: _data.responseText ?? "");
+                                  }
+                                  orderdetailsViewModel.navigateMainMenu(context);
+
+                                 }else{
+                                  Fluttertoast.showToast(
+                                          msg: "something went wrong please try again");
+                                 }
+                                 
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white, // Optional background
+                                    border: Border.all(
+                                      color: pinkcolor, //  Border color
+                                      width: 1, //  Border width
+                                    ),
+                                    borderRadius: BorderRadius.circular( 8 ), // Rounded corners
+                                  ),
+                                  child: Text(
+                                    "Cancel Order",
+                                    style: textStyleForredText,
+                                  ))),
+                          Spacer(),
+                          TextButton(onPressed: () async {
+
+                             NormalModel? _data = await orderdetailsViewModel.reOrder();
+                                 if (_data != null){
+                                  if (_data.responseCode == "1"){
+                                    Fluttertoast.showToast(
+                                          msg: _data.responseText ?? "");
+                                  }else{
+                                    Fluttertoast.showToast(
+                                          msg: _data.responseText ?? "");
+                                  }
+                                  orderdetailsViewModel.navigateMainMenu(context);
+
+                                 }else{
+                                  Fluttertoast.showToast(
+                                          msg: "something went wrong please try again");
+                                 }
+
+                          }, child: Container(
+                                padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white, // Optional background
+                                    border: Border.all(
+                                      color: skybluecolor, //  Border color
+                                      width: 1, //  Border width
+                                    ),
+                                    borderRadius: BorderRadius.circular( 8 ), // Rounded corners
+                                  ),
+                                  child: Text(
+                                    "Re-Order",
+                                    style: textStyleForSkyText,
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 40),
                   ],
                 ),
               ),

@@ -9,6 +9,13 @@ import 'package:wg_garment/Menu/menu_model.dart';
 class MenuViewModel extends ChangeNotifier{
 
   String cartCount = "0";
+  int selectedIndex = 0;
+
+
+  void setPageNav(int value){
+     selectedIndex = value;
+     notifyListeners();
+  }
 
   void clearData() {
   }

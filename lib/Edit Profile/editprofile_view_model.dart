@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Menu/menu.dart';
+import 'package:wg_garment/Menu/menu_view_model.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
 
 class EditprofileViewModel extends ChangeNotifier {
@@ -14,6 +16,24 @@ class EditprofileViewModel extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   UserData? profileDta;
+
+
+    void navigateMainMenu(BuildContext context) async {
+    Provider.of<MenuViewModel>(context, listen: false).setPageNav(5);
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MenuView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
+  }
 
   String checkValidation() {
     String str = "";

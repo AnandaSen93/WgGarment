@@ -9,7 +9,8 @@ import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Checkout/checkout_model.dart';
 import 'package:wg_garment/Home/home_model.dart';
-import 'package:wg_garment/My%20Order/myorderview.dart';
+import 'package:wg_garment/Menu/menu.dart';
+import 'package:wg_garment/Menu/menu_view_model.dart';
 
 class CheckoutViewModel extends ChangeNotifier {
   final TextEditingController couponCodeController = TextEditingController();
@@ -45,13 +46,13 @@ class CheckoutViewModel extends ChangeNotifier {
   }
 
   void navigateMainMenu(BuildContext context) async {
-    //Provider.of<AddresslistViewModel>(context, listen: false).setAddressType(adddressType);
+    Provider.of<MenuViewModel>(context, listen: false).setPageNav(1);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MyOrderListView(),
+        builder: (context) => MenuView(),
       ),
     );
 

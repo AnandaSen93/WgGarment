@@ -151,6 +151,12 @@ const textStyleForredText = TextStyle(
                             color: pinkcolor,
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.none);
+const textStyleForSkyText = TextStyle(
+                            fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
+                            fontSize: 16,
+                            color: skybluecolor,
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.none);
 
 const textstyleNormalBlackText = TextStyle(
     fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`

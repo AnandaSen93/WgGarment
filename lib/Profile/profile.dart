@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
-import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Profile/profile_view_model.dart';
-import 'package:wg_garment/Signup/signup.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ProfileView extends StatefulWidget {

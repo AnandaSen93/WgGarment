@@ -22,6 +22,9 @@ void clearData(){
    cartList = [];
 }
 
+
+
+
   void navigateToCheckOutView(BuildContext context) async {    
 
     String cartIds = cartList.map((item) => item.cartId.toString()).toList().join(',');

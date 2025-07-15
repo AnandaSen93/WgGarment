@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Menu/menu.dart';
+import 'package:wg_garment/Menu/menu_view_model.dart';
 import 'package:wg_garment/Product%20Details/product_details_model.dart';
 import 'package:wg_garment/Product%20List/product_list_model.dart';
 import 'package:wg_garment/Review/reviewlist.dart';
@@ -60,6 +62,23 @@ class ProductDetailsViewModel extends ChangeNotifier {
   void setProductId(String productID) {
     productId = productID;
     notifyListeners(); // Notify UI to update
+  }
+
+    void navigateMainMenu(BuildContext context) async {
+    Provider.of<MenuViewModel>(context, listen: false).setPageNav(4);
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MenuView(),
+      ),
+    );
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
   }
 
      void navigateToReviewPage(BuildContext context) async {    

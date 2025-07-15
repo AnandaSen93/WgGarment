@@ -577,6 +577,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   setState(() {
                                     Fluttertoast.showToast(
                                         msg: response.responseText.toString());
+                                        productDetailsViewModel.navigateMainMenu(context);
                                   });
                                 } else {
                                   Fluttertoast.showToast(
