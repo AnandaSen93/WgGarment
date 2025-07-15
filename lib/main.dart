@@ -16,6 +16,7 @@ import 'package:wg_garment/Checkout/checkout.dart';
 import 'package:wg_garment/Checkout/checkout_view_model.dart';
 import 'package:wg_garment/Edit%20Profile/editprofile_view_model.dart';
 import 'package:wg_garment/Forgot%20Password/forgotpassword_view_model.dart';
+import 'package:wg_garment/Home%20Product%20List/homeproductlist_view_model.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
 import 'package:wg_garment/Menu/menu.dart';
@@ -36,6 +37,7 @@ import 'package:wg_garment/Signup/signup.dart';
 import 'package:wg_garment/Signup/signup_view_model.dart';
 import 'package:wg_garment/Slug%20Page/slugview.dart';
 import 'package:wg_garment/Splash/splash.dart';
+import 'package:wg_garment/Sub%20Category/subcategory_view_model.dart';
 import 'package:wg_garment/WishList/wishlist_view_model.dart';
 import 'package:wg_garment/cart/cart_view_model.dart';
 
@@ -64,6 +66,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => OrderdetailsViewModel()),
         ChangeNotifierProvider(create: (context) => EditprofileViewModel()),
         ChangeNotifierProvider(create: (context) => ReviewlistViewModel()),
+        ChangeNotifierProvider(create: (context) => SubcategoryViewModel()),
+        ChangeNotifierProvider(create: (context) => HomeproductlistViewModel()),
 
 
         

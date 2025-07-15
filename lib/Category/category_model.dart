@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:wg_garment/Home/home_model.dart';
+
 
 CategoryModel categoryModelFromJson(String str) => CategoryModel.fromJson(json.decode(str));
 String categoryModelToJson(CategoryModel data) => json.encode(data.toJson()); 
@@ -64,30 +66,3 @@ class CategoryData {
     };
 }
 
-class SubCategory {
-    String? subcategoryId;
-    String? subcategoryImage;
-    String? subcategoryName;
-
-    SubCategory({
-        this.subcategoryId,
-        this.subcategoryImage,
-        this.subcategoryName,
-    });
-
-    factory SubCategory.fromRawJson(String str) => SubCategory.fromJson(json.decode(str));
-
-    String toRawJson() => json.encode(toJson());
-
-    factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
-        subcategoryId: json["subcategoryId"],
-        subcategoryImage: json["subcategoryImage"],
-        subcategoryName: json["subcategoryName"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "subcategoryId": subcategoryId,
-        "subcategoryImage": subcategoryImage,
-        "subcategoryName": subcategoryName,
-    };
-}

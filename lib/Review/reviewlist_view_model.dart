@@ -51,7 +51,7 @@ class ReviewlistViewModel extends ChangeNotifier {
             "userId": userID,
             "productId":productId,
             "review":commentsController.text,
-             "rating":ratingValue
+            "rating":ratingValue
             }, ApiConstant.addreview);
 
       print("Response Type: ${response.runtimeType}");

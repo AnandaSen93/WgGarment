@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
@@ -103,11 +104,11 @@ class _ProfileViewState extends State<ProfileView> {
                           child: ClipOval(
                             child: AspectRatio(
                                 aspectRatio: 1,
-                                child: ((profileViewModel.profileDta?.profileImage.toString() ?? "") != "") ? 
-                                    Image.network(
-                                      profileViewModel.profileDta?.profileImage.toString() ?? "",
-                                      fit: BoxFit.cover,
-                                    ):Image.asset("assets/images/profile.png")),
+                                child: CustomNetworkImage(
+                                          imageUrl: profileViewModel.profileDta?.profileImage.toString() ?? "",
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),),
                           ),
                         ),
                       ),

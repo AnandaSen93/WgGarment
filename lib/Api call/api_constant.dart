@@ -13,6 +13,7 @@ class ApiConstant {
 
   static const String categorylistUrl = "categorylist";
   static const String productllistingurl = "productllisting";
+  static const String homeProductList = "backinarrivalwanted";
   static const String searchList = "search";
   static const String productdetailsUrl = "productdetails";
   static const String reviewlist = "reviewlist";
@@ -23,6 +24,7 @@ class ApiConstant {
   static const String changepassword = "changepassword";
   static const String updatenewslatter = "updatenewslatter";
   static const String editprofile = "editprofile";
+  static const String updateprofileimage = "updateprofileimage";
   static const String editemail = "editemail";
   static const String logout = "logout";
   static const String deleteaccount = "deleteaccount";

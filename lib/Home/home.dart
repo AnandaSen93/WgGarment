@@ -9,10 +9,8 @@ import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 
 class HomeView extends StatefulWidget {
-
   final VoidCallback onCButtonPressed;
   const HomeView({super.key, required this.onCButtonPressed});
-
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -89,32 +87,32 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               // Search Start
-             
-               TextButton(
-                  onPressed: (){
-                    homeViewModel.navigateToSearchage(context);
-                  },
+
+              TextButton(
+                onPressed: () {
+                  homeViewModel.navigateToSearchage(context);
+                },
                 child: Container(
                   child: Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: lightgraykcolor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      height: 50,
-                      // color: lightgraykcolor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.search),
-                          Text(
-                            "What are you looking for?",
-                            style: textStyleForTextField,
-                          )
-                        ],
-                      ),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: lightgraykcolor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    height: 50,
+                    // color: lightgraykcolor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.search),
+                        Text(
+                          "What are you looking for?",
+                          style: textStyleForTextField,
+                        )
+                      ],
                     ),
                   ),
+                ),
               ),
               //Search End
 
@@ -169,7 +167,9 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Spacer(),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              homeViewModel.navigateToCategoryList(context);
+                            },
                             child: Text(
                               "View All",
                               style: textStyleForViewAll,
@@ -184,28 +184,44 @@ class _HomeViewState extends State<HomeView> {
                           itemCount: homeViewModel.topCategory.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return Container(
-                              padding: EdgeInsets.only(right: 8),
+                            return GestureDetector(
+                              onTap: (){
+                                homeViewModel.navigateToSubCat(homeViewModel.topCategory[index].categoryId ?? "", index, context);
+                              },
                               child: Container(
-                                height: double.infinity,
-                                color: Colors.transparent,
-                                child: Column(
-                                  children: [
-                                    CustomNetworkImage(
-                                      imageUrl: homeViewModel
-                                          .topCategory[index].categoryImage
-                                          .toString(),
-                                      height: 120,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      homeViewModel
-                                          .topCategory[index].categoryName
-                                          .toString(),
-                                      style: textStyleForTextField,
-                                    )
-                                  ],
+                                padding: EdgeInsets.only(right: 8),
+                                child: Container(
+                                  height: double.infinity,
+                                  color: Colors.transparent,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          // border: Border.all(
+                                          //   color: Colors.black, // Black border color
+                                          //   width: 1.0, // Border width
+                                          // ),
+                                          borderRadius: BorderRadius.circular(
+                                              10.0), // Optional: Rounded corners
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: CustomNetworkImage(
+                                          imageUrl: homeViewModel
+                                              .topCategory[index].categoryImage
+                                              .toString(),
+                                          height: 120,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        homeViewModel
+                                            .topCategory[index].categoryName
+                                            .toString(),
+                                        style: textStyleForTextField,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -231,7 +247,9 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Spacer(),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              homeViewModel.navigateToHomeProductList("newArrival", context);
+                            },
                             child: Text(
                               "View All",
                               style: textStyleForViewAll,
@@ -256,7 +274,7 @@ class _HomeViewState extends State<HomeView> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () async {
-                               homeViewModel.navigateToProductDetails(
+                                homeViewModel.navigateToProductDetails(
                                     homeViewModel.newArrival[index].productId
                                         .toString(),
                                     context);
@@ -476,7 +494,9 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Spacer(),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              homeViewModel.navigateToHomeProductList("MostWanted", context);
+                            },
                             child: Text(
                               "View All",
                               style: textStyleForViewAll,
@@ -716,7 +736,9 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Spacer(),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              homeViewModel.navigateToHomeProductList("backInStock", context);
+                            },
                             child: Text(
                               "View All",
                               style: textStyleForViewAll,

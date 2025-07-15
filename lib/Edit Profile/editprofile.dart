@@ -20,7 +20,7 @@ class EditProfileView extends StatefulWidget {
 
 class _EditProfileViewState extends State<EditProfileView> {
   bool _isInitialized = false;
-
+  late EditprofileViewModel _viewModel;
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
 
@@ -30,6 +30,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     if (pickedFile != null) {
       setState(() {
         _imageFile = pickedFile;
+        _viewModel.uploadprofileImage(File(_imageFile?.path ?? ""));
       });
     }
   }
@@ -38,8 +39,9 @@ class _EditProfileViewState extends State<EditProfileView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_isInitialized) {
-      Provider.of<EditprofileViewModel>(context, listen: false)
-          .profileApiCall();
+      _viewModel = Provider.of<EditprofileViewModel>(context, listen: false);
+
+          _viewModel.profileApiCall();
 
       //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
       _isInitialized = true; // Ensure it's called only once

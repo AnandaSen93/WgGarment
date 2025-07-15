@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
@@ -46,7 +49,28 @@ class EditprofileViewModel extends ChangeNotifier {
     return str;
   }
 
-    Future<NormalModel?> updateEmailApi() async {
+  Future<NormalModel?> uploadprofileImage(File? imageFile) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+
+    try {
+      final response = await ApiServices().postApiCall({
+        "userId": userID,
+        "image": imageFile,
+      }, ApiConstant.updateprofileimage);
+      print("Response Type: ${response.runtimeType}");
+      final _response = normalModelFromJson(response);
+
+      notifyListeners();
+      return _response;
+    } catch (error) {
+      print("Error parse: $error");
+      notifyListeners();
+      return null;
+    }
+  }
+
+  Future<NormalModel?> updateEmailApi() async {
     final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");
     try {
@@ -66,7 +90,7 @@ class EditprofileViewModel extends ChangeNotifier {
     }
   }
 
-     Future<NormalModel?> updatePhoneApi() async {
+  Future<NormalModel?> updatePhoneApi() async {
     final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");
     try {
