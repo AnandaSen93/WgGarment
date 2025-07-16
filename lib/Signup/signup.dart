@@ -426,17 +426,13 @@ class _SignupViewState extends State<SignupView> {
                                     "success") {
                                   NormalModel? response =
                                       await signuoViewModel.signUpApiCall();
-                                  if (response != null) {
-                                    if (response.responseCode == 1) {
-                                      Navigator.pop(context);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
-                                    }
+                                  if (response?.responseCode == 1) {
+                                    Navigator.pop(context);
                                   } else {
-                                    print("Login failed");
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
                                   }
-                                } else {
+                                                                } else {
                                   setState(() {
                                     Fluttertoast.showToast(
                                         msg: signuoViewModel.checkValidation());

@@ -242,12 +242,10 @@ class _ProfileViewState extends State<ProfileView> {
                                   Navigator.pop(context);
 
                                   NormalModel? _data = await profileViewModel.logOutApi();
-                                  if (_data != null){
-                                    if (_data.responseCode == "1"){
-                                      profileViewModel.navigateToLoginPage(context);
-                                    }
+                                  if (_data?.responseCode == 1){
+                                    profileViewModel.navigateToLoginPage(context);
                                   }
-
+                                
                                   // Close the alert
                                 },
                                 color: Colors.green,
@@ -285,12 +283,10 @@ class _ProfileViewState extends State<ProfileView> {
                                   print("Yes");
                                   Navigator.pop(context);
                                      NormalModel? _data = await profileViewModel.deleteYourAccountApi();
-                                  if (_data != null){
-                                    if (_data.responseCode == "1"){
-                                      profileViewModel.navigateToLoginPage(context);
-                                    }
+                                  if (_data?.responseCode == 1){
+                                    profileViewModel.navigateToLoginPage(context);
                                   }
-                              
+                                                              
 
                                   // Close the alert
                                 },

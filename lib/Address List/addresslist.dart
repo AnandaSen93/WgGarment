@@ -184,26 +184,17 @@ class _AddresslistViewState extends State<AddresslistView> {
                                                                             .addressList[index]
                                                                             .addressId ??
                                                                         "");
-                                                            if (response !=
-                                                                null) {
-                                                              if (response
-                                                                      .responseCode ==
-                                                                  1) {
-                                                                Fluttertoast.showToast(
-                                                                    msg: response
-                                                                            .responseText ??
-                                                                        "");
-                                                              } else {
-                                                                Fluttertoast.showToast(
-                                                                    msg: response
-                                                                            .responseText ??
-                                                                        "");
-                                                              }
+                                                            if (response?.responseCode ==
+                                                                1) {
+                                                              Fluttertoast.showToast(
+                                                                  msg: response?.responseText ??
+                                                                      "");
                                                             } else {
-                                                              print(
-                                                                  "Login failed");
+                                                              Fluttertoast.showToast(
+                                                                  msg: response?.responseText ??
+                                                                      "");
                                                             }
-                                                          },
+                                                                                                                    },
                                                           icon: Icon(
                                                             Icons.delete,
                                                             size:

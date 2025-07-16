@@ -206,7 +206,9 @@ class _LoginViewState extends State<LoginView>
                         Container(
                           width: double.infinity,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              loginViewModel.navigateToForgetPassword(context);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
                                   .end, // Align text to the right
@@ -226,21 +228,17 @@ class _LoginViewState extends State<LoginView>
                                     "success") {
                                   LoginModel? response =
                                       await loginViewModel.loginApiCall();
-                                  if (response != null) {
-                                    if (response.responseCode == 1) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MenuView()));
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
-                                    }
+                                  if (response?.responseCode == 1) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MenuView()));
                                   } else {
-                                    print("Login failed");
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
                                   }
-                                } else {
+                                                                } else {
                                   Fluttertoast.showToast(
                                       msg: loginViewModel.checkValidation());
                                 }

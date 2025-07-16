@@ -428,11 +428,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 } else {
                                   CouponModel? response =
                                       await checkoutViewModel.applyCouponCode();
-                                  if (response != null) {
-                                    Fluttertoast.showToast(
-                                        msg: response.responseText ?? "");
-                                  }
-                                }
+                                  Fluttertoast.showToast(
+                                      msg: response?.responseText ?? "");
+                                                                }
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -620,14 +618,12 @@ class _CheckOutViewState extends State<CheckOutView> {
                               "success") {
                             NormalModel? response =
                                 await checkoutViewModel.placeOrder();
-                            if (response != null) {
-                              Fluttertoast.showToast(
-                                  msg: response.responseText ?? "");
-                              Future.delayed(Duration(seconds: 2), () {
-                                checkoutViewModel.navigateMainMenu(context);
-                              });
-                            }
-                          } else {
+                            Fluttertoast.showToast(
+                                msg: response?.responseText ?? "");
+                            Future.delayed(Duration(seconds: 2), () {
+                              checkoutViewModel.navigateMainMenu(context);
+                            });
+                                                    } else {
                             Fluttertoast.showToast(
                                 msg: checkoutViewModel.checkValidation());
                           }

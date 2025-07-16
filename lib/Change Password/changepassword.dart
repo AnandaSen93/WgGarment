@@ -214,20 +214,16 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                                     "success") {
                                   NormalModel? response =
                                       await changepasswordViewModel.changepasswordApi();
-                                  if (response != null) {
-                                    if (response.responseCode == 1) {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
+                                  if (response?.responseCode == 1) {
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
 
-                                      Navigator.pop(context);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
-                                    }
+                                    Navigator.pop(context);
                                   } else {
-                                    print("Login failed");
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
                                   }
-                                } else {
+                                                                } else {
                                   setState(() {
                                     Fluttertoast.showToast(
                                         msg: changepasswordViewModel.checkValidation());

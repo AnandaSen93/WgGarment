@@ -514,21 +514,16 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           TextButton(
                               onPressed: () async{
                                  NormalModel? _data = await orderdetailsViewModel.cancelOrder();
-                                 if (_data != null){
-                                  if (_data.responseCode == "1"){
-                                    Fluttertoast.showToast(
-                                          msg: _data.responseText ?? "");
-                                  }else{
-                                    Fluttertoast.showToast(
-                                          msg: _data.responseText ?? "");
-                                  }
-                                  orderdetailsViewModel.navigateMainMenu(context);
-
-                                 }else{
+                                if (_data?.responseCode == "1"){
                                   Fluttertoast.showToast(
-                                          msg: "something went wrong please try again");
-                                 }
-                                 
+                                        msg: _data?.responseText ?? "");
+                                }else{
+                                  Fluttertoast.showToast(
+                                        msg: _data?.responseText ?? "");
+                                }
+                                orderdetailsViewModel.navigateMainMenu(context);
+
+                                                                
                               },
                               child: Container(
                                 padding: EdgeInsets.all(10),
@@ -548,21 +543,16 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           TextButton(onPressed: () async {
 
                              NormalModel? _data = await orderdetailsViewModel.reOrder();
-                                 if (_data != null){
-                                  if (_data.responseCode == "1"){
-                                    Fluttertoast.showToast(
-                                          msg: _data.responseText ?? "");
-                                  }else{
-                                    Fluttertoast.showToast(
-                                          msg: _data.responseText ?? "");
-                                  }
-                                  orderdetailsViewModel.navigateMainMenu(context);
-
-                                 }else{
+                                if (_data?.responseCode == 1){
                                   Fluttertoast.showToast(
-                                          msg: "something went wrong please try again");
-                                 }
+                                        msg: _data?.responseText ?? "");
+                                }else{
+                                  Fluttertoast.showToast(
+                                        msg: _data?.responseText ?? "");
+                                }
+                                orderdetailsViewModel.navigateMainMenu(context);
 
+                               
                           }, child: Container(
                                 padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(

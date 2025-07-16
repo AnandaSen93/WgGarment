@@ -214,27 +214,22 @@ class _CartViewState extends State<CartView> {
                                                                             index]
                                                                         .cartId
                                                                         .toString());
-                                                        if (response != null) {
-                                                          if (response
-                                                                  .responseCode ==
-                                                              1) {
-                                                            widget
-                                                                .onCButtonPressed();
-                                                            setState(() {
-                                                              Fluttertoast.showToast(
-                                                                  msg: response
-                                                                      .responseText
-                                                                      .toString());
-                                                            });
-                                                          } else {
+                                                        if (response?.responseCode ==
+                                                            1) {
+                                                          widget
+                                                              .onCButtonPressed();
+                                                          setState(() {
                                                             Fluttertoast.showToast(
-                                                                msg: response
-                                                                        .responseText ??
-                                                                    "");
-                                                          }
-                                                          // setState(() {});
+                                                                msg: response?.responseText
+                                                                    ?? "");
+                                                          });
+                                                        } else {
+                                                          Fluttertoast.showToast(
+                                                              msg: response?.responseText ??
+                                                                  "");
                                                         }
-                                                        cartViewModel
+                                                        // setState(() {});
+                                                                                                              cartViewModel
                                                             .addRemoveCartQuantityApicall(
                                                                 cartViewModel
                                                                     .cartList[
@@ -279,21 +274,19 @@ class _CartViewState extends State<CartView> {
                                     await cartViewModel.deleteCartApicall(
                                         cartViewModel.cartList[index].cartId
                                             .toString());
-                                if (response != null) {
-                                  if (response.responseCode == 1) {
-                                    widget.onCButtonPressed();
-                                    setState(() {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              response.responseText.toString());
-                                    });
-                                  } else {
+                                if (response?.responseCode == 1) {
+                                  widget.onCButtonPressed();
+                                  setState(() {
                                     Fluttertoast.showToast(
-                                        msg: response.responseText ?? "");
-                                  }
-                                  // setState(() {});
+                                        msg:
+                                            response?.responseText ?? "");
+                                  });
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: response?.responseText ?? "");
                                 }
-                              },
+                                // setState(() {});
+                                                            },
                             ),
                           ),
                           Positioned(

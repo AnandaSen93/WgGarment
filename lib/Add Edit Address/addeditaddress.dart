@@ -571,31 +571,23 @@ class _AddEditAddressViewState extends State<AddEditAddressView> {
                                   NormalModel? response =
                                       await addeditAddressViewModel
                                           .addAddress();
-                                  if (response != null) {
-                                    if (response.responseCode == 1) {
-                                      Navigator.pop(context);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
-                                    }
+                                  if (response?.responseCode == 1) {
+                                    Navigator.pop(context);
                                   } else {
-                                    print("Login failed");
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
                                   }
-                                } else {
+                                                                } else {
                                   NormalModel? response =
                                       await addeditAddressViewModel
                                           .updateAddress();
-                                  if (response != null) {
-                                    if (response.responseCode == 1) {
-                                      Navigator.pop(context);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: response.responseText ?? "");
-                                    }
+                                  if (response?.responseCode == 1) {
+                                    Navigator.pop(context);
                                   } else {
-                                    print("Login failed");
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
                                   }
-                                }
+                                                                }
                               } else {
                                 setState(() {
                                   Fluttertoast.showToast(

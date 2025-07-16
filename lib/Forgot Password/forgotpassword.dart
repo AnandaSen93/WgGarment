@@ -121,20 +121,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             NormalModel? response =
                                 await forgotpasswordViewModel
                                     .forgotpasswordApi();
-                            if (response != null) {
-                              if (response.responseCode == 1) {
-                                Fluttertoast.showToast(
-                                    msg: response.responseText ?? "");
+                            if (response?.responseCode == 1) {
+                              Fluttertoast.showToast(
+                                  msg: response?.responseText ?? "");
 
-                                Navigator.pop(context);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: response.responseText ?? "");
-                              }
+                              Navigator.pop(context);
                             } else {
-                              print("Login failed");
+                              Fluttertoast.showToast(
+                                  msg: response?.responseText ?? "");
                             }
-                          } else {
+                                                    } else {
                             setState(() {
                               Fluttertoast.showToast(
                                   msg: forgotpasswordViewModel

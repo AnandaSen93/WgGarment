@@ -572,21 +572,17 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 "success") {
                               NormalModel? response =
                                   await productDetailsViewModel.addToCartApi();
-                              if (response != null) {
-                                if (response.responseCode == 1) {
-                                  setState(() {
-                                    Fluttertoast.showToast(
-                                        msg: response.responseText.toString());
-                                        productDetailsViewModel.navigateMainMenu(context);
-                                  });
-                                } else {
+                              if (response?.responseCode == 1) {
+                                setState(() {
                                   Fluttertoast.showToast(
-                                      msg: response.responseText ?? "");
-                                }
+                                      msg: response?.responseText ?? "");
+                                      productDetailsViewModel.navigateMainMenu(context);
+                                });
                               } else {
-                                print("Login failed");
+                                Fluttertoast.showToast(
+                                    msg: response?.responseText ?? "");
                               }
-                            } else {
+                                                        } else {
                               setState(() {
                                 Fluttertoast.showToast(
                                     msg: productDetailsViewModel

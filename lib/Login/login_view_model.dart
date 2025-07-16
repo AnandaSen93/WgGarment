@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Forgot%20Password/forgotpassword.dart';
 import 'package:wg_garment/Login/login_model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,26 @@ class LoginViewModel extends ChangeNotifier {
       str = "success";
     }
     return str;
+  }
+
+
+    void navigateToForgetPassword(BuildContext context) async {
+    
+
+    // Push the second screen and pass the user data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgotPasswordView(),
+      ),
+    ).then((_) {
+      // Refresh after coming back
+    });
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
   }
 
  

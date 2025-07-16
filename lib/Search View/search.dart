@@ -132,9 +132,6 @@ late SearchViewModel _viewModel;
                            if (searchViewModel.searchText != ""){
                             
                             SearchListModel? response = await searchViewModel.searchTextApi();
-                            if (response == null){
-                                  Fluttertoast.showToast(msg: response?.responseText ?? "");
-                            }
                            }else{
                             Fluttertoast.showToast(msg: "Please enter text for search.");
                            }

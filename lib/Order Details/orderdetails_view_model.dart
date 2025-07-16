@@ -93,7 +93,7 @@ class OrderdetailsViewModel extends ChangeNotifier {
 
 
   void navigateMainMenu(BuildContext context) async {
-    Provider.of<MenuViewModel>(context, listen: false).setPageNav(5);
+    Provider.of<MenuViewModel>(context, listen: false).setPageNav(4);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(
