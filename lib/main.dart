@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Api%20call/loader.dart';
+
 import 'package:wg_garment/Add%20Edit%20Address/addedit_address_view_model.dart';
 import 'package:wg_garment/Add%20Edit%20Address/addeditaddress.dart';
 import 'package:wg_garment/Address%20List/addresslist.dart';
 import 'package:wg_garment/Address%20List/addresslist_view_model.dart';
 
-import 'package:wg_garment/Api%20call/api_service.dart';
-import 'package:wg_garment/Api%20call/loader.dart';
+
 import 'package:wg_garment/Category/category.dart';
 import 'package:wg_garment/Category/category_view_model.dart';
 import 'package:wg_garment/Change%20Password/changepassword.dart';
@@ -35,6 +38,7 @@ import 'package:wg_garment/Review/reviewlist_view_model.dart';
 import 'package:wg_garment/Search%20View/search_view_model.dart';
 import 'package:wg_garment/Signup/signup.dart';
 import 'package:wg_garment/Signup/signup_view_model.dart';
+import 'package:wg_garment/Slug%20Page/slug_view_model.dart';
 import 'package:wg_garment/Slug%20Page/slugview.dart';
 import 'package:wg_garment/Splash/splash.dart';
 import 'package:wg_garment/Sub%20Category/subcategory_view_model.dart';
@@ -68,6 +72,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => ReviewlistViewModel()),
         ChangeNotifierProvider(create: (context) => SubcategoryViewModel()),
         ChangeNotifierProvider(create: (context) => HomeproductlistViewModel()),
+        ChangeNotifierProvider(create: (context) => SlugViewModel()),
 
 
         

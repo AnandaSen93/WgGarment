@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Forgot%20Password/forgotpassword.dart';
 import 'package:wg_garment/Login/login_model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Menu/menu.dart';
+import 'package:wg_garment/Menu/menu_view_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   String _email = '';
@@ -35,6 +38,32 @@ class LoginViewModel extends ChangeNotifier {
       str = "success";
     }
     return str;
+  }
+
+
+
+     void navigateMainMenu(BuildContext context) async {
+    Provider.of<MenuViewModel>(context, listen: false).setPageNav(0);
+
+    // Push the second screen and pass the user data
+    // final result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => MenuView(),
+    //   ),
+    // );
+
+      final result = Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => MenuView()),
+      (Route<dynamic> route) => false,
+    );
+
+
+    if (result != null) {
+      // Handle the returned result (pop data)
+      print("Received Data: $result");
+    }
   }
 
 

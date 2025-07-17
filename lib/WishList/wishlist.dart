@@ -15,7 +15,7 @@ class WishlistView extends StatefulWidget {
 }
 
 class _WishlistViewState extends State<WishlistView> {
-  bool _like = true;
+  
 
   late WishlistViewModel _viewModel;
   bool _isInitialized = false;

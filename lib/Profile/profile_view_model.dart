@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Address%20List/addresslist.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
@@ -10,6 +11,7 @@ import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/My%20Order/myorderview.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
+import 'package:wg_garment/Slug%20Page/slug_view_model.dart';
 import 'package:wg_garment/Slug%20Page/slugview.dart';
 
 class ProfileViewModel extends ChangeNotifier {
@@ -42,11 +44,12 @@ class ProfileViewModel extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
       await prefs.remove('isLoggedIn');
     // Push the second screen and pass the user data
-    final result = await Navigator.push(
+    final result = await Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => LoginView(),
       ),
+      (Route<dynamic> route) => false,
     );
 
     if (result != null) {
@@ -106,8 +109,8 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  void navigateToSlugPage(BuildContext context) async {
-    // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
+  void navigateToSlugPage(String ID,BuildContext context) async {
+     Provider.of<SlugViewModel>(context, listen: false).setPageID(ID);
 
     // Push the second screen and pass the user data
     final result = await Navigator.push(

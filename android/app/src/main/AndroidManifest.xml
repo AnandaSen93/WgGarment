@@ -9,7 +9,7 @@
 
 
     <application
-        android:label="wg_garment"
+        android:label="Garment Hub"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

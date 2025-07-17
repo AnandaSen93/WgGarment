@@ -47,9 +47,9 @@ dependencies:
   dropdown_search: ^6.0.2
   flutter_spinkit: ^5.2.1
   flutter_widget_from_html: ^0.16.0
-  webview_flutter: ^4.13.0
-  
+  webview_flutter: ^4.13.0  
   image_picker: ^1.0.7
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -64,9 +64,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/app_icon.png" # for legacy devices and iOS
   adaptive_icon_background: "#FFFFFF"  # Background color for Android adaptive icons
-  adaptive_icon_foreground: "assets/images/app_icon.png"
+  adaptive_icon_foreground: "assets/images/android_app_icon1.png" # for legacy devices and iOS
 
 flutter_native_splash:
   color: "#ffffff"             # Background color of the splash screen

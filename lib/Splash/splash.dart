@@ -25,12 +25,16 @@ class _SplashState extends State<Splash> {
       print("end");
       //Navigator.pushNamed(context, 'howItsWorks');
      getLoginStatus().then((isLoggedIn) {
-             Navigator.push(context, MaterialPageRoute(
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
             builder: (context) => isLoggedIn ? MenuView() : LoginView(),
-  ));
+  ),
+  (Route<dynamic> route) => false,
+  );
 });
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -229,11 +229,7 @@ class _LoginViewState extends State<LoginView>
                                   LoginModel? response =
                                       await loginViewModel.loginApiCall();
                                   if (response?.responseCode == 1) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MenuView()));
+                                    loginViewModel.navigateMainMenu(context);
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: response?.responseText ?? "");

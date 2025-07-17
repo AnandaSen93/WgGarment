@@ -96,11 +96,17 @@ class OrderdetailsViewModel extends ChangeNotifier {
     Provider.of<MenuViewModel>(context, listen: false).setPageNav(4);
 
     // Push the second screen and pass the user data
-    final result = await Navigator.push(
+    // final result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => MenuView(),
+    //   ),
+    // );
+
+      final result = Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-        builder: (context) => MenuView(),
-      ),
+      MaterialPageRoute(builder: (context) => MenuView()),
+      (Route<dynamic> route) => false,
     );
 
     if (result != null) {

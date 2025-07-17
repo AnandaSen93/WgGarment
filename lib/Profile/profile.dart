@@ -23,7 +23,8 @@ class _ProfileViewState extends State<ProfileView> {
     "Terms And Aonditions",
     "Privacy Policy",
     "Who We Are",
-    "Contact",
+    "About Us",
+    "Delivery information",
     "Return Policy",
     "Log Out",
     "Delete Account"
@@ -38,10 +39,18 @@ class _ProfileViewState extends State<ProfileView> {
     "Please check",
     "Please check",
     "Please check",
+    "Please check",
     "",
     ""
   ];
 
+
+// 10-Return Policy
+// 6 about Us
+// 4 Delivery information
+// 3 privacy policy
+// 2 terms and conditions
+// 1 who we are
  
 
 
@@ -311,18 +320,35 @@ class _ProfileViewState extends State<ProfileView> {
                         } else if (list[index] == "My Address") {
                           profileViewModel.navigateToAddressList(context);
                         } else if (list[index] == "Terms And Aonditions" ) {
-                          profileViewModel.navigateToSlugPage(context);
+                          //2
+                          profileViewModel.navigateToSlugPage("2",context);
                         } else if (list[index] == "Privacy Policy" ) {
-                          profileViewModel.navigateToSlugPage(context);
+                          //3
+                          profileViewModel.navigateToSlugPage("2",context);
                         } else if (list[index] == "Who We Are" ) {
-                          profileViewModel.navigateToSlugPage(context);
+                          //1
+                          profileViewModel.navigateToSlugPage("1",context);
                         } else if (list[index] =="Return Policy" ) {
-                          profileViewModel.navigateToSlugPage(context);
+                          //10
+                          profileViewModel.navigateToSlugPage("10",context);
+                        } else if (list[index] =="About Us" ) {
+                          //6
+                          profileViewModel.navigateToSlugPage("6",context);
+                        } else if (list[index] =="Delivery information" ) {
+                          //4
+                          profileViewModel.navigateToSlugPage("4",context);
                         } else if (list[index] == "Privacy" ){
                           profileViewModel.navigateToChangePassword(context);
                         } else if (list[index] == "My Order"){
                           profileViewModel.navigateToMyOrder(context);
                         }
+
+// 10-Return Policy
+// 6 about Us
+// 4 Delivery information
+// 3 privacy policy
+// 2 terms and conditions
+// 1 who we are
 
                       },
                       child: Column(

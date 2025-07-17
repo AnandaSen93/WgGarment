@@ -27,7 +27,8 @@ class ApiConstant {
   static const String editemail = "editemail";
   static const String logout = "logout";
   static const String deleteaccount = "deleteaccount";
-
+  static const String slugpage = "slugpage";
+  
   static const String addToCartUrl = "addtocart";
   static const String countUrl = "getcount";
   static const String cartlistUrl = "cartlist";

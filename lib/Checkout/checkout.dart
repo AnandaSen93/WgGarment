@@ -380,7 +380,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                               borderRadius: BorderRadius.circular(
                                   0.0), // Optional: Rounded corners
                             ),
-                            height: 50,
+                            height: 40,
                             child: PlatformTextField(
                               controller:
                                   checkoutViewModel.couponCodeController,
@@ -414,11 +414,11 @@ class _CheckOutViewState extends State<CheckOutView> {
                         ),
                         SizedBox(width: 10),
                         Container(
-                            // padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: pinkcolor,
+                             decoration: BoxDecoration(
+                              color: skybluecolor,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            height: 50,
+                            height: 40,
                             width: 100,
                             // color: lightgraykcolor,
                             child: TextButton(
@@ -432,17 +432,12 @@ class _CheckOutViewState extends State<CheckOutView> {
                                       msg: response?.responseText ?? "");
                                                                 }
                               },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
+                              child: Text(
                                     checkoutViewModel.isCouponApply
                                         ? "Remove"
                                         : "Apply",
                                     style: textStyleForButton,
                                   )
-                                ],
-                              ),
                             ))
                       ],
                     ),
@@ -605,11 +600,11 @@ class _CheckOutViewState extends State<CheckOutView> {
                     height: 20,
                   ),
                   Container(
-                      // padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: pinkcolor,
-                      ),
-                      height: 50,
+                          decoration: BoxDecoration(
+                              color: skybluecolor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                      height: 40,
                       width: double.infinity,
                       // color: lightgraykcolor,
                       child: TextButton(
@@ -628,16 +623,12 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 msg: checkoutViewModel.checkValidation());
                           }
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Order Placed",
-                              style: textStyleForButton,
-                            )
-                          ],
-                        ),
-                      ))
+                        child: Text(
+                                  "Order Placed",
+                                  style: textStyleForButton,
+                                ),
+                      )),
+                      SizedBox(height: 20)
                 ],
               ),
             ),

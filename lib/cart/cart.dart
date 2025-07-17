@@ -114,6 +114,7 @@ class _CartViewState extends State<CartView> {
                                                 .cartList[index].productName
                                                 .toString(),
                                             style: textStyleForMainProductName,
+                                            maxLines: 2,
                                           ),
                                           Spacer(),
                                           Text(
