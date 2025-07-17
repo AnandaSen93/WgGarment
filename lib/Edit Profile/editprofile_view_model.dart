@@ -123,7 +123,7 @@ class EditprofileViewModel extends ChangeNotifier {
       final response = await ApiServices().postApiCall({
         "userId": userID,
         "phone": phoneController.text,
-      }, ApiConstant.editemail);
+      }, ApiConstant.editPhone);
       print("Response Type: ${response.runtimeType}");
       final _response = normalModelFromJson(response);
 

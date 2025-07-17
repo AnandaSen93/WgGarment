@@ -25,6 +25,7 @@ class ApiConstant {
   static const String editprofile = "editprofile";
   static const String updateprofileimage = "updateprofileimage";
   static const String editemail = "editemail";
+  static const String editPhone = "editPhone";
   static const String logout = "logout";
   static const String deleteaccount = "deleteaccount";
   static const String slugpage = "slugpage";
