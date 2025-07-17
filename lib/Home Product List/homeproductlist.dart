@@ -150,6 +150,7 @@ class _HomeproductlistViewState extends State<HomeproductlistView> {
                                                   .productList[index].productName
                                                   .toString(),
                                               style: textStyleForProductName,
+                                              maxLines: 2,
                                             ),
                                           ),
                                           AspectRatio(
@@ -223,34 +224,63 @@ class _HomeproductlistViewState extends State<HomeproductlistView> {
                                     child: AspectRatio(
                                       aspectRatio: 5,
                                       child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: homeProductListViewModel
+                              scrollDirection: Axis.horizontal,
+                              itemCount: homeProductListViewModel
                                                   .productList[index]
                                                   .colorList
                                                   ?.length ??
                                               0,
-                                          itemBuilder: (context, index1) {
-                                            return Container(
-                                              //padding: EdgeInsets.only(right: 2),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Colors.grey,
-                                                  width: 1,
-                                                ),
-                                              ),
-                                              child: Icon(
-                                                Icons.circle,
-                                                size: 35,
-                                                color: hexToColor(
+                              itemBuilder: (context, index1) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      padding: EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape
+                                            .circle, // Ensures circular border
+                                        border: Border.all(
+                                            color: Colors
+                                                .black54, // Border color for selection
+                                            width:
+                                                1.0 // Border width when selected
+                                            ),
+                                      ),
+                                      child: Container(
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: hexToColor(
                                                     homeProductListViewModel
                                                         .productList[index]
                                                         .colorList![index1]
                                                         .code
                                                         .toString()),
-                                              ),
-                                            );
-                                          }),
+                                                      ),
+                                                    )
+                                      
+                                      
+                                      // FittedBox(
+                                      //   child: Icon(
+                                      //     Icons.circle,
+                                      //     //color: Colors.red,
+                                      //     color: hexToColor(
+                                      //               homeProductListViewModel
+                                      //                   .productList[index]
+                                      //                   .colorList![index1]
+                                      //                   .code
+                                      //                   .toString()),
+                                      //   ),
+                                      // ),
+
+                                      
+                                    ),
+                                  ),
+                                );
+                              })
+                                      
+                                          
+                                          ,
                                     ),
                                   )
                                 ],
