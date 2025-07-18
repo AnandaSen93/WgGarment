@@ -114,7 +114,7 @@ class _CartViewState extends State<CartView> {
                                                 .cartList[index].productName
                                                 .toString(),
                                             style: textStyleForMainProductName,
-                                            maxLines: 2,
+                                            maxLines: 1,
                                           ),
                                           Spacer(),
                                           Text(
@@ -123,7 +123,7 @@ class _CartViewState extends State<CartView> {
                                                 .toString(),
                                             style:
                                                 textStyleForMainProductDescription,
-                                            maxLines: 2,
+                                            maxLines: 1,
                                           ),
                                           Spacer(),
                                           Text(
@@ -144,7 +144,6 @@ class _CartViewState extends State<CartView> {
                                             //"hello",
                                             style: textStyleForMainPrice,
                                           ),
-                                          Spacer(),
                                           Container(
                                             color: Colors.transparent,
                                             padding: EdgeInsets.all(0),
@@ -207,30 +206,7 @@ class _CartViewState extends State<CartView> {
                                                   aspectRatio: 1,
                                                   child: IconButton(
                                                       onPressed: () async {
-                                                        NormalModel? response =
-                                                            await cartViewModel
-                                                                .deleteCartApicall(
-                                                                    cartViewModel
-                                                                        .cartList[
-                                                                            index]
-                                                                        .cartId
-                                                                        .toString());
-                                                        if (response?.responseCode ==
-                                                            1) {
-                                                          widget
-                                                              .onCButtonPressed();
-                                                          setState(() {
-                                                            Fluttertoast.showToast(
-                                                                msg: response?.responseText
-                                                                    ?? "");
-                                                          });
-                                                        } else {
-                                                          Fluttertoast.showToast(
-                                                              msg: response?.responseText ??
-                                                                  "");
-                                                        }
-                                                        // setState(() {});
-                                                                                                              cartViewModel
+                                                        cartViewModel
                                                             .addRemoveCartQuantityApicall(
                                                                 cartViewModel
                                                                     .cartList[

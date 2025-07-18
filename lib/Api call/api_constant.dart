@@ -25,7 +25,7 @@ class ApiConstant {
   static const String editprofile = "editprofile";
   static const String updateprofileimage = "updateprofileimage";
   static const String editemail = "editemail";
-  static const String editPhone = "editPhone";
+  static const String editPhone = "editphone";
   static const String logout = "logout";
   static const String deleteaccount = "deleteaccount";
   static const String slugpage = "slugpage";
@@ -55,3 +55,7 @@ class ApiConstant {
 
   static const String addremovewishlistUrl = "addremovewishlist";
 }
+
+
+// https://developersatwork.com/projects/f4/david_alame_live/index.php?route=appapi/editphone
+// https://developersatwork.com/projects/f4/david_alame_live/index.php?route=appapi/editPhone

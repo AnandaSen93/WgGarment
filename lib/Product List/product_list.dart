@@ -407,6 +407,8 @@ class _ProductListViewState extends State<ProductListView> {
                                                           ),
                                                     ),
                                                     child: Container(
+                                                      height: double.infinity,
+                                                      width: double.infinity,
                                                       decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         color: hexToColor(
