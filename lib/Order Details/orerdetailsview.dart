@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
@@ -348,7 +349,27 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                 orderdetailsViewModel.ordreDetails?.orderStatus == "Pending" ?
                                 TextButton(
                                   onPressed: () async {
-                                    NormalModel? _data =
+
+
+
+                                    Alert(
+                            context: context,
+                            type: AlertType
+                                .warning, // You can change the type (success, error, info, etc.)
+                            title: "Cancel Order",
+                            desc: "Are you sure you want to cancel this order?",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () async {
+                                  print("Yes");
+                                  Navigator.pop(context);
+
+                                      NormalModel? _data =
                                         await orderdetailsViewModel
                                             .cancelOrder();
                                     if (_data?.responseCode == 1) {
@@ -362,6 +383,32 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                       Fluttertoast.showToast(
                                           msg: _data?.responseText ?? "");
                                     }
+
+                                  // Close the alert
+                                },
+                                color: Colors.green,
+                              ),
+                              DialogButton(
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  print("No");
+                                  Navigator.pop(context); // Close the alert
+                                },
+                                color: Colors.red,
+                              )
+                            ],
+                          ).show();
+
+
+
+                              
+
+
+
                                   },
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.zero,
@@ -545,7 +592,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                               ),
                               Spacer(),
                               Text(
-                                "\$ ${orderdetailsViewModel.ordreDetails?.totalMrp ?? ""}",
+                                "${ currency + (orderdetailsViewModel.ordreDetails?.totalMrp ?? "")}",
                                 style: textStyleForMainProductDescription,
                               )
                             ],
@@ -559,7 +606,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                               ),
                               Spacer(),
                               Text(
-                                "\$ ${orderdetailsViewModel.ordreDetails?.deliveryCharge ?? ""}",
+                                " ${currency + (orderdetailsViewModel.ordreDetails?.deliveryCharge ?? "")}",
                                 style: textStyleForMainProductDescription,
                               ),
                             ],
@@ -573,7 +620,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                               ),
                               Spacer(),
                               Text(
-                                "\$ ${orderdetailsViewModel.ordreDetails?.discountMrp ?? ""}",
+                                "${currency + (orderdetailsViewModel.ordreDetails?.discountMrp ?? "")}",
                                 style: textStyleForMainProductDescription,
                               ),
                             ],
@@ -592,7 +639,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                               ),
                               Spacer(),
                               Text(
-                                "\$" +
+                                currency +
                                     (orderdetailsViewModel
                                             .ordreDetails?.totalPayableAmount ??
                                         ""),
