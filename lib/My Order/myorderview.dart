@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
+import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/My%20Order/myorder_view_model.dart';
 
@@ -182,7 +183,7 @@ class _MyOrderListViewState extends State<MyOrderListView> {
                                                       textStyleForMainProductName,
                                                 ),
                                                 Text(
-                                                  "\$" +
+                                                  currency +
                                                       (myorderViewModel
                                                           .orderList[index]
                                                           .orderPrice
@@ -205,6 +206,25 @@ class _MyOrderListViewState extends State<MyOrderListView> {
                                                 Text((myorderViewModel
                                                           .orderList[index]
                                                           .paymentMethod
+                                                          .toString()),
+                                                  style:
+                                                      textStyleForMainProductDescription,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                           Container(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Order status: ",
+                                                  style:
+                                                      textStyleForMainProductName,
+                                                ),
+                                                Text(myorderViewModel.getStatusName(myorderViewModel
+                                                          .orderList[index]
+                                                          .orderStatusId
                                                           .toString()),
                                                   style:
                                                       textStyleForMainProductDescription,

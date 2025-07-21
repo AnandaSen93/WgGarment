@@ -152,7 +152,7 @@ class _WishlistViewState extends State<WishlistView> {
                                                     .productSellPrice
                                                     .toString() !=
                                                 "0.00")
-                                        ? Text(
+                                        ? Text( currency + 
                                             wishlistViewModel
                                                 .wishListProduct[index]
                                                 .productSellPrice
@@ -160,7 +160,7 @@ class _WishlistViewState extends State<WishlistView> {
                                             style: textStyleForMainPrice,
                                             maxLines: 1,
                                           )
-                                        : Text(
+                                        : Text( currency +
                                             wishlistViewModel
                                                 .wishListProduct[index]
                                                 .productOriginalPrice
@@ -177,12 +177,12 @@ class _WishlistViewState extends State<WishlistView> {
                                                     .productSellPrice
                                                     .toString() !=
                                                 "0.00")
-                                        ? Text(
+                                        ? Text( 
                                             "",
                                             style: textStyleForCutPrice,
                                             maxLines: 1,
                                           )
-                                        : Text(
+                                        : Text( currency +
                                             wishlistViewModel
                                                 .wishListProduct[index]
                                                 .productOriginalPrice

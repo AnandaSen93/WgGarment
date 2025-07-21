@@ -8,10 +8,38 @@ import 'package:wg_garment/My%20Order/myorder_model.dart';
 import 'package:wg_garment/Order%20Details/orderdetails_view_model.dart';
 import 'package:wg_garment/Order%20Details/orerdetailsview.dart';
 
+
+
+
 class MyorderViewModel extends ChangeNotifier {
 
   
    List<OrderDetailsData> orderList = [];
+
+
+
+
+
+   String getStatusName(String id) {
+  const statusMap = {
+    '1': 'Pending',
+    '2': 'Processing',
+    '3': 'Shipped',
+    '5': 'Complete',
+    '7': 'Canceled',
+    '8': 'Denied',
+    '9': 'Canceled Reversal',
+    '10': 'Failed',
+    '11': 'Refunded',
+    '12': 'Reversed',
+    '13': 'Chargeback',
+    '14': 'Expired',
+    '15': 'Processed',
+    '16': 'Voided',
+  };
+
+  return statusMap[id] ?? 'Unknown';
+}
 
 
    void navigateToOrderDetails(String OrderID,BuildContext context) async {    

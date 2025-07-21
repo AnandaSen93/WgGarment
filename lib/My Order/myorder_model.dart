@@ -37,6 +37,7 @@ class OrderDetailsData {
     DateTime? orderDateTime;
     String? orderPrice;
     String? paymentMethod;
+    String? orderStatusId;
     String? orderProductImage;
 
     OrderDetailsData({
@@ -44,6 +45,7 @@ class OrderDetailsData {
         this.orderDateTime,
         this.orderPrice,
         this.paymentMethod,
+        this.orderStatusId,
         this.orderProductImage,
     });
 
@@ -52,6 +54,7 @@ class OrderDetailsData {
         orderDateTime: json["orderDateTime"] == null ? null : DateTime.parse(json["orderDateTime"]),
         orderPrice: json["orderPrice"],
         paymentMethod: json["paymentMethod"],
+        orderStatusId: json["orderStatusId"],
         orderProductImage: json["orderProductImage"],
     );
 
@@ -60,6 +63,7 @@ class OrderDetailsData {
         "orderDateTime": orderDateTime?.toIso8601String(),
         "orderPrice": orderPrice,
         "paymentMethod": paymentMethod,
+        "orderStatusId":orderStatusId,
         "orderProductImage": orderProductImage,
     };
 }

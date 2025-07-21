@@ -41,6 +41,9 @@ class ApiConstant {
   static const String placedorder = "placedorder";
   static const String orderlist = "orderlist";
   static const String orderdetails = "orderdetails";
+  static const String reorder = "reorder";
+  static const String ordercancel = "ordercancel";
+
 
 
   static const String addresslist = "addresslist";

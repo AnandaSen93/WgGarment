@@ -172,7 +172,7 @@ class ProductDetailsViewModel extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");
 
-    print("userID: ${userID}");
+    print("cartQuantity: ${cartQuantity}");
     try {
       final response = await ApiServices().postApiCall({
         "userId": userID,
@@ -193,6 +193,9 @@ class ProductDetailsViewModel extends ChangeNotifier {
       return null;
     }
   }
+
+
+  
 
 
 

@@ -139,8 +139,8 @@ class _CartViewState extends State<CartView> {
                                             maxLines: 2,
                                           ),
                                           Spacer(),
-                                          Text(
-                                            "\$${cartViewModel.cartList[index].productOriginalPrice.toString()}",
+                                          Text( 
+                                            "${currency + cartViewModel.cartList[index].productOriginalPrice.toString()}",
                                             //"hello",
                                             style: textStyleForMainPrice,
                                           ),
@@ -305,12 +305,12 @@ class _CartViewState extends State<CartView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Total Pay: \$${cartViewModel.totalPay}",
+                              "Total Pay: ${currency + cartViewModel.totalPay}",
                               style: textStyleForCategorytName,
                             ),
                             SizedBox(height: 5),
                             Text(
-                              "Total Save: \$${cartViewModel.totalsave}",
+                              "Total Save: ${ currency + cartViewModel.totalsave}",
                               style: textStyleForMainPrice,
                             )
                           ],

@@ -230,7 +230,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                         Container(
                                           width: double.infinity,
                                           child: Text(
-                                            "Price: \$" +
+                                            "Price: " + currency +
                                                 orderdetailsViewModel
                                                     .orderProductList[index]
                                                     .productOriginalPrice
@@ -328,7 +328,116 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                   "",
                               style: textStyleForredText,
                             ),
-                          )
+                          ),
+
+                          // Container(
+                          //   height: 40,
+                          //   color: Colors.amber,
+                          //   child: Row(
+                          //     height
+                          //   ),
+                          // ),
+
+                          Container(
+                          //  color: Colors.amber,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
+                            child: Row(
+                              children: [
+
+                                orderdetailsViewModel.ordreDetails?.orderStatus == "Pending" ?
+                                TextButton(
+                                  onPressed: () async {
+                                    NormalModel? _data =
+                                        await orderdetailsViewModel
+                                            .cancelOrder();
+                                    if (_data?.responseCode == 1) {
+                                      Fluttertoast.showToast(
+                                          msg: _data?.responseText ?? "");
+                                     Future.delayed(Duration(seconds: 2), () {
+                                        orderdetailsViewModel
+                                            .navigateMainMenu(context);
+                                      });
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: _data?.responseText ?? "");
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: Size(0, 0),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: pinkcolor,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Cancel Order",
+                                      style: textStyleForredText,
+                                    ),
+                                  ),
+                                ) : 
+                                Spacer(),
+
+
+
+
+                                Spacer(),
+                                TextButton(
+                                  onPressed: () async {
+                                    NormalModel? _data =
+                                        await orderdetailsViewModel.reOrder();
+                                    if (_data?.responseCode == 1) {
+                                      Fluttertoast.showToast(
+                                          msg: _data?.responseText ?? "");
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        orderdetailsViewModel
+                                            .navigateMainMenu(context);
+                                      });
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: _data?.responseText ?? "");
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: Size(0, 0),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: skybluecolor,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Reorder",
+                                      style: textStyleForSkyText,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+
+
+
                         ],
                       ),
                     ),
@@ -445,7 +554,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           Row(
                             children: [
                               Text(
-                                "Delivert Charge",
+                                "delivery Charge",
                                 style: textStyleForProductName,
                               ),
                               Spacer(),
@@ -496,80 +605,6 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12, // shadow color
-                            spreadRadius: 2, // how much the shadow spreads
-                            blurRadius: 5, // how soft the shadow is
-                            offset: Offset(2, 3), // shadow position (x, y)
-                          ),
-                        ], // Optional: Rounded corners
-                      ),
-                      child: Row(
-                        children: [
-                          TextButton(
-                              onPressed: () async{
-                                 NormalModel? _data = await orderdetailsViewModel.cancelOrder();
-                                if (_data?.responseCode == "1"){
-                                  Fluttertoast.showToast(
-                                        msg: _data?.responseText ?? "");
-                                }else{
-                                  Fluttertoast.showToast(
-                                        msg: _data?.responseText ?? "");
-                                }
-                                orderdetailsViewModel.navigateMainMenu(context);
-
-                                                                
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white, // Optional background
-                                    border: Border.all(
-                                      color: pinkcolor, //  Border color
-                                      width: 1, //  Border width
-                                    ),
-                                    borderRadius: BorderRadius.circular( 8 ), // Rounded corners
-                                  ),
-                                  child: Text(
-                                    "Cancel Order",
-                                    style: textStyleForredText,
-                                  ))),
-                          Spacer(),
-                          TextButton(onPressed: () async {
-
-                             NormalModel? _data = await orderdetailsViewModel.reOrder();
-                                if (_data?.responseCode == 1){
-                                  Fluttertoast.showToast(
-                                        msg: _data?.responseText ?? "");
-                                }else{
-                                  Fluttertoast.showToast(
-                                        msg: _data?.responseText ?? "");
-                                }
-                                orderdetailsViewModel.navigateMainMenu(context);
-
-                               
-                          }, child: Container(
-                                padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white, // Optional background
-                                    border: Border.all(
-                                      color: skybluecolor, //  Border color
-                                      width: 1, //  Border width
-                                    ),
-                                    borderRadius: BorderRadius.circular( 8 ), // Rounded corners
-                                  ),
-                                  child: Text(
-                                    "Re-Order",
-                                    style: textStyleForSkyText,
-                                  ))),
-                        ],
-                      ),
-                    ),
                     SizedBox(height: 40),
                   ],
                 ),

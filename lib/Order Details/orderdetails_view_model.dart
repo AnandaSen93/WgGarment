@@ -54,7 +54,7 @@ class OrderdetailsViewModel extends ChangeNotifier {
         "userId": userID,
         "orderId": orderID,
         "deviceToken": "",
-      }, ApiConstant.orderdetails);
+      }, ApiConstant.ordercancel);
 
       print("Response Type: ${response}");
       var _responseData = normalModelFromJson(response);
@@ -77,7 +77,7 @@ class OrderdetailsViewModel extends ChangeNotifier {
         "userId": userID,
         "orderId": orderID,
         "deviceToken": "",
-      }, ApiConstant.orderdetails);
+      }, ApiConstant.reorder);
 
       print("Response Type: ${response}");
       var _responseData = normalModelFromJson(response);

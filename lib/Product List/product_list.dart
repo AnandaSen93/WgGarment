@@ -330,7 +330,7 @@ class _ProductListViewState extends State<ProductListView> {
                                                                 .productSellPrice
                                                                 .toString() !=
                                                             "0.00")
-                                                    ? Text(
+                                                    ? Text(currency +
                                                         productListViewModel
                                                             .productList[index]
                                                             .productSellPrice
@@ -339,7 +339,7 @@ class _ProductListViewState extends State<ProductListView> {
                                                             textStyleForMainPrice,
                                                         maxLines: 1,
                                                       )
-                                                    : Text(
+                                                    : Text(currency +
                                                         productListViewModel
                                                             .productList[index]
                                                             .productOriginalPrice
@@ -363,7 +363,7 @@ class _ProductListViewState extends State<ProductListView> {
                                                         style:
                                                             textStyleForCutPrice,
                                                         maxLines: 1)
-                                                    : Text(
+                                                    : Text(currency +
                                                         productListViewModel
                                                             .productList[index]
                                                             .productOriginalPrice

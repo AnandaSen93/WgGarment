@@ -45,7 +45,8 @@ class _CheckOutViewState extends State<CheckOutView> {
   }
 
   String dropdownvalue = 'COD';
-  var dropdownItems = ["COD", "Online"];
+  var dropdownItems = ["COD"];
+  //"Online"
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -209,7 +210,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                   Container(
                     width: double.infinity,
                     child: Text(
-                      "Payment Address",
+                      "Billing Address",
                       textAlign: TextAlign.start,
                       style: textStyleForCategorytName2,
                     ),
@@ -543,7 +544,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                           children: [
                             Text("Total MRP:", style: textStyleForTextField),
                             Spacer(),
-                            Text("\$" + checkoutViewModel.totalMRP,
+                            Text(currency + checkoutViewModel.totalMRP,
                                 style: textStyleForTextField)
                           ],
                         ),
@@ -556,7 +557,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 style: textStyleForTextField),
                             Spacer(),
                             Text(
-                                "- \$" + (checkoutViewModel.discountMRP ?? "0"),
+                                "-" + currency + (checkoutViewModel.discountMRP ?? "0"),
                                 style: textStyleForTextField)
                           ],
                         ),
@@ -565,10 +566,10 @@ class _CheckOutViewState extends State<CheckOutView> {
                         ),
                         Row(
                           children: [
-                            Text("Delivary Charge:",
+                            Text("delivery Charge:",
                                 style: textStyleForTextField),
                             Spacer(),
-                            Text("\$" + checkoutViewModel.deliveryCharge,
+                            Text(currency + checkoutViewModel.deliveryCharge,
                                 style: textStyleForTextField)
                           ],
                         ),
@@ -586,7 +587,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                           children: [
                             Text("Total Amount:", style: textStyleForTextField),
                             Spacer(),
-                            Text("\$" + checkoutViewModel.totalPayableAmount,
+                            Text(currency + checkoutViewModel.totalPayableAmount,
                                 style: textStyleForTextField)
                           ],
                         ),

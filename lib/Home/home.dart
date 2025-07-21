@@ -357,7 +357,7 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "0.00")
-                                                      ? Text(
+                                                      ? Text( currency +
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productSellPrice
@@ -366,7 +366,7 @@ class _HomeViewState extends State<HomeView> {
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text(
+                                                      : Text( currency +
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productOriginalPrice
@@ -390,7 +390,7 @@ class _HomeViewState extends State<HomeView> {
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)
-                                                      : Text(
+                                                      : Text( currency +
                                                           homeViewModel
                                                               .newArrival[index]
                                                               .productOriginalPrice
@@ -597,7 +597,7 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "0.00")
-                                                      ? Text(
+                                                      ? Text( currency +
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productSellPrice
@@ -606,7 +606,7 @@ class _HomeViewState extends State<HomeView> {
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text(
+                                                      : Text( currency +
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productOriginalPrice
@@ -633,7 +633,7 @@ class _HomeViewState extends State<HomeView> {
                                                               textStyleForCutPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text(
+                                                      : Text( currency +
                                                           homeViewModel
                                                               .mostWanted[index]
                                                               .productOriginalPrice
@@ -847,7 +847,7 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "")
-                                                      ? Text(
+                                                      ? Text( currency +
                                                           homeViewModel
                                                               .backInaStack[
                                                                   index]
@@ -857,7 +857,7 @@ class _HomeViewState extends State<HomeView> {
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text(
+                                                      : Text( currency +
                                                           homeViewModel
                                                               .backInaStack[
                                                                   index]
@@ -882,7 +882,7 @@ class _HomeViewState extends State<HomeView> {
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)
-                                                      : Text(
+                                                      : Text(currency +
                                                           homeViewModel
                                                               .backInaStack[
                                                                   index]

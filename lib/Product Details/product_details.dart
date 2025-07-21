@@ -296,6 +296,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                         setState(() {
                                           if (item_count > 1) {
                                             item_count = (item_count - 1);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Minimum quantity: 1");
                                           }
                                         });
                                         productDetailsViewModel
@@ -317,8 +321,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                           if (item_count < 10) {
                                             print("${item_count}");
                                             item_count = (item_count + 1);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Maximum quantity: 10");
                                           }
                                         });
+                                        productDetailsViewModel
+                                            .updateQuantity("${item_count}");
                                       },
                                       icon: Icon(Icons.add)),
                                 )
@@ -576,13 +586,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 setState(() {
                                   Fluttertoast.showToast(
                                       msg: response?.responseText ?? "");
-                                      productDetailsViewModel.navigateMainMenu(context);
+                                  productDetailsViewModel
+                                      .navigateMainMenu(context);
                                 });
                               } else {
                                 Fluttertoast.showToast(
                                     msg: response?.responseText ?? "");
                               }
-                                                        } else {
+                            } else {
                               setState(() {
                                 Fluttertoast.showToast(
                                     msg: productDetailsViewModel
@@ -850,27 +861,27 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         //         .productDetailsData?.isAlreadyBuy
                         //         .toString() ==
                         //     "1")
-                          SizedBox(
-                            height: 50,
-                            width: double.infinity,
-                            child: TextButton(
-                                onPressed: () {
-                                  productDetailsViewModel
-                                      .navigateToReviewPage(context);
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      pinkcolor, // Button background color
-                                  foregroundColor: Colors.white, // Text color
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5.0), // Rounded corners
-                                  ),
+                        SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: TextButton(
+                              onPressed: () {
+                                productDetailsViewModel
+                                    .navigateToReviewPage(context);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    pinkcolor, // Button background color
+                                foregroundColor: Colors.white, // Text color
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      5.0), // Rounded corners
                                 ),
-                                child: Text("Add Review")),
-                          ),
+                              ),
+                              child: Text("Add Review")),
+                        ),
                       ],
                     ),
                   ),
@@ -1004,21 +1015,23 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                                       .toString() !=
                                                                   "0.00")
                                                           ? Text(
-                                                              productDetailsViewModel
-                                                                  .similarProductlist[
-                                                                      index]
-                                                                  .productSellPrice
-                                                                  .toString(),
+                                                              currency +
+                                                                  productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productSellPrice
+                                                                      .toString(),
                                                               style:
                                                                   textStyleForMainPrice,
                                                               maxLines: 1,
                                                             )
                                                           : Text(
-                                                              productDetailsViewModel
-                                                                  .similarProductlist[
-                                                                      index]
-                                                                  .productOriginalPrice
-                                                                  .toString(),
+                                                              currency +
+                                                                  productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productOriginalPrice
+                                                                      .toString(),
                                                               style:
                                                                   textStyleForMainPrice,
                                                               maxLines: 1),
@@ -1039,11 +1052,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                                   textStyleForCutPrice,
                                                               maxLines: 1)
                                                           : Text(
-                                                              productDetailsViewModel
-                                                                  .similarProductlist[
-                                                                      index]
-                                                                  .productOriginalPrice
-                                                                  .toString(),
+                                                              currency +
+                                                                  productDetailsViewModel
+                                                                      .similarProductlist[
+                                                                          index]
+                                                                      .productOriginalPrice
+                                                                      .toString(),
                                                               style:
                                                                   textStyleForCutPrice,
                                                               maxLines: 1)

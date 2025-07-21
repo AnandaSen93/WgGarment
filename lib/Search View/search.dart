@@ -221,7 +221,7 @@ late SearchViewModel _viewModel;
                                                 MainAxisAlignment.center,
                                             children: [
                                               (searchViewModel.productList[index] .productSellPrice.toString() != "" && searchViewModel.productList[index] .productSellPrice.toString() != "0.00")
-                                                  ? Text(
+                                                  ? Text(currency +
                                                       searchViewModel
                                                           .productList[index]
                                                           .productSellPrice
@@ -229,7 +229,7 @@ late SearchViewModel _viewModel;
                                                       style: textStyleForMainPrice,
                                                       maxLines: 1,
                                                     )
-                                                  : Text(
+                                                  : Text(currency +
                                                       searchViewModel
                                                           .productList[index]
                                                           .productOriginalPrice
@@ -240,7 +240,7 @@ late SearchViewModel _viewModel;
                                                   ? Text("",
                                                       style: textStyleForCutPrice,
                                                       maxLines: 1)
-                                                  : Text(
+                                                  : Text(currency +
                                                       searchViewModel
                                                           .productList[index]
                                                           .productOriginalPrice
