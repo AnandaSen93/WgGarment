@@ -6,6 +6,8 @@ import 'package:wg_garment/Address%20List/addresslist_view_model.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_model.dart';
 
+fgfgfgfgfg
+
 class AddresslistView extends StatefulWidget {
   const AddresslistView({super.key});
 
