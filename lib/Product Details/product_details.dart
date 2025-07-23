@@ -204,20 +204,22 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                   .toString() !=
                                               "0.00")
                                       ? Text(
-                                          productDetailsViewModel
-                                                  .productDetailsData
-                                                  ?.productSellPrice
-                                                  .toString() ??
-                                              "",
+                                          currency +
+                                              (productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.productSellPrice
+                                                      .toString() ??
+                                                  ""),
                                           style: textStyleForMainPrice,
                                           maxLines: 1,
                                         )
                                       : Text(
-                                          productDetailsViewModel
-                                                  .productDetailsData
-                                                  ?.productOriginalPrice
-                                                  .toString() ??
-                                              "",
+                                          currency +
+                                              (productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.productOriginalPrice
+                                                      .toString() ??
+                                                  ""),
                                           style: textStyleForMainPrice,
                                           maxLines: 1),
                                   (productDetailsViewModel.productDetailsData
@@ -233,11 +235,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                           style: textStyleForCutPrice,
                                           maxLines: 1)
                                       : Text(
-                                          productDetailsViewModel
-                                                  .productDetailsData
-                                                  ?.productOriginalPrice
-                                                  .toString() ??
-                                              "",
+                                          currency +
+                                              (productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.productOriginalPrice
+                                                      .toString() ??
+                                                  ""),
                                           style: textStyleForCutPrice,
                                           maxLines: 1)
                                 ],
@@ -298,8 +301,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             item_count = (item_count - 1);
                                           } else {
                                             Fluttertoast.showToast(
-                                                msg:
-                                                    "Minimum quantity: 1");
+                                                msg: "Minimum quantity: 1");
                                           }
                                         });
                                         productDetailsViewModel
@@ -323,8 +325,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                             item_count = (item_count + 1);
                                           } else {
                                             Fluttertoast.showToast(
-                                                msg:
-                                                    "Maximum quantity: 10");
+                                                msg: "Maximum quantity: 10");
                                           }
                                         });
                                         productDetailsViewModel
@@ -551,13 +552,22 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           style: textStyleForCategorytName2,
                         ),
                         SizedBox(height: 15),
-                        HtmlWidget(
-                          productDetailsViewModel
-                                  .productDetailsData?.productDescription
-                                  .toString() ??
-                              "",
-                          textStyle: textStyleForCategorytName,
+                        Text(
+                          decodeAndCleanHtml(
+                            productDetailsViewModel
+                                    .productDetailsData?.productDescription
+                                    .toString() ??
+                                "",
+                          ),
+                          style: textStyleForCategorytName,
                         )
+                        // HtmlWidget(
+                        //   productDetailsViewModel
+                        //           .productDetailsData?.productDescription
+                        //           .toString() ??
+                        //       "",
+                        //   textStyle: textStyleForCategorytName,
+                        // )
                       ],
                     ),
                   ),

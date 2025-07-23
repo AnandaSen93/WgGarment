@@ -73,7 +73,7 @@ flutter_native_splash:
   image: assets/images/app_logo.png     # Path to your splash image
   android: true                # Apply to Android
   ios: true    
-  #ios_content_mode: "fullscreen"               # Apply to iOS
+  # ios_content_mode: "fullscreen"               # Apply to iOS
   android_12:
     image: assets/images/app_logo.png   # Separate image for Android 12+
     icon_background_color: "#ffffff"  # Bac

@@ -231,7 +231,8 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                                         Container(
                                           width: double.infinity,
                                           child: Text(
-                                            "Price: " + currency +
+                                            "Price: " +
+                                                currency +
                                                 orderdetailsViewModel
                                                     .orderProductList[index]
                                                     .productOriginalPrice
@@ -332,159 +333,136 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                           ),
 
                           // Container(
-                          //   height: 40,
-                          //   color: Colors.amber,
+                          // //  color: Colors.amber,
+                          //   padding: EdgeInsets.symmetric(
+                          //       horizontal: 0, vertical: 0),
                           //   child: Row(
-                          //     height
+                          //     children: [
+
+                          //        orderdetailsViewModel.ordreDetails?.orderStatus == "Pending" ?
+                          //       TextButton(
+                          //         onPressed: () async {
+
+                          //           Alert(
+                          //   context: context,
+                          //   type: AlertType
+                          //       .warning, // You can change the type (success, error, info, etc.)
+                          //   title: "Cancel Order",
+                          //   desc: "Are you sure you want to cancel this order?",
+                          //   buttons: [
+                          //     DialogButton(
+                          //       child: Text(
+                          //         "Yes",
+                          //         style: TextStyle(
+                          //             color: Colors.white, fontSize: 18),
+                          //       ),
+                          //       onPressed: () async {
+                          //         print("Yes");
+                          //         Navigator.pop(context);
+
+                          //             NormalModel? _data =
+                          //               await orderdetailsViewModel
+                          //                   .cancelOrder();
+                          //           if (_data?.responseCode == 1) {
+                          //             Fluttertoast.showToast(
+                          //                 msg: _data?.responseText ?? "");
+                          //            Future.delayed(Duration(seconds: 2), () {
+                          //               orderdetailsViewModel
+                          //                   .navigateMainMenu(context);
+                          //             });
+                          //           } else {
+                          //             Fluttertoast.showToast(
+                          //                 msg: _data?.responseText ?? "");
+                          //           }
+
+                          //         // Close the alert
+                          //       },
+                          //       color: Colors.green,
+                          //     ),
+                          //     DialogButton(
+                          //       child: Text(
+                          //         "No",
+                          //         style: TextStyle(
+                          //             color: Colors.white, fontSize: 18),
+                          //       ),
+                          //       onPressed: () {
+                          //         print("No");
+                          //         Navigator.pop(context); // Close the alert
+                          //       },
+                          //       color: Colors.red,
+                          //     )
+                          //   ],
+                          // ).show();
+
+                          //         },
+                          //         style: TextButton.styleFrom(
+                          //           padding: EdgeInsets.zero,
+                          //           minimumSize: Size(0, 0),
+                          //           tapTargetSize:
+                          //               MaterialTapTargetSize.shrinkWrap,
+                          //         ),
+                          //         child: Container(
+                          //           padding: EdgeInsets.symmetric(
+                          //               horizontal: 12, vertical: 6),
+                          //           decoration: BoxDecoration(
+                          //             color: Colors.white,
+                          //             border: Border.all(
+                          //               color: pinkcolor,
+                          //               width: 1,
+                          //             ),
+                          //             borderRadius: BorderRadius.circular(8),
+                          //           ),
+                          //           child: Text(
+                          //             "Cancel Order",
+                          //             style: textStyleForredText,
+                          //           ),
+                          //         ),
+                          //       ) :
+                          //       Spacer(),
+
+                          //       Spacer(),
+                          // TextButton(
+                          //   onPressed: () async {
+                          //     NormalModel? _data =
+                          //         await orderdetailsViewModel.reOrder();
+                          //     if (_data?.responseCode == 1) {
+                          //       Fluttertoast.showToast(
+                          //           msg: _data?.responseText ?? "");
+                          //       Future.delayed(Duration(seconds: 2), () {
+                          //         orderdetailsViewModel
+                          //             .navigateMainMenu(context);
+                          //       });
+                          //     } else {
+                          //       Fluttertoast.showToast(
+                          //           msg: _data?.responseText ?? "");
+                          //     }
+                          //   },
+                          //   style: TextButton.styleFrom(
+                          //     padding: EdgeInsets.zero,
+                          //     minimumSize: Size(0, 0),
+                          //     tapTargetSize:
+                          //         MaterialTapTargetSize.shrinkWrap,
+                          //   ),
+                          //   child: Container(
+                          //     padding: EdgeInsets.symmetric(
+                          //         horizontal: 12, vertical: 6),
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.white,
+                          //       border: Border.all(
+                          //         color: skybluecolor,
+                          //         width: 1,
+                          //       ),
+                          //       borderRadius: BorderRadius.circular(8),
+                          //     ),
+                          //     child: Text(
+                          //       "Reorder",
+                          //       style: textStyleForSkyText,
+                          //     ),
                           //   ),
                           // ),
-
-                          Container(
-                          //  color: Colors.amber,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 0),
-                            child: Row(
-                              children: [
-
-                                orderdetailsViewModel.ordreDetails?.orderStatus == "Pending" ?
-                                TextButton(
-                                  onPressed: () async {
-
-
-
-                                    Alert(
-                            context: context,
-                            type: AlertType
-                                .warning, // You can change the type (success, error, info, etc.)
-                            title: "Cancel Order",
-                            desc: "Are you sure you want to cancel this order?",
-                            buttons: [
-                              DialogButton(
-                                child: Text(
-                                  "Yes",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                                onPressed: () async {
-                                  print("Yes");
-                                  Navigator.pop(context);
-
-                                      NormalModel? _data =
-                                        await orderdetailsViewModel
-                                            .cancelOrder();
-                                    if (_data?.responseCode == 1) {
-                                      Fluttertoast.showToast(
-                                          msg: _data?.responseText ?? "");
-                                     Future.delayed(Duration(seconds: 2), () {
-                                        orderdetailsViewModel
-                                            .navigateMainMenu(context);
-                                      });
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: _data?.responseText ?? "");
-                                    }
-
-                                  // Close the alert
-                                },
-                                color: Colors.green,
-                              ),
-                              DialogButton(
-                                child: Text(
-                                  "No",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                                onPressed: () {
-                                  print("No");
-                                  Navigator.pop(context); // Close the alert
-                                },
-                                color: Colors.red,
-                              )
-                            ],
-                          ).show();
-
-
-
-                              
-
-
-
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size(0, 0),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: pinkcolor,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      "Cancel Order",
-                                      style: textStyleForredText,
-                                    ),
-                                  ),
-                                ) : 
-                                Spacer(),
-
-
-
-
-                                Spacer(),
-                                TextButton(
-                                  onPressed: () async {
-                                    NormalModel? _data =
-                                        await orderdetailsViewModel.reOrder();
-                                    if (_data?.responseCode == 1) {
-                                      Fluttertoast.showToast(
-                                          msg: _data?.responseText ?? "");
-                                      Future.delayed(Duration(seconds: 2), () {
-                                        orderdetailsViewModel
-                                            .navigateMainMenu(context);
-                                      });
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: _data?.responseText ?? "");
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size(0, 0),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: skybluecolor,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      "Reorder",
-                                      style: textStyleForSkyText,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-
-
-
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -592,7 +570,7 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                               ),
                               Spacer(),
                               Text(
-                                "${ currency + (orderdetailsViewModel.ordreDetails?.totalMrp ?? "")}",
+                                "${currency + (orderdetailsViewModel.ordreDetails?.totalMrp ?? "")}",
                                 style: textStyleForMainProductDescription,
                               )
                             ],
@@ -652,6 +630,83 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                       ),
                     ),
                     SizedBox(height: 10),
+                    if (orderdetailsViewModel.ordreDetails?.orderStatus ==
+                        "Pending")
+                      TextButton(
+                        onPressed: () async {
+                          Alert(
+                            context: context,
+                            type: AlertType
+                                .warning, // You can change the type (success, error, info, etc.)
+                            title: "Cancel Order",
+                            desc: "Are you sure you want to cancel this order?",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () async {
+                                  print("Yes");
+                                  Navigator.pop(context);
+
+                                  NormalModel? _data =
+                                      await orderdetailsViewModel.cancelOrder();
+                                  if (_data?.responseCode == 1) {
+                                    Fluttertoast.showToast(
+                                        msg: _data?.responseText ?? "");
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      orderdetailsViewModel
+                                          .navigateMainMenu(context);
+                                    });
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: _data?.responseText ?? "");
+                                  }
+
+                                  // Close the alert
+                                },
+                                color: Colors.green,
+                              ),
+                              DialogButton(
+                                child: Text(
+                                  "No",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  print("No");
+                                  Navigator.pop(context); // Close the alert
+                                },
+                                color: Colors.red,
+                              )
+                            ],
+                          ).show();
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10),                     
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: pinkcolor,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            "Cancel Order",
+                            style: textStyleForredText,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
                     SizedBox(height: 40),
                   ],
                 ),

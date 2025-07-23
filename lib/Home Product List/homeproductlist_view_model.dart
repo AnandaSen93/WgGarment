@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
+import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Product%20Details/product_details.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
 import 'package:wg_garment/Product%20List/product_list_model.dart';
@@ -63,4 +64,29 @@ class HomeproductlistViewModel extends ChangeNotifier {
       return null;
     }
   }
+
+
+  Future<NormalModel?> addRemoveWishlistApiCall(String productID) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString("userID");
+    try {
+      final response = await ApiServices().postApiCall(
+          {"userId": userID, "productId": productID},
+          ApiConstant.addremovewishlistUrl);
+
+      print("Response : ${response.runtimeType}");
+      var normalData = normalModelFromJson(response);
+      print(normalData.responseText);
+
+      await productListApi();
+      //notifyListeners();
+      print("homeApiCall() executed successfully!");
+      return normalData;
+    } catch (error, stackTrace) {
+      print("Error in addRemoveWishlistApiCall: $error");
+      print(stackTrace);
+      return null;
+    } // Log the full stack trace for debugging
+  }
+  
 }

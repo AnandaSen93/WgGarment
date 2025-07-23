@@ -76,7 +76,6 @@ class _ProfileViewState extends State<ProfileView> {
     if (!_isInitialized) {
       Provider.of<ProfileViewModel>(context, listen: false).profileApiCall();
 
-      //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
       _isInitialized = true; // Ensure it's called only once
     }
   }
@@ -172,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  setState(() {
+                                  //setState(() {
                                     // api call
 
                                     profileViewModel.updatenewslatterApi(
@@ -181,7 +180,7 @@ class _ProfileViewState extends State<ProfileView> {
                                        );
 
 
-                                  });
+                                 // });
                                 },
                                 icon: Icon(
                                   profileViewModel.profileDta?.isNewsLetter.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
@@ -202,13 +201,13 @@ class _ProfileViewState extends State<ProfileView> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  setState(() {
+                                 // setState(() {
                                     // api call
                                       profileViewModel.updatenewslatterApi(
                                       profileViewModel.profileDta?.isProductFeed.toString() == "1" ? "0" : "1",
                                       profileViewModel.profileDta?.isNewsLetter.toString() ?? ""
                                        );
-                                  });
+                                //  });
                                 },
                                 icon: Icon(
                                   profileViewModel.profileDta?.isProductFeed.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
@@ -324,7 +323,7 @@ class _ProfileViewState extends State<ProfileView> {
                           profileViewModel.navigateToSlugPage("2",context);
                         } else if (list[index] == "Privacy Policy" ) {
                           //3
-                          profileViewModel.navigateToSlugPage("2",context);
+                          profileViewModel.navigateToSlugPage("3",context);
                         } else if (list[index] == "Who We Are" ) {
                           //1
                           profileViewModel.navigateToSlugPage("1",context);

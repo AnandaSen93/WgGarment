@@ -109,9 +109,7 @@ class OrderdetailsViewModel extends ChangeNotifier {
       (Route<dynamic> route) => false,
     );
 
-    if (result != null) {
-      // Handle the returned result (pop data)
-      print("Received Data: $result");
+    // Handle the returned result (pop data)
+    print("Received Data: $result");
     }
-  }
 }

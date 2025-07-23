@@ -6,7 +6,6 @@ import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Login/login_model.dart';
 import 'package:wg_garment/Login/login_view_model.dart';
-import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/Signup/signup.dart';
 
 class LoginView extends StatefulWidget {
@@ -117,7 +116,7 @@ class _LoginViewState extends State<LoginView>
                                     keyboardType: TextInputType.emailAddress,
 
                                     onSubmitted: (_) => _toggleKeyboard(),
-                                    hintText: 'Please enter email address',
+                                    hintText: 'Enter email address here...',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
                                       decoration: BoxDecoration(
@@ -136,7 +135,7 @@ class _LoginViewState extends State<LoginView>
                                         contentPadding: EdgeInsets.all(
                                             10), // You can add a border if needed
                                         hintText:
-                                            'Enter text here', // Optional: hint text for Android
+                                            'Enter email address here...', // Optional: hint text for Android
                                       ),
                                     ),
                                   ))
@@ -175,7 +174,7 @@ class _LoginViewState extends State<LoginView>
                                     keyboardType: TextInputType.emailAddress,
                                     //focusNode: _focusNode,
                                     onSubmitted: (_) => _toggleKeyboard(),
-                                    hintText: 'Please enter password here....',
+                                    hintText: 'Enter password here...',
                                     cupertino: (context, platform) =>
                                         CupertinoTextFieldData(
                                       decoration: BoxDecoration(
@@ -196,7 +195,7 @@ class _LoginViewState extends State<LoginView>
                               contentPadding: EdgeInsets.all(
                                   10), // You can add a border if needed
                                         hintText:
-                                            'Please enter password here....', // Optional: hint text for Android
+                                            'Enter password here...', // Optional: hint text for Android
                                       ),
                                     ),
                                   ))

@@ -56,6 +56,8 @@ class ReviewlistViewModel extends ChangeNotifier {
 
       print("Response Type: ${response.runtimeType}");
       var _responseData = normalModelFromJson(response);  
+      commentsController.clear();
+      ratingValue = "1";
       getReviewList();   
       notifyListeners();
       return _responseData;

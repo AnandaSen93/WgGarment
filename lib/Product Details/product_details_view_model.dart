@@ -82,11 +82,9 @@ class ProductDetailsViewModel extends ChangeNotifier {
     );
 
 
-    if (result != null) {
-      // Handle the returned result (pop data)
-      print("Received Data: $result");
+    // Handle the returned result (pop data)
+    print("Received Data: $result");
     }
-  }
 
      void navigateToReviewPage(BuildContext context) async {    
 

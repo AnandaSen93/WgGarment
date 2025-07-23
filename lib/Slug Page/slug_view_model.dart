@@ -7,6 +7,7 @@ class SlugViewModel extends ChangeNotifier {
   
 
    String pageID = '';
+   String pageName = '';
 
 
     void setPageID(String _id){
@@ -23,7 +24,7 @@ class SlugViewModel extends ChangeNotifier {
       print("Response Type: ${response.runtimeType}");
       final _data = slugResponseModelFromJson(response);
      
-
+      pageName = _data.responseData?.metaTitle ?? "";
 
       notifyListeners();
       return _data;      

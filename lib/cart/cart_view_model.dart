@@ -20,6 +20,7 @@ String totalsave = "";
 
 void clearData(){
    cartList = [];
+   notifyListeners();
 }
 
 

@@ -35,11 +35,9 @@ class EditprofileViewModel extends ChangeNotifier {
       (Route<dynamic> route) => false,
     );
 
-    if (result != null) {
-      // Handle the returned result (pop data)
-      print("Received Data: $result");
+    // Handle the returned result (pop data)
+    print("Received Data: $result");
     }
-  }
 
   String checkValidation() {
     String str = "";
@@ -69,6 +67,10 @@ class EditprofileViewModel extends ChangeNotifier {
     String str = "";
     if (phoneController.text.isEmpty) {
       str = "Please enter your phone number.";
+    }else if (phoneController.text.length < 10) {
+      str = "Please enter a valid phone number.";
+    }else if (phoneController.text.length > 15) {
+      str = "Please enter a valid phone number.";
     } else {
       str = "success";
     }

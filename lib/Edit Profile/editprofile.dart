@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -271,6 +272,10 @@ void _initAsync() async {
                                     0.0), // Optional: Rounded corners
                               ),
                               child: PlatformTextField(
+                                 inputFormatters: [
+                                      FilteringTextInputFormatter.deny(RegExp(
+                                          r'[0-9]')),
+                                    ],
                                   controller: editProfileViewModel
                                       .firstNameController, // (Optional: TextEditingController, currently commented)
                                   // onChanged: addeditAddressViewModel.setFirstName, // Called on text change
@@ -320,6 +325,10 @@ void _initAsync() async {
                                     0.0), // Optional: Rounded corners
                               ),
                               child: PlatformTextField(
+                                 inputFormatters: [
+                                      FilteringTextInputFormatter.deny(RegExp(
+                                          r'[0-9]')),
+                                    ],
                                   controller: editProfileViewModel
                                       .lastNameController, // (Optional: TextEditingController, currently commented)
                                   // onChanged: addeditAddressViewModel.setFirstName, // Called on text change
@@ -483,7 +492,7 @@ void _initAsync() async {
                                           } else {
                                             Fluttertoast.showToast(
                                                 msg: editProfileViewModel
-                                                    .checkValidation());
+                                                    .checkValidationForEmail());
                                           }
                                         },
                                         child: Text(
@@ -512,6 +521,7 @@ void _initAsync() async {
                                             0.0), // Optional: Rounded corners
                                       ),
                                       child: PlatformTextField(
+                                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                           controller: editProfileViewModel
                                               .phoneController, // (Optional: TextEditingController, currently commented)
                                           // onChanged: addeditAddressViewModel.setFirstName, // Called on text change
@@ -581,7 +591,7 @@ void _initAsync() async {
                                           } else {
                                             Fluttertoast.showToast(
                                                 msg: editProfileViewModel
-                                                    .checkValidation());
+                                                    .checkValidationForPhone());
                                           }
                                         },
                                         child: Text(

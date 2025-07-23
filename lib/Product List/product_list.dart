@@ -289,7 +289,8 @@ class _ProductListViewState extends State<ProductListView> {
                                               height: 30,
                                             ),
                                             onPressed: () {
-                                              // Action when pressed
+                                              productListViewModel.addRemoveWishlistApiCall(productListViewModel
+                                                          .productList[index].productId ?? "");
                                             },
                                           ),
                                         )

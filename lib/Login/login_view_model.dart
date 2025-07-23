@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
@@ -60,11 +59,9 @@ class LoginViewModel extends ChangeNotifier {
     );
 
 
-    if (result != null) {
-      // Handle the returned result (pop data)
-      print("Received Data: $result");
+    // Handle the returned result (pop data)
+    print("Received Data: $result");
     }
-  }
 
 
     void navigateToForgetPassword(BuildContext context) async {

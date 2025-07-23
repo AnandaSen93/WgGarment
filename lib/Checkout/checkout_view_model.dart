@@ -30,18 +30,15 @@ class CheckoutViewModel extends ChangeNotifier {
 
   String adddressType = '';
 
-  @override
-  void dispose() {
-    couponCodeController.dispose();
-    commentController.dispose();
-    super.dispose();
-  }
 
   void clearData() {
     discountMRP = "0.0";
     deliveryCharge = "10";
     totalPayableAmount = "0.0";
     isCouponApply = false;
+    couponCodeController.clear();
+    commentController.clear();
+    notifyListeners();
   }
 
   void navigateMainMenu(BuildContext context) async {
@@ -62,11 +59,9 @@ class CheckoutViewModel extends ChangeNotifier {
       (Route<dynamic> route) => false,
     );
 
-    if (result != null) {
-      // Handle the returned result (pop data)
-      print("Received Data: $result");
+    // Handle the returned result (pop data)
+    print("Received Data: $result");
     }
-  }
 
   void navigateToAddressPage(BuildContext context) async {
     Provider.of<AddresslistViewModel>(context, listen: false)
@@ -95,11 +90,10 @@ class CheckoutViewModel extends ChangeNotifier {
 
   String checkValidation() {
     String str = "";
-    if (shippingAddress.addressId!.isEmpty) {
-      str = "Please enter your email.";
-    }
-    if (billingAddress.addressId!.isEmpty) {
-      str = "Please enter your email.";
+    if (shippingAddress.addressId == null) {
+      str = "Please add your shipping address.";
+    }else if (billingAddress.addressId == null) {
+      str = "Please add your billing address.";
     } else {
       str = "success";
     }

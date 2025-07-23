@@ -8,7 +8,6 @@ import 'package:wg_garment/Change%20Password/changepassword.dart';
 import 'package:wg_garment/Edit%20Profile/editprofile.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Login/login.dart';
-import 'package:wg_garment/Menu/menu.dart';
 import 'package:wg_garment/My%20Order/myorderview.dart';
 import 'package:wg_garment/Profile/profile_model.dart';
 import 'package:wg_garment/Slug%20Page/slug_view_model.dart';

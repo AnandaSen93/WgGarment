@@ -115,11 +115,11 @@ class _ReviewListViewState extends State<ReviewListView> {
                   emptyIcon: Icons.star_border,
                   emptyColor: pinkcolor,
                   filledColor: pinkcolor,
-                  initialRating: 2,
+                  initialRating: 1,
                   maxRating: 5,
                   size: 40,
                   alignment: Alignment.center,
-                  onRatingChanged: (value) => debugPrint('$value'),
+                  onRatingChanged: (value) => _viewModel.ratingValue = value.toString(),
                 ),
               ),
               SizedBox(

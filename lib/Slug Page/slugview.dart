@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wg_garment/Config/colors.dart';
+import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Slug%20Page/slug_view_model.dart';
 import 'package:html_unescape/html_unescape.dart';
 
@@ -46,7 +50,7 @@ class _SlugviewState extends State<Slugview> {
           final decodedHtml = unescape.convert(rawHtml);
 
           // Inject frontend-controlled CSS wrapper
-final frontendStyledHtml = '''
+          final frontendStyledHtml = '''
 <!DOCTYPE html>
 <html>
   <head>
@@ -58,7 +62,7 @@ final frontendStyledHtml = '''
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
         padding: 16px;
         color: #333;
-        background-color: #ffffff;
+        background-color: transparent;
       }
       h1, h2, h3 {
         font-size: 20px !important;
@@ -85,11 +89,10 @@ final frontendStyledHtml = '''
 </html>
 ''';
 
-
           _controller
             ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..setBackgroundColor(Colors.transparent)
             ..loadHtmlString(frontendStyledHtml);
-
         }
       } else {
         Fluttertoast.showToast(msg: "Something went wrong!");
@@ -98,10 +101,10 @@ final frontendStyledHtml = '''
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
+final slugViewModel = Provider.of<SlugViewModel>(context);
+
     return PlatformScaffold(
       body: SafeArea(
           child: Column(
@@ -126,6 +129,17 @@ final frontendStyledHtml = '''
               ],
             ),
           ),
+
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              decodeAndCleanHtml(slugViewModel.pageName),
+              textAlign: TextAlign.center,
+              style: textStyleForMainProductName,
+            ),
+          ),
+
+          
 
           Expanded(
             child: WebViewWidget(

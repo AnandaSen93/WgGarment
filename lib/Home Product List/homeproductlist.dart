@@ -131,7 +131,9 @@ class _HomeproductlistViewState extends State<HomeproductlistView> {
                                             height: 30,
                                           ),
                                           onPressed: () {
-                                            // Action when pressed
+                                            homeProductListViewModel.addRemoveWishlistApiCall(homeProductListViewModel
+                                                        .productList[index].productId ?? "");
+
                                           },
                                         ),
                                       )

@@ -38,13 +38,13 @@ class AddeditAddressViewModel extends ChangeNotifier {
     stateID = '';
     stateName = '';
 
-    firstNameController.text = "";
-    lastNameController.text = "";
-    companyController.text = "";
-    address1Controller.text = "";
-    address2Controller.text = "";
-    cityController.text = "";
-    postCodeController.text = "";
+    firstNameController.clear();
+    lastNameController.clear();
+    companyController.clear();
+    address1Controller.clear();
+    address2Controller.clear();
+    cityController.clear();
+    postCodeController.clear();
     isDefault =  addressFull?.isDefault ?? "0";
 
 }
@@ -111,6 +111,10 @@ class AddeditAddressViewModel extends ChangeNotifier {
       str = "Please enter city.";
     } else if (postCodeController.text == "") {
       str = "Please enter your postcode.";
+    } else if (postCodeController.text.length < 4) {
+      str = "Please enter a valid postcode.";
+    } else if (postCodeController.text.length > 8) {
+      str = "Please enter a valid postcode.";
     } else if (countryID == "") {
       str = "Please select your country.";
     } else if (stateID == "") {

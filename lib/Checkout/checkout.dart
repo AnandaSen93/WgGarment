@@ -75,6 +75,7 @@ class _CheckOutViewState extends State<CheckOutView> {
               children: [
                 IconButton(
                     onPressed: () {
+                      checkoutViewModel.clearData();
                       Navigator.pop(context);
                     },
                     icon: Icon(Icons.arrow_back_ios_new)),
@@ -114,7 +115,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                           width: 1.0, // Border width
                         ),
                         borderRadius: BorderRadius.circular(
-                            0.0), // Optional: Rounded corners
+                            8.0), // Optional: Rounded corners
                       ),
                       child: Container(
                         width: double.infinity,
@@ -166,37 +167,31 @@ class _CheckOutViewState extends State<CheckOutView> {
                                     colorBlendMode: BlendMode.srcIn,
                                   ),
                                   Expanded(
-                                    child:
-                                        Text(
-                                            (checkoutViewModel.shippingAddress.houseOne ?? "") +
-                                                "," +
-                                                (checkoutViewModel
-                                                        .shippingAddress
-                                                        .houseTwo ??
-                                                    "") +
-                                                "," +
-                                                (checkoutViewModel
-                                                        .shippingAddress.city ??
-                                                    "") +
-                                                "," +
-                                                (checkoutViewModel
-                                                        .shippingAddress
-                                                        .state ??
-                                                    "") +
-                                                "," +
-                                                (checkoutViewModel
-                                                        .shippingAddress
-                                                        .country ??
-                                                    "") +
-                                                "," +
-                                                (checkoutViewModel
-                                                        .shippingAddress
-                                                        .pincode ??
-                                                    ""),
-                                            maxLines:
-                                                3, // Limit lines (optional)
-                                            overflow: TextOverflow.ellipsis,
-                                            style: textStyleForMainProductDescription),
+                                    child: Text(
+                                        (checkoutViewModel.shippingAddress.houseOne ?? "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .shippingAddress.houseTwo ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel.shippingAddress.city ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .shippingAddress.state ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .shippingAddress.country ??
+                                                "") +
+                                            "," +
+                                            (checkoutViewModel
+                                                    .shippingAddress.pincode ??
+                                                ""),
+                                        maxLines: 3, // Limit lines (optional)
+                                        overflow: TextOverflow.ellipsis,
+                                        style:
+                                            textStyleForMainProductDescription),
                                   )
                                 ],
                               ),
@@ -225,7 +220,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                           width: 1.0, // Border width
                         ),
                         borderRadius: BorderRadius.circular(
-                            0.0), // Optional: Rounded corners
+                            8.0), // Optional: Rounded corners
                       ),
                       child: Container(
                         width: double.infinity,
@@ -300,7 +295,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                                                 ""),
                                         maxLines: 3, // Limit lines (optional)
                                         overflow: TextOverflow.ellipsis,
-                                        style: textStyleForMainProductDescription),
+                                        style:
+                                            textStyleForMainProductDescription),
                                   )
                                 ],
                               ),
@@ -329,7 +325,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(
-                          0.0), // Optional: Rounded corners
+                          8.0), // Optional: Rounded corners
                     ),
                     padding: EdgeInsets.only(left: 10, right: 10),
                     child: Material(
@@ -379,7 +375,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 width: 1.0, // Border width
                               ),
                               borderRadius: BorderRadius.circular(
-                                  0.0), // Optional: Rounded corners
+                                  8.0), // Optional: Rounded corners
                             ),
                             height: 40,
                             child: PlatformTextField(
@@ -404,8 +400,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                                   filled:
                                       false, // Remove the background color for Android
                                   border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(
-                                  10), // You can add a border if needed
+                                  contentPadding: EdgeInsets.all(
+                                      10), // You can add a border if needed
                                   hintText:
                                       'Enter your coupon here', // Optional: hint text for Android
                                 ),
@@ -415,7 +411,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                         ),
                         SizedBox(width: 10),
                         Container(
-                             decoration: BoxDecoration(
+                            decoration: BoxDecoration(
                               color: skybluecolor,
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -423,23 +419,23 @@ class _CheckOutViewState extends State<CheckOutView> {
                             width: 100,
                             // color: lightgraykcolor,
                             child: TextButton(
-                              onPressed: () async {
-                                if (checkoutViewModel.isCouponApply) {
-                                  checkoutViewModel.removeCouponCode();
-                                } else {
-                                  CouponModel? response =
-                                      await checkoutViewModel.applyCouponCode();
-                                  Fluttertoast.showToast(
-                                      msg: response?.responseText ?? "");
-                                                                }
-                              },
-                              child: Text(
-                                    checkoutViewModel.isCouponApply
-                                        ? "Remove"
-                                        : "Apply",
-                                    style: textStyleForButton,
-                                  )
-                            ))
+                                onPressed: () async {
+                                  if (checkoutViewModel.isCouponApply) {
+                                    checkoutViewModel.removeCouponCode();
+                                  } else {
+                                    CouponModel? response =
+                                        await checkoutViewModel
+                                            .applyCouponCode();
+                                    Fluttertoast.showToast(
+                                        msg: response?.responseText ?? "");
+                                  }
+                                },
+                                child: Text(
+                                  checkoutViewModel.isCouponApply
+                                      ? "Remove"
+                                      : "Apply",
+                                  style: textStyleForButton,
+                                )))
                       ],
                     ),
                   ),
@@ -474,7 +470,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(
-                          0.0), // Optional: Rounded corners
+                          8.0), // Optional: Rounded corners
                     ),
                     width: double.infinity,
                     height: 100,
@@ -522,7 +518,7 @@ class _CheckOutViewState extends State<CheckOutView> {
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(
-                          0.0), // Optional: Rounded corners
+                          8.0), // Optional: Rounded corners
                     ),
                     width: double.infinity,
                     padding: EdgeInsets.all(10),
@@ -557,7 +553,9 @@ class _CheckOutViewState extends State<CheckOutView> {
                                 style: textStyleForTextField),
                             Spacer(),
                             Text(
-                                "-" + currency + (checkoutViewModel.discountMRP ?? "0"),
+                                "-" +
+                                    currency +
+                                    (checkoutViewModel.discountMRP ?? "0"),
                                 style: textStyleForTextField)
                           ],
                         ),
@@ -587,7 +585,8 @@ class _CheckOutViewState extends State<CheckOutView> {
                           children: [
                             Text("Total Amount:", style: textStyleForTextField),
                             Spacer(),
-                            Text(currency + checkoutViewModel.totalPayableAmount,
+                            Text(
+                                currency + checkoutViewModel.totalPayableAmount,
                                 style: textStyleForTextField)
                           ],
                         ),
@@ -601,10 +600,10 @@ class _CheckOutViewState extends State<CheckOutView> {
                     height: 20,
                   ),
                   Container(
-                          decoration: BoxDecoration(
-                              color: skybluecolor,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                      decoration: BoxDecoration(
+                        color: skybluecolor,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                       height: 40,
                       width: double.infinity,
                       // color: lightgraykcolor,
@@ -614,22 +613,25 @@ class _CheckOutViewState extends State<CheckOutView> {
                               "success") {
                             NormalModel? response =
                                 await checkoutViewModel.placeOrder();
+
                             Fluttertoast.showToast(
                                 msg: response?.responseText ?? "");
-                            Future.delayed(Duration(seconds: 2), () {
-                              checkoutViewModel.navigateMainMenu(context);
-                            });
-                                                    } else {
+                            if (response?.responseCode == 1) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                checkoutViewModel.navigateMainMenu(context);
+                              });
+                            }
+                          } else {
                             Fluttertoast.showToast(
                                 msg: checkoutViewModel.checkValidation());
                           }
                         },
                         child: Text(
-                                  "Order Placed",
-                                  style: textStyleForButton,
-                                ),
+                          "Order Placed",
+                          style: textStyleForButton,
+                        ),
                       )),
-                      SizedBox(height: 20)
+                  SizedBox(height: 20)
                 ],
               ),
             ),

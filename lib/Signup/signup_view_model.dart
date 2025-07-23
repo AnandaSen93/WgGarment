@@ -61,6 +61,10 @@ class SignupViewModel extends ChangeNotifier {
       str = "Please enter your last name.";
     }else if (_phone == "") {
       str = "Please enter your phone number.";
+    }else if (_phone.length < 10) {
+      str = "Please enter a valid phone number.";
+    }else if (_phone.length > 15) {
+      str = "Please enter a valid phone number.";
     } else if (_email == "") {
       str = "Please enter your email.";
     } else if (!Helper.isValidEmail(_email)) {

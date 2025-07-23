@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 const currency = "₹";
 
@@ -28,6 +29,17 @@ Color hexToColor(String hexString) {
 }
 
 
+
+String decodeAndCleanHtml(String htmlText) {
+  // 1. Decode HTML entities
+  var unescape = HtmlUnescape();
+  String decoded = unescape.convert(htmlText);
+
+  // 2. Remove HTML tags
+  String cleaned = decoded.replaceAll(RegExp(r'<[^>]*>'), ' ').replaceAll(RegExp(r'\s+'), ' ').trim();
+
+  return cleaned;
+}
 
 
 
