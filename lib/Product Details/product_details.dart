@@ -120,16 +120,36 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 isLoop: true,
                                 children: productDetailsViewModel.bannerImage
                                         .map((imageUrl) {
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: CustomNetworkImage(
-                                          imageUrl: imageUrl
-                                              .toString(), // Convert String to Widget
-                                          fit: BoxFit.cover,
-                                          width: double.infinity,
-                                          height: double.infinity,
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  FullScreenImageViewer(
+                                                      imageUrl: imageUrl),
+                                            ),
+                                          );
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: Image.network(imageUrl,
+                                              fit: BoxFit.cover),
                                         ),
                                       );
+                                      // }).toList(),
+
+                                      //  ClipRRect(
+                                      //   borderRadius: BorderRadius.circular(12),
+                                      //   child: CustomNetworkImage(
+                                      //     imageUrl: imageUrl
+                                      //         .toString(), // Convert String to Widget
+                                      //     fit: BoxFit.cover,
+                                      //     width: double.infinity,
+                                      //     height: double.infinity,
+                                      //   ),
+                                      // );
                                     }).toList() ??
                                     [],
                               )
@@ -145,7 +165,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         top: 0,
                         right: 10,
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            
+                            // Share.share('Hey! Check out this amazing Flutter app!');
+                          },
                           icon: Image.asset(
                             "assets/images/shareBtn.png", // Replace with your image path
                             width: 30,
@@ -1183,6 +1206,28 @@ class RatingSlideBar extends StatelessWidget {
           ),
           SizedBox(width: 5),
         ],
+      ),
+    );
+  }
+}
+
+class FullScreenImageViewer extends StatelessWidget {
+  final String imageUrl;
+
+  const FullScreenImageViewer({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(backgroundColor: Colors.white),
+      body: Center(
+        child: InteractiveViewer(
+          panEnabled: true,
+          minScale: 1.0,
+          maxScale: 4.0,
+          child: Image.network(imageUrl),
+        ),
       ),
     );
   }

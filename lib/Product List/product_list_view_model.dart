@@ -16,11 +16,12 @@ class ProductListViewModel extends ChangeNotifier {
   var upperPrice = '';
 
   void clearData() {
-    productList = [];
+    productList.clear();
     categoryId = '';
     sortBy = '';
     lowerPrice = '';
     upperPrice = '';
+    notifyListeners();
   }
 
   void setcategoryId(String categoryID) {

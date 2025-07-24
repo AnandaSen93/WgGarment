@@ -16,7 +16,8 @@ class WishlistViewModel extends ChangeNotifier {
   List<ProductListData> wishListProduct = [];
 
   void clearData(){
-    wishListProduct = [];
+    wishListProduct.clear();
+    notifyListeners();
   }
 
 

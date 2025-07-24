@@ -17,6 +17,11 @@ class ReviewlistViewModel extends ChangeNotifier {
     notifyListeners();
    }
 
+   void clearData(){
+    reviewList.clear();
+    notifyListeners();
+   }
+
     Future<ReviewListModel?> getReviewList() async {
     final prefs = await SharedPreferences.getInstance();
     String? userID = prefs.getString("userID");

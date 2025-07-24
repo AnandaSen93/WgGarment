@@ -20,9 +20,18 @@ class _ReviewListViewState extends State<ReviewListView> {
   bool _isInitialized = false;
   late ReviewlistViewModel _viewModel;
   final FocusNode _focusNode = FocusNode();
+
+
+@override
+void initState() {
+  super.initState();
+  // Reset or clear previous data
+}
+
   @override
   void dispose() {
     super.dispose();
+    _viewModel.clearData();
   }
 
   @override

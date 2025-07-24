@@ -13,7 +13,7 @@ class HomeproductlistViewModel extends ChangeNotifier {
   var listtype = '';
 
   void clearData() {
-    productList = [];
+    productList.clear();
     listtype = '';
     
   }

@@ -27,10 +27,10 @@ class ProductDetailsViewModel extends ChangeNotifier {
 
   void clearData() {
     productId = "";
-    similarProductlist = [];
-    bannerImage = [];
-    colorList = [];
-    SizeList = [];
+    similarProductlist.clear();
+    bannerImage.clear();
+    colorList.clear();
+    SizeList.clear();
     productDetailsData = null;
     selectedColorId = '';
     selecetedSizeId = '';

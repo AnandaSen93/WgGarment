@@ -16,7 +16,7 @@ class SearchViewModel extends ChangeNotifier {
 
 
   void clearData() {
-    productList = [];
+    productList.clear();
     searchText = '';
   }
 

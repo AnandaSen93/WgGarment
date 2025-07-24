@@ -31,10 +31,10 @@ class AddeditAddressViewModel extends ChangeNotifier {
 
   void clearData(){
     addressFull = AddressDetailsData();
-    countryList = [];
+    countryList.clear();
     countryID = '';
     countryName = '';
-    stateList = [];
+    stateList.clear();
     stateID = '';
     stateName = '';
 
