@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Login/login.dart';
 import 'dart:async';
 
@@ -11,10 +12,7 @@ class Splash extends StatefulWidget {
   _SplashState createState() => _SplashState();
 }
 
-    Future<bool> getLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("isLoggedIn") ?? false;
-  }
+
 
 class _SplashState extends State<Splash> {
   @override
@@ -24,15 +22,22 @@ class _SplashState extends State<Splash> {
     Timer(const Duration(seconds: 3), () {
       print("end");
       //Navigator.pushNamed(context, 'howItsWorks');
-     getLoginStatus().then((isLoggedIn) {
-             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-            builder: (context) => isLoggedIn ? MenuView() : LoginView(),
+         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) => MenuView(),
   ),
   (Route<dynamic> route) => false,
   );
-});
     });
   }
+
+
+//        getLoginStatus().then((isLoggedIn) {
+//              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+//             builder: (context) => isLoggedIn ? MenuView() : LoginView(),
+//   ),
+//   (Route<dynamic> route) => false,
+//   );
+// });
 
 
 
@@ -41,7 +46,7 @@ class _SplashState extends State<Splash> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          "assets/images/app_logo.png",
+          "assets/images/app_icon.png",
            width: 300,
           // height: double.infinity,
           fit: BoxFit.fill,

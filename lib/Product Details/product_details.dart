@@ -3,6 +3,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
@@ -10,7 +11,9 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'dart:async';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:wg_garment/Home/home_model.dart';
+import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Product%20Details/product_details_view_model.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({super.key});
@@ -91,6 +94,49 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     return textPainter.size.width; // Get the width
   }
 
+
+
+    void loginAlert() {
+    Alert(
+      context: context,
+      type: AlertType
+          .none, // You can change the type (success, error, info, etc.)
+      title: "Login or Sign Up Required",
+      desc:
+          "You need to be logged in to use this feature. Please login or create a new account to continue.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ),
+            );
+          },
+          color: Colors.white,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            print("No");
+          
+          },
+          color: Colors.white,
+        )
+      ],
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     final productDetailsViewModel =
@@ -165,9 +211,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         top: 0,
                         right: 10,
                         child: IconButton(
-                          onPressed: () {
-                            
-                            // Share.share('Hey! Check out this amazing Flutter app!');
+                          onPressed: () async {
+                            // ignore: deprecated_member_use
+                            await Share.share(
+                              productDetailsViewModel.productDetailsData
+                                      ?.productShareableLink ??
+                                  "",
+                              subject: 'Share link',
+                            );
                           },
                           icon: Image.asset(
                             "assets/images/shareBtn.png", // Replace with your image path
@@ -179,9 +230,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         bottom: 0,
                         right: 10,
                         child: IconButton(
-                          onPressed: () {
-                            productDetailsViewModel.addRemoveWishlistApiCall(
-                                productDetailsViewModel.productId);
+                          onPressed: () async {
+                            if (await getLoginStatus()) {
+                              productDetailsViewModel.addRemoveWishlistApiCall(
+                                  productDetailsViewModel.productId);
+                            } else {
+                              loginAlert();
+                            }
                           },
                           icon: Image.asset(
                             (productDetailsViewModel
@@ -307,6 +362,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           aspectRatio: 3,
                           child: Container(
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
                               color: Colors.transparent,
                               border: Border.all(
                                 color: Colors.black,
@@ -725,7 +781,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           ?.ratingAll
                                                           ?.five ??
                                                       "0"),
-                                              index: 0),
+                                              index: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.ratingAll
+                                                      ?.five ??
+                                                  "0"),
                                           RatingSlideBar(
                                               ratingLabel: "4",
                                               progressValue: double.parse(
@@ -734,7 +794,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           ?.ratingAll
                                                           ?.four ??
                                                       "0"),
-                                              index: 0),
+                                              index: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.ratingAll
+                                                      ?.four ??
+                                                  "0"),
                                           RatingSlideBar(
                                               ratingLabel: "3",
                                               progressValue: double.parse(
@@ -743,7 +807,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           ?.ratingAll
                                                           ?.three ??
                                                       "0"),
-                                              index: 0),
+                                              index: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.ratingAll
+                                                      ?.three ??
+                                                  "0"),
                                           RatingSlideBar(
                                               ratingLabel: "2",
                                               progressValue: double.parse(
@@ -752,7 +820,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           ?.ratingAll
                                                           ?.two ??
                                                       "0"),
-                                              index: 0),
+                                              index: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.ratingAll
+                                                      ?.two ??
+                                                  "0"),
                                           RatingSlideBar(
                                               ratingLabel: "1",
                                               progressValue: double.parse(
@@ -761,7 +833,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                           ?.ratingAll
                                                           ?.one ??
                                                       "0"),
-                                              index: 0),
+                                              index: productDetailsViewModel
+                                                      .productDetailsData
+                                                      ?.ratingAll
+                                                      ?.one ??
+                                                  "0"),
                                         ],
                                       ),
                                     ),
@@ -994,17 +1070,21 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                     width: 30,
                                                     height: 30,
                                                   ),
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     // Action when pressed
                                                     print("hello");
 
-                                                    productDetailsViewModel
-                                                        .addRemoveWishlistApiCall(
-                                                            productDetailsViewModel
-                                                                .similarProductlist[
-                                                                    index]
-                                                                .productId
-                                                                .toString());
+                                                    if (await getLoginStatus()) {
+                                                      productDetailsViewModel
+                                                          .addRemoveWishlistApiCall(
+                                                              productDetailsViewModel
+                                                                  .similarProductlist[
+                                                                      index]
+                                                                  .productId
+                                                                  .toString());
+                                                    } else {
+                                                      loginAlert();
+                                                    }
                                                   },
                                                 ),
                                               )
@@ -1166,7 +1246,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 class RatingSlideBar extends StatelessWidget {
   final String ratingLabel;
   final double progressValue;
-  final int index;
+  final String index;
 
   const RatingSlideBar({
     Key? key,

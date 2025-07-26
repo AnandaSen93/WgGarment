@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wg_garment/Category/category.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home.dart';
+import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Menu/menu_view_model.dart';
 import 'package:wg_garment/Profile/profile.dart';
 import 'package:wg_garment/WishList/wishlist.dart';
@@ -18,12 +20,8 @@ class MenuView extends StatefulWidget {
   State<MenuView> createState() => _MenuViewState();
 }
 
-class _MenuViewState extends State<MenuView> with RouteAware{
-
-
-
-  
-  var pageList = [ ];
+class _MenuViewState extends State<MenuView> with RouteAware {
+  var pageList = [];
 
   late MenuViewModel _viewModel;
   bool _isInitialized = false;
@@ -31,12 +29,12 @@ class _MenuViewState extends State<MenuView> with RouteAware{
   void initState() {
     super.initState();
     pageList = [
-    HomeView(onCButtonPressed: fetchMenuData),
-    CategoryView(),
-    WishlistView(),
-    CartView(onCButtonPressed: fetchMenuData),
-    ProfileView(),
-  ];
+      HomeView(onCButtonPressed: fetchMenuData),
+      CategoryView(),
+      WishlistView(),
+      CartView(onCButtonPressed: fetchMenuData),
+      ProfileView(),
+    ];
   }
 
   @override
@@ -52,6 +50,47 @@ class _MenuViewState extends State<MenuView> with RouteAware{
     });
   }
 
+  void loginAlert() {
+    Alert(
+      context: context,
+      
+      type: AlertType
+          .none, // You can change the type (success, error, info, etc.)
+      title: "Login or Sign Up Required",
+      desc:
+          "You need to be logged in to use this feature. Please login or create a new account to continue.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ),
+            );
+          },
+          color: Colors.white,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            print("No");
+          
+          },
+          color: Colors.white,
+        )
+      ],
+    ).show();
+  }
 
   @override
   void didPopNext() {
@@ -59,32 +98,34 @@ class _MenuViewState extends State<MenuView> with RouteAware{
     // This method is called when coming back from the Second Screen
   }
 
-    @override
+  @override
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isInitialized) {
-     await fetchMenuData();
-     _isInitialized = true;
+      await fetchMenuData();
+      _isInitialized = true;
     }
   }
 
   Future<void> fetchMenuData() async {
-  _viewModel = Provider.of<MenuViewModel>(context, listen: false);
+     _viewModel = Provider.of<MenuViewModel>(context, listen: false);
+    if (await getLoginStatus()) {
+     
 
-  final response = await _viewModel.countApi();
-  if (response != null) {
-    if (response.responseCode != 1) {
-      Fluttertoast.showToast(msg: response.responseText ?? "");
+      final response = await _viewModel.countApi();
+      if (response != null) {
+        if (response.responseCode != 1) {
+          Fluttertoast.showToast(msg: response.responseText ?? "");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Somethings went wrong!");
+      }
     }
-  } else {
-    Fluttertoast.showToast(msg: "Somethings went wrong!");
   }
-}
 
   @override
   Widget build(BuildContext context) {
-    
-     final menuViewModel = Provider.of<MenuViewModel>(context);
+    final menuViewModel = Provider.of<MenuViewModel>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -131,7 +172,9 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                         Spacer(),
                         Icon(
                           Icons.home_outlined,
-                          color: menuViewModel.selectedIndex == 0 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 0
+                              ? pinkcolor
+                              : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -169,7 +212,9 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                         Spacer(),
                         Icon(
                           Icons.category_outlined,
-                          color: menuViewModel.selectedIndex == 1 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 1
+                              ? pinkcolor
+                              : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -189,8 +234,12 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    _onItemTapped(2);
+                  onTap: () async {
+                    if (await getLoginStatus()) {
+                      _onItemTapped(2);
+                    } else {
+                      loginAlert();
+                    }
                   },
                   child: Container(
                     width: screenWidth / 5,
@@ -207,7 +256,9 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                         Spacer(),
                         ImageIcon(
                           AssetImage('assets/images/heart.png'),
-                          color: menuViewModel.selectedIndex == 2 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 2
+                              ? pinkcolor
+                              : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),
@@ -227,8 +278,12 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    _onItemTapped(3);
+                  onTap: () async {
+                    if (await getLoginStatus()) {
+                      _onItemTapped(3);
+                    } else {
+                      loginAlert();
+                    }
                   },
                   child: Stack(children: [
                     Container(
@@ -246,8 +301,9 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                           Spacer(),
                           ImageIcon(
                             AssetImage('assets/images/shopping_bags.png'),
-                            color:
-                                menuViewModel.selectedIndex == 3 ? pinkcolor : Colors.grey,
+                            color: menuViewModel.selectedIndex == 3
+                                ? pinkcolor
+                                : Colors.grey,
                             size: 30,
                           ),
                           Spacer(),
@@ -266,25 +322,25 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                       ),
                     ),
                     if (menuViewModel.cartCount != "0")
-                    Positioned(
-                        top: 0,
-                        right: 5,
-                        child: Container(
-                          padding: EdgeInsets.all(7), // Adjust padding
-                          decoration: BoxDecoration(
-                            color: pinkcolor, // Background color
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            menuViewModel.cartCount, // Your label text
-                            style: textStyleCounter,
-                          ),
-                        ))
+                      Positioned(
+                          top: 0,
+                          right: 5,
+                          child: Container(
+                            padding: EdgeInsets.all(7), // Adjust padding
+                            decoration: BoxDecoration(
+                              color: pinkcolor, // Background color
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              menuViewModel.cartCount, // Your label text
+                              style: textStyleCounter,
+                            ),
+                          ))
                   ]),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    _onItemTapped(04);
+                  onTap: () async {
+                    _onItemTapped(4);
                   },
                   child: Container(
                     width: screenWidth / 5,
@@ -301,7 +357,9 @@ class _MenuViewState extends State<MenuView> with RouteAware{
                         Spacer(),
                         ImageIcon(
                           AssetImage('assets/images/profile.png'),
-                          color: menuViewModel.selectedIndex == 4 ? pinkcolor : Colors.grey,
+                          color: menuViewModel.selectedIndex == 4
+                              ? pinkcolor
+                              : Colors.grey,
                           size: 30,
                         ),
                         Spacer(),

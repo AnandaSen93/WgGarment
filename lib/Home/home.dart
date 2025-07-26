@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home/home_view_model.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:wg_garment/Login/login.dart';
 
 class HomeView extends StatefulWidget {
   final VoidCallback onCButtonPressed;
@@ -69,15 +71,55 @@ class _HomeViewState extends State<HomeView> {
     print('Is Logged In: $isLoggedIn');
   }
 
+
+    void loginAlert() {
+    Alert(
+      context: context,
+      type: AlertType
+          .none, // You can change the type (success, error, info, etc.)
+      title: "Login or Sign Up Required",
+      desc:
+          "You need to be logged in to use this feature. Please login or create a new account to continue.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ),
+            );
+          },
+          color: Colors.white,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            print("No");
+          
+          },
+          color: Colors.white,
+        )
+      ],
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     final homeViewModel = Provider.of<HomeViewModel>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    void homeApiCall() {
-      homeViewModel.homeApiCall();
-    }
+  
 
     return PlatformScaffold(
       body: SafeArea(
@@ -185,8 +227,13 @@ class _HomeViewState extends State<HomeView> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: (){
-                                homeViewModel.navigateToSubCat(homeViewModel.topCategory[index].categoryId ?? "", index, context);
+                              onTap: () {
+                                homeViewModel.navigateToSubCat(
+                                    homeViewModel
+                                            .topCategory[index].categoryId ??
+                                        "",
+                                    index,
+                                    context);
                               },
                               child: Container(
                                 padding: EdgeInsets.only(right: 8),
@@ -248,7 +295,8 @@ class _HomeViewState extends State<HomeView> {
                         Spacer(),
                         TextButton(
                             onPressed: () {
-                              homeViewModel.navigateToHomeProductList("newArrival", context);
+                              homeViewModel.navigateToHomeProductList(
+                                  "newArrival", context);
                             },
                             child: Text(
                               "View All",
@@ -308,16 +356,20 @@ class _HomeViewState extends State<HomeView> {
                                                 width: 30,
                                                 height: 30,
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // Action when pressed
                                                 print("hello");
 
-                                                homeViewModel
-                                                    .addRemoveWishlistApiCall(
-                                                        homeViewModel
-                                                            .newArrival[index]
-                                                            .productId
-                                                            .toString());
+                                                if (await getLoginStatus()) {
+                                                  homeViewModel
+                                                      .addRemoveWishlistApiCall(
+                                                          homeViewModel
+                                                              .newArrival[index]
+                                                              .productId
+                                                              .toString());
+                                                } else {
+                                                  loginAlert();
+                                                }
                                               },
                                             ),
                                           )
@@ -357,20 +409,24 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "0.00")
-                                                      ? Text( currency +
-                                                          homeViewModel
-                                                              .newArrival[index]
-                                                              .productSellPrice
-                                                              .toString(),
+                                                      ? Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text( currency +
-                                                          homeViewModel
-                                                              .newArrival[index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1),
@@ -390,11 +446,13 @@ class _HomeViewState extends State<HomeView> {
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)
-                                                      : Text( currency +
-                                                          homeViewModel
-                                                              .newArrival[index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .newArrival[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)
@@ -495,7 +553,8 @@ class _HomeViewState extends State<HomeView> {
                         Spacer(),
                         TextButton(
                             onPressed: () {
-                              homeViewModel.navigateToHomeProductList("MostWanted", context);
+                              homeViewModel.navigateToHomeProductList(
+                                  "MostWanted", context);
                             },
                             child: Text(
                               "View All",
@@ -551,14 +610,18 @@ class _HomeViewState extends State<HomeView> {
                                                 width: 30,
                                                 height: 30,
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // Action when pressed
-                                                homeViewModel
-                                                    .addRemoveWishlistApiCall(
-                                                        homeViewModel
-                                                            .mostWanted[index]
-                                                            .productId
-                                                            .toString());
+                                                if (await getLoginStatus()) {
+                                                  homeViewModel
+                                                      .addRemoveWishlistApiCall(
+                                                          homeViewModel
+                                                              .mostWanted[index]
+                                                              .productId
+                                                              .toString());
+                                                } else {
+                                                  loginAlert();
+                                                }
                                               },
                                             ),
                                           )
@@ -597,20 +660,24 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "0.00")
-                                                      ? Text( currency +
-                                                          homeViewModel
-                                                              .mostWanted[index]
-                                                              .productSellPrice
-                                                              .toString(),
+                                                      ? Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text( currency +
-                                                          homeViewModel
-                                                              .mostWanted[index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
@@ -633,11 +700,13 @@ class _HomeViewState extends State<HomeView> {
                                                               textStyleForCutPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text( currency +
-                                                          homeViewModel
-                                                              .mostWanted[index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .mostWanted[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1,
@@ -737,7 +806,8 @@ class _HomeViewState extends State<HomeView> {
                         Spacer(),
                         TextButton(
                             onPressed: () {
-                              homeViewModel.navigateToHomeProductList("backInStock", context);
+                              homeViewModel.navigateToHomeProductList(
+                                  "backInStock", context);
                             },
                             child: Text(
                               "View All",
@@ -799,14 +869,19 @@ class _HomeViewState extends State<HomeView> {
                                                 width: 30,
                                                 height: 30,
                                               ),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // Action when pressed
-                                                homeViewModel
-                                                    .addRemoveWishlistApiCall(
-                                                        homeViewModel
-                                                            .backInaStack[index]
-                                                            .productId
-                                                            .toString());
+                                                if (await getLoginStatus()) {
+                                                  homeViewModel
+                                                      .addRemoveWishlistApiCall(
+                                                          homeViewModel
+                                                              .backInaStack[
+                                                                  index]
+                                                              .productId
+                                                              .toString());
+                                                } else {
+                                                  loginAlert();
+                                                }
                                               },
                                             ),
                                           )
@@ -847,22 +922,24 @@ class _HomeViewState extends State<HomeView> {
                                                                   .productSellPrice
                                                                   .toString() !=
                                                               "")
-                                                      ? Text( currency +
-                                                          homeViewModel
-                                                              .backInaStack[
-                                                                  index]
-                                                              .productSellPrice
-                                                              .toString(),
+                                                      ? Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productSellPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1,
                                                         )
-                                                      : Text( currency +
-                                                          homeViewModel
-                                                              .backInaStack[
-                                                                  index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForMainPrice,
                                                           maxLines: 1),
@@ -882,12 +959,13 @@ class _HomeViewState extends State<HomeView> {
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)
-                                                      : Text(currency +
-                                                          homeViewModel
-                                                              .backInaStack[
-                                                                  index]
-                                                              .productOriginalPrice
-                                                              .toString(),
+                                                      : Text(
+                                                          currency +
+                                                              homeViewModel
+                                                                  .backInaStack[
+                                                                      index]
+                                                                  .productOriginalPrice
+                                                                  .toString(),
                                                           style:
                                                               textStyleForCutPrice,
                                                           maxLines: 1)

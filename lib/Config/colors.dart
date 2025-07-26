@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const currency = "₹";
 
@@ -27,6 +28,12 @@ Color hexToColor(String hexString) {
 
   return Color(int.parse(hexString, radix: 16));
 }
+
+
+    Future<bool> getLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("isLoggedIn") ?? false;
+  }
 
 
 

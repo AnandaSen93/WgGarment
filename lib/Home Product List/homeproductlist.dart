@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
 import 'package:wg_garment/Home%20Product%20List/homeproductlist_view_model.dart';
+import 'package:wg_garment/Login/login.dart';
 
 class HomeproductlistView extends StatefulWidget {
   const HomeproductlistView({super.key});
@@ -48,6 +50,48 @@ class _HomeproductlistViewState extends State<HomeproductlistView> {
       //Provider.of<HomeViewModel>(context).homeApiCall(); // Call API
       _isInitialized = true; // Ensure it's called only once
     }
+  }
+
+
+    void loginAlert() {
+    Alert(
+      context: context,
+      type: AlertType
+          .none, // You can change the type (success, error, info, etc.)
+      title: "Login or Sign Up Required",
+      desc:
+          "You need to be logged in to use this feature. Please login or create a new account to continue.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ),
+            );
+          },
+          color: Colors.white,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            print("No");
+          
+          },
+          color: Colors.white,
+        )
+      ],
+    ).show();
   }
 
   @override
@@ -130,9 +174,15 @@ class _HomeproductlistViewState extends State<HomeproductlistView> {
                                             width: 30,
                                             height: 30,
                                           ),
-                                          onPressed: () {
-                                            homeProductListViewModel.addRemoveWishlistApiCall(homeProductListViewModel
+                                          onPressed: () async{
+                                                // Action when pressed
+                                                if (await getLoginStatus()) {
+                                                   homeProductListViewModel.addRemoveWishlistApiCall(homeProductListViewModel
                                                         .productList[index].productId ?? "");
+                                                } else {
+                                                  loginAlert();
+                                                }
+                                           
 
                                           },
                                         ),

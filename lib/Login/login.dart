@@ -60,7 +60,9 @@ class _LoginViewState extends State<LoginView>
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }, icon: Icon(Icons.arrow_back_ios_new)),
                   Spacer(),
                   Spacer()
                 ],
@@ -212,7 +214,9 @@ class _LoginViewState extends State<LoginView>
                               mainAxisAlignment: MainAxisAlignment
                                   .end, // Align text to the right
                               children: [
-                                Text('Forget Password'),
+                                Text('Forget Password',
+                                style: textstyleSmall.copyWith(color: Colors.black54)
+                                ),
                               ],
                             ),
                           ),
@@ -261,8 +265,12 @@ class _LoginViewState extends State<LoginView>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have an account?"),
-                                Text(" SIGN UP"),
+                                Text("Don't have an account?",
+                                style: textstyleSmall.copyWith(color: Colors.black54)
+                                ),
+                                Text(" SIGN UP",
+                                    style: textstyleSmall.copyWith(color: pinkcolor),
+                                ),
                               ],
                             )),
                       ],

@@ -115,7 +115,7 @@ const textstyleLarge = TextStyle(
 
 const textstyleSmall = TextStyle(
     fontFamily: 'Poppins', // Use the font family defined in `pubspec.yaml`
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.none

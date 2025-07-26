@@ -50,7 +50,7 @@ dependencies:
   webview_flutter: ^4.13.0  
   image_picker: ^1.0.7
   html_unescape: ^2.0.0
-
+  share_plus: ^11.0.0
   
   
 
@@ -67,18 +67,18 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png" # for legacy devices and iOS
+  image_path: "assets/images/appicon.png" # for legacy devices and iOS
   adaptive_icon_background: "#FFFFFF"  # Background color for Android adaptive icons
-  adaptive_icon_foreground: "assets/images/android_app_icon1.png" # for legacy devices and iOS
+  adaptive_icon_foreground: "assets/images/appicon.png" # for legacy devices and iOS
 
 flutter_native_splash:
   color: "#ffffff"             # Background color of the splash screen
-  image: assets/images/app_logo.png     # Path to your splash image
+  image: assets/images/app_icon.png     # Path to your splash image
   android: true                # Apply to Android
   ios: true    
   # ios_content_mode: "fullscreen"               # Apply to iOS
   android_12:
-    image: assets/images/app_logo.png   # Separate image for Android 12+
+    image: assets/images/app_icon.png   # Separate image for Android 12+
     icon_background_color: "#ffffff"  # Bac
 
   # The "flutter_lints" package below contains a set of recommended lints to

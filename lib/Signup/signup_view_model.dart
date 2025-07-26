@@ -10,7 +10,11 @@ class SignupViewModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
   String _confirmPassword = '';
+  String isProductFeed = '1';
+  String isNewsLetter = '1';
 
+
+                                       
   void setEmail(String email) {
     _email = email;
      print(_email);
@@ -89,8 +93,8 @@ class SignupViewModel extends ChangeNotifier {
         "phone": _phone,
         "email": _email,
         "password": _password,
-        "newsLetter": "1",
-        "productFeed": "1",
+        "newsLetter": isNewsLetter,
+        "productFeed": isProductFeed,
       }, ApiConstant.signupUrl);
 
       print("Response Type: ${response.runtimeType}");

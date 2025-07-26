@@ -437,8 +437,57 @@ class _SignupViewState extends State<SignupView> {
                             ),
                           ),
                           SizedBox(height: 15),
+                           Container(
+                        height: 40,
+                        width: double.infinity,
+                        
+                        child: Row(
+                          children: [
+                            Text(
+                              "Subscribe newsletter :",
+                              style: textStyleForCategorytName,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    signuoViewModel.isNewsLetter.toString() == "1" ? signuoViewModel.isNewsLetter = "0" : signuoViewModel.isNewsLetter = "1";
+                                 });
+                                },
+                                icon: Icon(
+                                  signuoViewModel.isNewsLetter.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
+                                  size: 30,
+                                )),
+                            
+                          ],
+                        ),
+                      ),
+            Container(
+                        height: 40,
+                        width: double.infinity,
+                        //  color: Colors.green,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Subscribe to product feed :",
+                              style: textStyleForCategorytName,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                 setState(() {
+                                    signuoViewModel.isProductFeed.toString() == "1" ? signuoViewModel.isProductFeed = "0" : signuoViewModel.isProductFeed = "1";
+                                     
+                                 });
+                                },
+                                icon: Icon(
+                                  signuoViewModel.isProductFeed.toString() == "1" ? Icons.check_box : Icons.check_box_outline_blank,
+                                  size: 30,
+                                )),
+                            
+                          ],
+                        ),
+                      ),
                   
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
                           SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -480,16 +529,17 @@ class _SignupViewState extends State<SignupView> {
                           ),
                           TextButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => Signup()));
+                                Navigator.pop(context);
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("You have an account?"),
-                                  Text(" LOGIN"),
+                                  Text("You have an account?",
+                                  style: textstyleSmall.copyWith(color: Colors.black54 )
+                                  ),
+                                  Text(" LOGIN",
+                                  style: textstyleSmall.copyWith(color: pinkcolor
+                                  )),
                                 ],
                               )),
                         ],

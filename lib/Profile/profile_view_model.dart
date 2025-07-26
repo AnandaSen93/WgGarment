@@ -5,6 +5,7 @@ import 'package:wg_garment/Address%20List/addresslist.dart';
 import 'package:wg_garment/Api%20call/api_constant.dart';
 import 'package:wg_garment/Api%20call/api_service.dart';
 import 'package:wg_garment/Change%20Password/changepassword.dart';
+import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Edit%20Profile/editprofile.dart';
 import 'package:wg_garment/Home/home_model.dart';
 import 'package:wg_garment/Login/login.dart';
@@ -15,6 +16,66 @@ import 'package:wg_garment/Slug%20Page/slugview.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   UserData? profileDta;
+  bool isLoggedIn = false;
+
+
+  var list = [];
+  var list1 = [];
+
+  void setUI() async{
+ if (await getLoginStatus()) {
+      isLoggedIn = true;
+      list = [
+        "My Order",
+        "My Address",
+        "Privacy",
+        "Terms And Aonditions",
+        "Privacy Policy",
+        "Who We Are",
+        "About Us",
+        "Delivery information",
+        "Return Policy",
+        "Log Out",
+        "Delete Account"
+      ];
+
+      list1 = [
+        "View all orders",
+        "Add and update address",
+        "Change your password",
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        "",
+        ""
+      ];
+    } else {
+      isLoggedIn = false;
+      list = [
+        "Terms And Aonditions",
+        "Privacy Policy",
+        "Who We Are",
+        "About Us",
+        "Delivery information",
+        "Return Policy",
+        "Log In",
+      ];
+
+      list1 = [
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        "Please check",
+        ""
+      ];
+    }
+     notifyListeners();
+  }
 
   void navigateToEditProfile(BuildContext context) async {
     // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
@@ -42,14 +103,17 @@ class ProfileViewModel extends ChangeNotifier {
     // Provider.of<ProductDetailsViewModel>(context, listen: false).selectedProductID(ProductID);
     final prefs = await SharedPreferences.getInstance();
       await prefs.remove('isLoggedIn');
+      await prefs.remove('userID');
     // Push the second screen and pass the user data
-    final result = await Navigator.pushAndRemoveUntil(
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LoginView(),
       ),
-      (Route<dynamic> route) => false,
-    );
+    ).then((_) {
+      // Refresh after coming back
+      setUI();
+    });
 
     if (result != null) {
       // Handle the returned result (pop data)

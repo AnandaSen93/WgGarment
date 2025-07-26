@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wg_garment/Api%20call/imageClass.dart';
 import 'package:wg_garment/Config/colors.dart';
 import 'package:wg_garment/Config/textstyle.dart';
+import 'package:wg_garment/Login/login.dart';
 import 'package:wg_garment/Product%20List/product_list_view_model.dart';
 
 class ProductListView extends StatefulWidget {
@@ -55,6 +57,8 @@ class _ProductListViewState extends State<ProductListView> {
       _isInitialized = true; // Ensure it's called only once
     }
   }
+
+
 
   void _showRangeSliderDialog() {
     RangeValues tempRange = _selectedRange; // ✅ Store temporary range
@@ -125,6 +129,49 @@ class _ProductListViewState extends State<ProductListView> {
         );
       },
     );
+  }
+
+
+
+    void loginAlert() {
+    Alert(
+      context: context,
+      type: AlertType
+          .none, // You can change the type (success, error, info, etc.)
+      title: "Login or Sign Up Required",
+      desc:
+          "You need to be logged in to use this feature. Please login or create a new account to continue.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () async {
+            Navigator.pop(context);
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginView(),
+              ),
+            );
+          },
+          color: Colors.white,
+        ),
+        DialogButton(
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.black, fontSize: 18),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            print("No");
+          
+          },
+          color: Colors.white,
+        )
+      ],
+    ).show();
   }
 
   @override
@@ -288,9 +335,15 @@ class _ProductListViewState extends State<ProductListView> {
                                               width: 30,
                                               height: 30,
                                             ),
-                                            onPressed: () {
-                                              productListViewModel.addRemoveWishlistApiCall(productListViewModel
+                                            onPressed: () async{
+
+                                                   if (await getLoginStatus()) {
+                                                      productListViewModel.addRemoveWishlistApiCall(productListViewModel
                                                           .productList[index].productId ?? "");
+                                                    } else {
+                                                      loginAlert();
+                                                    }
+                                             
                                             },
                                           ),
                                         )
