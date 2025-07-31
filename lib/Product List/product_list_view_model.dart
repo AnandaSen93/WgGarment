@@ -11,9 +11,27 @@ import 'package:wg_garment/Product%20List/product_list_model.dart';
 class ProductListViewModel extends ChangeNotifier {
   List<ProductListData> productList = [];
   var categoryId = '';
-  var sortBy = '';
+  var sortBy = 'Newest';
   var lowerPrice = '';
   var upperPrice = '';
+
+
+
+  //priceLowToHight/priceHightToLow/newest (not require)
+
+   String getsortkey(String sortValue) {
+
+    if (sortValue == "Price Low To Hight"){
+      return 'priceLowToHight';
+    }else if (sortValue == "Price Hight To Low"){
+      return 'priceHightToLow';
+    }else{
+      //"Newest"
+      return 'newest';
+    }
+  
+    }
+  
 
   void clearData() {
     productList.clear();
@@ -57,7 +75,7 @@ class ProductListViewModel extends ChangeNotifier {
       final response = await ApiServices().postApiCall({
         "userId": userID,
         "categoryId": categoryId,
-        "sortBy": sortBy,
+        "sortBy": getsortkey(sortBy),
         "lowerPrice": lowerPrice,
         "upperPrice": upperPrice,
       }, ApiConstant.productllistingurl);

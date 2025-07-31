@@ -21,7 +21,7 @@ class ProductListView extends StatefulWidget {
 
 class _ProductListViewState extends State<ProductListView> {
   RangeValues _selectedRange = RangeValues(500, 5000);
-  String dropdownvalue = 'Newest';
+  
   var dropdownItems = ["Price Low To Hight", "Price Hight To Low", "Newest"];
 
   bool _isInitialized = false;
@@ -42,8 +42,9 @@ class _ProductListViewState extends State<ProductListView> {
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_isInitialized) {
-      _viewModel = Provider.of<ProductListViewModel>(context, listen: false);
 
+      _viewModel = Provider.of<ProductListViewModel>(context, listen: false);
+      _viewModel.sortBy = 'Newest';
       final response = await _viewModel.productListApi();
       if (response != null) {
         if (response.responseCode != 1) {
@@ -246,7 +247,7 @@ class _ProductListViewState extends State<ProductListView> {
                       child: Material(
                         child: DropdownButton(
                             isExpanded: true,
-                            value: dropdownvalue,
+                            value: productListViewModel.sortBy,
                             items: dropdownItems
                                 .map(
                                   (e) => DropdownMenuItem(
@@ -260,7 +261,6 @@ class _ProductListViewState extends State<ProductListView> {
                                 .toList(),
                             onChanged: (value) {
                               setState(() {
-                                dropdownvalue = value.toString();
                                 productListViewModel.sortBy = value.toString();
                                 productListViewModel.productListApi();
                               });
